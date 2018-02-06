@@ -64,7 +64,7 @@ class Status(db.Model):
     def __repr__(self):
         """Displays status object."""
 
-        return "<Status name={}>",format(self.name)
+        return "<Status name={}>".format(self.name)
 
 
 
@@ -80,18 +80,21 @@ def createStatusTable():
     db.session.commit()
 
 
-class Date(db.Model):
+class DateChange(db.Model):
     """Dates from job search website."""
 
     __tablename__ = "dates"
 
-    application_id = db.Column(db.Integer, db.ForeignKey('applications.application_id'), nullable=False)
     date_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    application_id = db.Column(db.Integer, db.ForeignKey('applications.application_id'), nullable=False)
     status_id = db.Column(db.Integer, db.ForeignKey('status.status_id'), nullable=False)
 
-    date = db.Column(db.Date, nullable=False)
+    # This column logs the date a change was created
+    date_created = db.Column(db.Date, nullable=False)
 
     application = db.relationship('Application', backref=db.backref('dates'), order_by=application_id)
+    status = db.relationship('Status', backref=db.backref('status'), order_by=status_id)
+
 
 class Application(db.Model):
     """Application from job search website."""
@@ -104,11 +107,8 @@ class Application(db.Model):
     company_id = db.Column(db.Integer, db.ForeignKey('companies.company_id'), nullable=False)
     contact_id = db.Column(db.Integer, db.ForeignKey('contacts.contact_id'), nullable=True)
     status_id = db.Column(db.Integer, db.ForeignKey('status.status_id'), nullable=False)
-    date_id = db.Column(db.Integer, db.ForeignKey('date.date'), nullable=False)
 
     offer_amount = db.Column(db.Numeric, nullable=True)
-
-    date = db.Column(db.Date, onupdate=)
 
     # Misc columns
     notes = db.Column(db.String(200), nullable=True)
@@ -119,7 +119,6 @@ class Application(db.Model):
     company = db.relationship('Company', backref=db.backref('applications', order_by=application_id))
     contact = db.relationship('Contact', backref=db.backref('applications', order_by=application_id))
     status = db.relationship('Status', backref=db.backref('applications', order_by=application_id))
-    dates = db.relationship('Date', backref=db.backref('applications', order_by=application_id))
 
     def __repr__(self):
         """Displays application object."""
@@ -156,12 +155,16 @@ if __name__ == "__main__":
     app = Application(user_id=1, company_id=1, contact_id=1, status_id=1, offer_amount=100000, url="www.hackbright.com")
     comp2 = Company(name="Facebook")
     app2 = Application(user_id=1, company_id=2, status_id=2, offer_amount=150000, url="www.facebook.com")
+    datech1 = DateChange(application_id=1, status_id=1, date_created='01/01/18')
+    datech2 = DateChange(application_id=2, status_id=2, date_created='01/05/18')
     db.session.add(user)
     db.session.add(comp)
     db.session.add(contact)
     db.session.add(app)
     db.session.add(comp2)
     db.session.add(app2)
+    db.session.add(datech1)
+    db.session.add(datech2)
     db.session.commit()
     print "Connected to DB."
 
