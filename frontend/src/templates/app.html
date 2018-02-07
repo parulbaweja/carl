@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>Locamo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="jobs-api-url" content="http://localhost:5001">
+    <!-- styles -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/hint.min.css') }}">
+  </head>
+  <body>
+    <!-- scripts -->
+    <div id="react-app"></div>
+    <script src="{{ url_for('static', filename='js/compiled/bundle.js') }}"></script>
+  </body>
+</html>
+
+

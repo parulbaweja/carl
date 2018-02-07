@@ -1,31 +1,24 @@
 from jinja2 import StrictUndefined
+from flask_cors import CORS
 
-from flask import (Flask, render_template, redirect, request, flash, session)
-from flask_debugtoolbar import DebugToolbarExtension
+from flask import (
+    Flask,
+    render_template,
+    redirect,
+    request,
+    flash,
+    session,
+    jsonify,
+    Blueprint
+)
+# from flask_debugtoolbar import DebugToolbarExtension
 
 from model import User, Company, Contact, Application, connect_to_db, db
 
-app = Flask(__name__)
-
-app.secret_key = "abc"
-
-app.jinja_env.undefined = StrictUndefined
-
-@app.route('/')
-def index():
-    """Homepage."""
-
-    return render_template('homepage.html')
+bp = Blueprint('server', __name__)
 
 
-@app.route('/login')
-def show_login_form():
-    """Display user log-in page."""
-
-    return render_template('login.html')
-
-
-@app.route('/login', methods=['POST'])
+@bp.route('/login', methods=['POST'])
 def submit_login_form():
     """Check for unique email and password. If correct, log in."""
 
@@ -44,14 +37,7 @@ def submit_login_form():
         return redirect('/user/' + str(user.user_id))
 
 
-@app.route('/add_app')
-def add_application():
-    """Shows application entry form."""
-
-    return render_template('add_app.html')
-
-
-@app.route('/add_app', methods=['POST'])
+@bp.route('/add_app', methods=['POST'])
 def submit_application():
     """Processes application entry form."""
 
@@ -92,29 +78,48 @@ def submit_application():
                       url=url)
 
 
+@bp.route('/user/<user_id>')
+def get_user(user_id):
+    pass
 
 
+@bp.route('/application/<user_id>')
+def display_application(user_id):
+    """Displays user's application entries."""
+
+    app = Application.query.filter(Application.user_id == user_id).first()
+
+    return jsonify(
+        data=[{
+            'company': app.company.name,
+            'status': 'i love parul',
+            'date': '01/01/01',
+        }, {
+            'company': 'NerdWallet',
+            'status': 'hi',
+            'date': '01/01/01',
+        }]
+    )
 
 
+if __name__ == "__main__":
+    app = Flask(__name__)
+    app.secret_key = "abc"
+    app.jinja_env.undefined = StrictUndefined
+    app.debug = True
 
+    app.register_blueprint(bp)
 
+    # We have to set debug=True here, since it has to be True at the
+    # point that we invoke the DebugToolbarExtension
+    # app.debug = True
+    # make sure templates, etc. are not cached in debug mode
+    # app.jinja_env.auto_reload = app.debug
+    CORS(app, supports_credentials=True)
 
+    connect_to_db(app)
 
+    # Use the DebugToolbar
+    # DebugToolbarExtension(app)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    app.run(port=5001, host='0.0.0.0')

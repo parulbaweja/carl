@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <div id="login"></div>
+  <div id="list"></div>
+  <div id="table"></div>
+  <div id="form"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+  <script type="text/babel">
+    class Login extends React.Component {
+      constructor(props) {
+        super(props);
+
+        this.state = {
+          email: "hello",
+          password: "world"
+        };
+      }
+
+      render() {
+          return (
+          <div>
+            Email: <input type="text" value={this.state.email}/>
+            <br/>
+            Password: <input type="text" value={this.state.password}/>
+            <button>Submit</button>
+          </div>
+          );
+        }
+
+    }
+
+    ReactDOM.render(<Login />, document.getElementById('login'))
+
+    class Form extends React.Component {
+        constructor(props) {
+            super(props);
+
+            this.state = {
+                company: "",
+                position: "",
+                contact: "",
+                contact_email: "",
+                status: "",
+                date: "",
+                url: "",
+                notes: ""
+            }
+        }
+
+        render() {
+            return (
+                <form>
+                    <h3>Application Tracking Form</h3>
+                    Company: <input type="text" /><br />
+                    Position: <input type="text" /><br />
+                    Contact: <input type="text" /><br />
+                    Contact Email: <input type="text" /><br />
+                    Status: <input type="text" /><br />
+                    Date: <input type="text" /><br />
+                    URL: <input type="text" /><br />
+                    Notes: <input type="textarea" /><br />
+                    <button>Submit</button>
+                </form>
+
+            );
+        }
+
+    }
+
+    ReactDOM.render(<Form />, document.getElementById('form'))
+
+    class Company extends React.Component {
+        render() {
+            return (
+                <li>
+                    Company: <span>
+                        {this.props.company}
+                    </span><br />
+                    Status: <span>
+                        {this.props.status}
+                    </span> <br />
+                    Date: <span>
+                        {this.props.date}
+                    </span>
+                </li>
+            )
+        }
+    }
+
+    Company.propTypes = {
+        company: React.PropTypes.string.isRequired,
+        status: React.PropTypes.string.isRequired,
+        date: React.PropTypes.string.isRequired
+    }
+
+    const fakeData = [
+        {company: "Hackbright", status: "Applied", date: "01/01/18"},
+        {company: "Facebook", status: "Interested", date: "01/05/18"}
+    ];
+
+    class List extends React.Component {
+        render() {
+            return (
+                <div>
+                    <h3>Application Log</h3>
+                    <div>
+                        <ol>
+                            <Company company="Hackbright"
+                                     status="Applied"
+                                     date="01/01/18" />
+                            <Company company="Facebook"
+                                     status="Interested"
+                                     date="01/06/18" />
+                        </ol>
+                    </div>
+                </div>
+            );
+        }
+    }
+
+    ReactDOM.render(<List />, document.getElementById('list'))
+
+    var cols = [
+        { key: 'company', label: 'Company' },
+        { key: 'status', label: 'Status' },
+        { key: 'date', label: 'Date'}
+    ];
+
+    var data = [
+        { id: 1, company: 'Hackbright', status: 'Applied', date: '01/01/18' },
+        { id: 2, company: 'Twilio', status: 'Interested', date: '01/01/18' }
+    ];
+
+    class Table extends React.Component {
+
+        render() {
+            var headerComponents = this.generateHeaders(),
+                rowComponents = this.generateRows();
+
+            return (
+                <table>
+                    <thead> {headerComponents} </thead>
+                    <tbody> {rowComponents} </tbody>
+                </table>
+            );
+        }
+
+        generateHeaders() {
+            var cols = this.props.cols;  // [{key, label}]
+
+            // generate our header (th) cell components
+            return cols.map(function(colData) {
+                return <th key={colData.key}> {colData.label} </th>;
+            });
+        }
+
+        generateRows() {
+            var cols = this.props.cols,  // [{key, label}]
+                data = this.props.data;
+
+            return data.map(function(item) {
+                // handle the column data within each row
+                var cells = cols.map(function(colData) {
+
+                    // colData.key might be "company"
+                    return <td> {item[colData.key]} </td>;
+                });
+                return <tr key={item.id}> {cells} </tr>;
+            });
+        }
+    }
+
+    ReactDOM.render(<Table cols={cols} data={data}/>, document.getElementById('table'));
+
+  </script>
+
+</body>
+</html>

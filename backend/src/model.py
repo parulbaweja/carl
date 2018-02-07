@@ -3,6 +3,7 @@
 # psql jobs
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_utils import EmailType
 
 db = SQLAlchemy()
 
@@ -12,7 +13,7 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    email = db.Column(db.String(64), nullable=False)
+    email = db.Column(EmailType, nullable=False)
     password = db.Column(db.String(64), nullable=False)
     fname = db.Column(db.String(64), nullable=False)
     lname = db.Column(db.String(64), nullable=False)
@@ -45,7 +46,7 @@ class Contact(db.Model):
     contact_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     # application_id = db.Column(db.Integer, db.ForeignKey('applications.application_id'), nullable=False)
     name = db.Column(db.String(64), nullable=True)
-    email = db.Column(db.String(64), nullable=True)
+    email = db.Column(EmailType, nullable=True)
 
     def __repr__(self):
         """Displays contact object."""
