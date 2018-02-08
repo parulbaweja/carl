@@ -13,7 +13,7 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    email = db.Column(EmailType, nullable=False)
+    email = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(64), nullable=False)
     fname = db.Column(db.String(64), nullable=False)
     lname = db.Column(db.String(64), nullable=False)
@@ -46,7 +46,7 @@ class Contact(db.Model):
     contact_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     # application_id = db.Column(db.Integer, db.ForeignKey('applications.application_id'), nullable=False)
     name = db.Column(db.String(64), nullable=True)
-    email = db.Column(EmailType, nullable=True)
+    email = db.Column(db.String(64), nullable=True)
 
     def __repr__(self):
         """Displays contact object."""
@@ -66,19 +66,6 @@ class Status(db.Model):
         """Displays status object."""
 
         return "<Status name={}>".format(self.name)
-
-
-
-def createStatusTable():
-    """Updates database with status table."""
-
-    statuses = ['Interested', 'Applied', 'Phone call', 'Interview', 'Offer', 'Accepted', 'Withdrawn', 'Not a fit']
-
-    for status in statuses:
-        temp = Status(name=status)
-        db.session.add(temp)
-
-    db.session.commit()
 
 
 class DateChange(db.Model):
@@ -109,7 +96,8 @@ class Application(db.Model):
     contact_id = db.Column(db.Integer, db.ForeignKey('contacts.contact_id'), nullable=True)
     status_id = db.Column(db.Integer, db.ForeignKey('status.status_id'), nullable=False)
 
-    offer_amount = db.Column(db.Numeric, nullable=True)
+    position = db.Column(db.String(50), nullable=True)
+    offer_amount = db.Column(db.String(50), nullable=True)
 
     # Misc columns
     notes = db.Column(db.String(200), nullable=True)
@@ -148,25 +136,6 @@ if __name__ == "__main__":
 
     from server import app
     connect_to_db(app)
-    db.create_all()
-    createStatusTable()
-    user = User(email="parul@gmail.com", password="mypassword", fname="Parul", lname="Baweja")
-    comp = Company(name="Hackbright")
-    contact = Contact(name="Dori Grant", email="dori@hackbrightacademy.com")
-    app = Application(user_id=1, company_id=1, contact_id=1, status_id=1, offer_amount=100000, url="www.hackbright.com")
-    comp2 = Company(name="Facebook")
-    app2 = Application(user_id=1, company_id=2, status_id=2, offer_amount=150000, url="www.facebook.com")
-    datech1 = DateChange(application_id=1, status_id=1, date_created='01/01/18')
-    datech2 = DateChange(application_id=2, status_id=2, date_created='01/05/18')
-    db.session.add(user)
-    db.session.add(comp)
-    db.session.add(contact)
-    db.session.add(app)
-    db.session.add(comp2)
-    db.session.add(app2)
-    db.session.add(datech1)
-    db.session.add(datech2)
-    db.session.commit()
     print "Connected to DB."
 
 

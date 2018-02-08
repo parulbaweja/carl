@@ -13,10 +13,13 @@ from flask import (
 )
 # from flask_debugtoolbar import DebugToolbarExtension
 
-from model import User, Company, Contact, Application, connect_to_db, db
+from model import User, Company, Contact, Application, Status, DateChange, connect_to_db, db
+
+app = Flask(__name__)
+app.secret_key = "abc"
+app.jinja_env.undefined = StrictUndefined
 
 bp = Blueprint('server', __name__)
-
 
 @bp.route('/login', methods=['POST'])
 def submit_login_form():
@@ -78,6 +81,26 @@ def submit_application():
                       url=url)
 
 
+@bp.route('/<user_id>/<application_id>')
+def display_user_app(user_id, application_id):
+    """Display one application entry for a user."""
+
+    app = Application.query.filter(Application.user_id == user_id, Application.application_id == application_id).first()
+
+    data = [{
+        'company': app.company.name,
+        'position': app.position,
+        'contact_name': app.contact.name,
+        'contact_email': app.contact.email,
+        'status': app.status.name,
+        'offer_amount': app.offer_amount,
+        'notes': app.notes,
+        'url': app.url
+    }]
+
+    return jsonify(data)
+
+
 @bp.route('/user/<user_id>')
 def get_user(user_id):
     pass
@@ -87,25 +110,28 @@ def get_user(user_id):
 def display_application(user_id):
     """Displays user's application entries."""
 
-    app = Application.query.filter(Application.user_id == user_id).first()
+    apps = Application.query.filter(Application.user_id == user_id).all()
+    # date = DateChange.query.filter(DateChange.application_id == app.application_id).first()
+    data = []
+    for app in apps:
+        temp = {}
+        temp['Company'] = app.company.name
+        temp['Position'] = app.position
+        temp['Contact Name'] = app.contact.name
+        temp['Contact Email'] = app.contact.email
+        temp['Status'] = app.status.name
+        temp['Offer Amount'] = app.offer_amount
+        temp['Notes'] = app.notes
+        temp['URL'] = app.url
+        data.append(temp)
 
-    return jsonify(
-        data=[{
-            'company': app.company.name,
-            'status': 'i love parul',
-            'date': '01/01/01',
-        }, {
-            'company': 'NerdWallet',
-            'status': 'hi',
-            'date': '01/01/01',
-        }]
-    )
+    return jsonify(data)
 
 
 if __name__ == "__main__":
-    app = Flask(__name__)
-    app.secret_key = "abc"
-    app.jinja_env.undefined = StrictUndefined
+    # app = Flask(__name__)
+    # app.secret_key = "abc"
+    # app.jinja_env.undefined = StrictUndefined
     app.debug = True
 
     app.register_blueprint(bp)
