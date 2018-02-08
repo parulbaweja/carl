@@ -2,8 +2,8 @@ import fetch from 'isomorphic-fetch';
 
 const apiURL = (path) => {
   const element = document.querySelector('meta[name="jobs-api-url"]');
-  const locamoApiURL = element && element.getAttribute('content');
-  return `${locamoApiURL}/${path}`;
+  const jobsApiURL = element && element.getAttribute('content');
+  return `${jobsApiURL}/${path}`;
 };
 
 const postRequest = (path, body, cb) => {

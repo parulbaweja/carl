@@ -44,10 +44,20 @@ class ApplicationForm extends React.Component {
     return (
         <form>
             <label>{'Company'}</label>
-        <input type="text" id="company" value={this.state.company} onChange={this.onChange('company')}/>
+            <input
+              id="company"
+              onChange={this.onChange('company')}
+              type="text"
+              value={this.state.company}
+            />
             <br/>
             <label>{'Position'}</label>
-        <input type="text" id="position" value={this.state.position} onChange={this.onChange('position')}/>
+            <input
+              id="position"
+              onChange={this.onChange('position')}
+              type="text"
+              value={this.state.position}
+            />
             <br/>
             <label>{'Contact Name'}</label>
             <input
@@ -58,10 +68,17 @@ class ApplicationForm extends React.Component {
             />
             <br/>
             <label>{'Contact Email'}</label>
-            <input type="text" id="contactEmail" value={this.state.contactEmail} onChange={this.onChange('contactEmail')}/>
+            <input
+              id="contactEmail"
+              onChange={this.onChange('contactEmail')}
+              type="text"
+              value={this.state.contactEmail}
+            />
             <br/>
             <label>{'Status'}</label>
-                <select value={this.state.status} onChange={this.onChange('status')}>
+            <select
+              onChange={this.onChange('status')}
+              value={this.state.status}>
                     <option value="Accepted">{'Accepted'}</option>
                     <option value="Applied">{'Applied'}</option>
                     <option value="Interested">{'Interested'}</option>
@@ -70,16 +87,30 @@ class ApplicationForm extends React.Component {
                     <option value="Offer">{'Offer'}</option>
                     <option value="Phone">{'Phone call'}</option>
                     <option value="Withdrawn">{'Withdrawn'}</option>
-                </select>
+            </select>
             <br/>
             <label>{'Offer Amount'}</label>
-        <input type="text" id="offerAmount" value={this.state.offerAmount} onChange={this.onChange('offerAmount')}/>
+            <input
+              id="offerAmount"
+              onChange={this.onChange('offerAmount')}
+              type="text"
+              value={this.state.offerAmount}
+            />
             <br/>
             <label>{'Notes'}</label>
-            <textarea id="notes" value={this.state.notes} onChange={this.onChange('notes')}></textarea>
+            <textarea
+              id="notes"
+              onChange={this.onChange('notes')}
+              value={this.state.notes}>
+            </textarea>
             <br/>
             <label>{'URL'}</label>
-        <input type="text" id="url" value={this.state.url} onChange={this.onChange('url')}/>
+            <input
+              id="url"
+              onChange={this.onChange('url')}
+              type="text"
+              value={this.state.url}
+            />
             <br/>
             <button onClick={this.onSubmit}>{'Submit'}</button>
         </form>);
