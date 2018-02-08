@@ -9,11 +9,11 @@ class SingleAppView extends React.Component {
       rows: [],
     };
     var self = this;
-    apiRequest('/1/1', function(body) {
+      apiRequest('user/app/1/1', function(body) {
       self.setState(function() {
         return {
-          rows: body.data.map(function(row) {
-            return [row.company, row.position, row.contact_name, row.contact_email, row.status, row.offer_amount, row.notes, row.url];
+          rows: body.map(function(row) {
+            return [row.company, row.position, row.contactName, row.contactEmail, row.status, row.offerAmount, row.notes, row.url];
           }),
         };
       });

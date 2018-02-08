@@ -21,13 +21,18 @@ class Table extends React.Component {
 
   generateRows() {
     var i = 0;
+    var j = 0;
     return this.props.rows.map(function(row) {
 
       var cells = row.map(function(cell) {
-        return <td key={cell}> {cell} </td>;
+        j++;
+        if (cell) {
+          return <td key={j}>{cell}</td>;
+        }
+        return <td key={j}></td>;
       });
       i++;
-      return <tr key={i}> {cells} </tr>;
+      return <tr key={i}>{cells}</tr>;
     });
   }
 }

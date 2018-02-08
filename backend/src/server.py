@@ -81,7 +81,7 @@ def submit_application():
                       url=url)
 
 
-@bp.route('/<user_id>/<application_id>')
+@bp.route('/user/app/<user_id>/<application_id>')
 def display_user_app(user_id, application_id):
     """Display one application entry for a user."""
 
@@ -90,12 +90,12 @@ def display_user_app(user_id, application_id):
     data = [{
         'company': app.company.name,
         'position': app.position,
-        'contact_name': app.contact.name,
-        'contact_email': app.contact.email,
+        'contactName': app.contact.name,
+        'contactEmail': app.contact.email,
         'status': app.status.name,
-        'offer_amount': app.offer_amount,
+        'offerAmount': app.offer_amount,
         'notes': app.notes,
-        'url': app.url
+        'url': app.url,
     }]
 
     return jsonify(data)
@@ -115,17 +115,44 @@ def display_application(user_id):
     data = []
     for app in apps:
         temp = {}
-        temp['Company'] = app.company.name
-        temp['Position'] = app.position
-        temp['Contact Name'] = app.contact.name
-        temp['Contact Email'] = app.contact.email
-        temp['Status'] = app.status.name
-        temp['Offer Amount'] = app.offer_amount
-        temp['Notes'] = app.notes
-        temp['URL'] = app.url
+        temp['company'] = app.company.name
+        temp['position'] = app.position
+        temp['contactName'] = app.contact.name
+        temp['contactEmail'] = app.contact.email
+        temp['status'] = app.status.name
+        temp['offerAmount'] = app.offer_amount
+        temp['notes'] = app.notes
+        temp['url'] = app.url
         data.append(temp)
 
     return jsonify(data)
+
+
+@bp.route('/application/<user_id>', methods=['POST'])
+def submit_entry(user_id):
+    """Processes user's new entry."""
+
+    company = request.json.get('company')
+    position = request.json.get('position')
+    contactName = request.json.get('contactName')
+    contactEmail = request.json.get('contactEmail')
+    status = request.json.get('status')
+    offerAmount = request.json.get('offerAmount')
+    notes = request.json.get('notes')
+    url = request.json.get('url')
+
+    new_comp = Company(name=company)
+    new_contact = Contact(name=contactName, email=contactEmail)
+    db.session.add(new_comp)
+    db.session.add(new_contact)
+
+    new_status = Status.query.filter(Status.name == status).first()
+
+    new_app = Application(user_id=user_id, company_id=new_comp.company_id, contact_id=new_contact.contact_id, position=position, status_id=new_status.status_id, offer_amount=offerAmount, notes=notes, url=url)
+    db.session.add(new_app)
+    db.session.commit()
+
+    return jsonify({})
 
 
 if __name__ == "__main__":

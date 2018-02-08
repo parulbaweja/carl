@@ -12,7 +12,7 @@ class JobApplications extends React.Component {
     apiRequest('application/1', function(body) {
       self.setState(function() {
         return {
-          rows: body.data.map(function(row) {
+          rows: body.map(function(row) {
             return [row.company, row.position, row.contactName, row.contactEmail, row.status, row.offerAmount, row.notes, row.url];
           }),
         };
