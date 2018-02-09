@@ -18,11 +18,20 @@ class User(db.Model):
     fname = db.Column(db.String(64), nullable=False)
     lname = db.Column(db.String(64), nullable=False)
 
+    auth_token = db.relationship('AuthID')
+
     def __repr__(self):
         """Displays user object."""
 
         return "<User user_id={} email={}>".format(self.user_id, self.email)
 
+
+class AuthId(db.Model):
+
+    __tablename__ = "auth_ids"
+
+    auth_token = db.Column(db.String(36), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
 
 class Company(db.Model):
     """Company from job search website."""

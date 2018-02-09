@@ -1,6 +1,7 @@
 from server import app
 from sqlalchemy import func
 from model import User, Company, Contact, Application, DateChange, Status, db, connect_to_db
+from uuid import uuid4
 
 user1 = User(email="parul@gmail.com", password="mypassword", fname="Parul", lname="Baweja")
 company1 = Company(name="Hackbright")
@@ -30,6 +31,11 @@ def load_data(ls):
     for obj in ls:
         db.session.add(obj)
         db.session.commit()
+
+
+def load_auth():
+
+    for user in user:
 
 
 def createStatusTable():
