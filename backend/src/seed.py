@@ -29,27 +29,26 @@ datechanges = [datechange1, datechange2, datechange3]
 def load_data(ls):
     for obj in ls:
         db.session.add(obj)
-
-    db.session.commit()
+        db.session.commit()
 
 
 def createStatusTable():
     """Updates database with status table."""
-    statuses = ['Interested', 'Applied', 'Phone call', 'Interview', 'Offer', 'Accepted', 'Withdrawn', 'Not a fit']
+
+    statuses = [('interested','Interested'), ('applied', 'Applied'), ('phoneCall', 'Phone call'), ('interview', 'Interview'), ('offer', 'Offer'), ('accepted', 'Accepted'), ('withdrawn', 'Withdrawn'), ('notAFit', 'Not a fit')]
     for status in statuses:
-        temp = Status(name=status)
+        temp = Status(js_name=status[0], u_name=status[1])
         db.session.add(temp)
-    db.session.commit()
+        db.session.commit()
 
 
 if __name__ == "__main__":
-    connect_to_db(app)
+                                                                        connect_to_db(app)
+                                                                        db.create_all()
+                                                                        load_data(users)
+                                                                        load_data(companies)
+                                                                        load_data(contacts)
+                                                                        createStatusTable()
+                                                                        load_data(apps)
+                                                                        load_data(datechanges)
 
-    db.create_all()
-
-    load_data(users)
-    load_data(companies)
-    load_data(contacts)
-    createStatusTable()
-    load_data(apps)
-    load_data(datechanges)

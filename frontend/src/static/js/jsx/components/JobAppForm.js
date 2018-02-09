@@ -1,6 +1,7 @@
 import Form from './Form';
 import React from 'react';
 import {postRequest} from '../utils/jobsSDK';
+import Status from './Status';
 
 // class ApplicationForm extends React.Component {
 //  render() {
@@ -79,14 +80,7 @@ class ApplicationForm extends React.Component {
             <select
               onChange={this.onChange('status')}
               value={this.state.status}>
-                    <option value="Accepted">{'Accepted'}</option>
-                    <option value="Applied">{'Applied'}</option>
-                    <option value="Interested">{'Interested'}</option>
-                    <option value="Interview">{'Interview'}</option>
-                    <option value="Not a fit">{'Not a fit'}</option>
-                    <option value="Offer">{'Offer'}</option>
-                    <option value="Phone">{'Phone call'}</option>
-                    <option value="Withdrawn">{'Withdrawn'}</option>
+              <Status/>
             </select>
             <br/>
             <label>{'Offer Amount'}</label>

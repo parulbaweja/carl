@@ -13,7 +13,8 @@ class JobApplications extends React.Component {
       self.setState(function() {
         return {
           rows: body.map(function(row) {
-            return [row.company, row.position, row.contactName, row.contactEmail, row.status, row.offerAmount, row.notes, row.url];
+            return [
+              <a href={'/app/single_app'}>{'Application'}</a>, row.company, row.position, row.contactName, row.contactEmail, row.status, row.offerAmount, row.notes, row.url];
           }),
         };
       });

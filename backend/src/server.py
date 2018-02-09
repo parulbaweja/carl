@@ -40,47 +40,6 @@ def submit_login_form():
         return redirect('/user/' + str(user.user_id))
 
 
-@bp.route('/add_app', methods=['POST'])
-def submit_application():
-    """Processes application entry form."""
-
-    user_id = User.query.filter(session['user_id'] == user_id).first()
-
-    company_name = request.form.get('company_name')
-    company = Company.query.filter(Company.name == company_name).first()
-    if company:
-        company_id = company.company_id
-    else:
-        company = Company(name=company_name)
-        db.session.add(company)
-        db.session.commit()
-        company_id = company.company_id
-
-    contact_name = request.form.get('contact_name')
-    contact_email = request.form.get('contact_email')
-    contact = Contact(name=contact_name, email=contact_email)
-    db.session.add(contact)
-    db.session.commit()
-
-    status = request.form.get('status')
-    status_db = Status.query.filter(Status.name == status).first()
-    status_id = status_db.status_id
-
-    offer_amount = request.form.get('offer_amount')
-    notes = request.form.get('notes')
-    url = request.form.get('url')
-
-
-
-    app = Application(user_id=user_id,
-                      company_id=company_id,
-                      contact_id=contact.contact_id,
-                      status_id=status_id,
-                      offer_amount=offer_amount,
-                      notes=notes,
-                      url=url)
-
-
 @bp.route('/user/app/<user_id>/<application_id>')
 def display_user_app(user_id, application_id):
     """Display one application entry for a user."""
@@ -92,7 +51,7 @@ def display_user_app(user_id, application_id):
         'position': app.position,
         'contactName': app.contact.name,
         'contactEmail': app.contact.email,
-        'status': app.status.name,
+        'status': app.status.u_name,
         'offerAmount': app.offer_amount,
         'notes': app.notes,
         'url': app.url,
@@ -107,7 +66,7 @@ def get_user(user_id):
 
 
 @bp.route('/application/<user_id>')
-def display_application(user_id):
+def display_all_applications(user_id):
     """Displays user's application entries."""
 
     apps = Application.query.filter(Application.user_id == user_id).all()
@@ -115,14 +74,31 @@ def display_application(user_id):
     data = []
     for app in apps:
         temp = {}
+        temp['userID'] = app.user_id
+        temp['applicationID'] = app.application_id
         temp['company'] = app.company.name
         temp['position'] = app.position
         temp['contactName'] = app.contact.name
         temp['contactEmail'] = app.contact.email
-        temp['status'] = app.status.name
+        temp['status'] = app.status.u_name
         temp['offerAmount'] = app.offer_amount
         temp['notes'] = app.notes
         temp['url'] = app.url
+        data.append(temp)
+
+    return jsonify(data)
+
+
+@bp.route('/status')
+def send_statuses():
+    """Sends JSON of current elements in status table."""
+
+    statuses = Status.query.all()
+    data = []
+
+    for i, status in enumerate(statuses):
+        temp = {}
+        temp['status'] = status.u_name
         data.append(temp)
 
     return jsonify(data)
@@ -146,7 +122,7 @@ def submit_entry(user_id):
     db.session.add(new_comp)
     db.session.add(new_contact)
 
-    new_status = Status.query.filter(Status.name == status).first()
+    new_status = Status.query.filter(Status.js_name == status).first()
 
     new_app = Application(user_id=user_id, company_id=new_comp.company_id, contact_id=new_contact.contact_id, position=position, status_id=new_status.status_id, offer_amount=offerAmount, notes=notes, url=url)
     db.session.add(new_app)

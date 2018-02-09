@@ -60,7 +60,8 @@ class Status(db.Model):
     __tablename__ = "status"
 
     status_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    js_name = db.Column(db.String(50), nullable=False)
+    u_name = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
         """Displays status object."""
