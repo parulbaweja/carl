@@ -18,7 +18,7 @@ class User(db.Model):
     fname = db.Column(db.String(64), nullable=False)
     lname = db.Column(db.String(64), nullable=False)
 
-    auth_token = db.relationship('AuthID')
+    auth_token = db.relationship('AuthId')
 
     def __repr__(self):
         """Displays user object."""
@@ -30,6 +30,7 @@ class AuthId(db.Model):
 
     __tablename__ = "auth_ids"
 
+    auth_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     auth_token = db.Column(db.String(36), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
 

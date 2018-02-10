@@ -5,7 +5,7 @@ class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: '',
+      email: '',
       password: '',
     };
     this.onSubmit = this.onSubmit.bind(this);
@@ -27,20 +27,22 @@ class LoginForm extends React.Component {
   render() {
     return (
             <form>
-                <label>{'Username:'}</label>
+                <label>{'Email:'}</label>
                 <input
-                  id="userId"
-                  onChange={this.onChange('userId')}
+                  id="email"
+                  onChange={this.onChange('email')}
                   type="text"
-                  value={this.state.userId}
-                />
+                  value={this.state.email}
+              />
+              <br/>
                 <label>{'Password:'}</label>
                 <input
                   id="password"
                   onChange={this.onChange('password')}
                   type="text"
                   value={this.state.password}
-                />
+              />
+              <button onClick={this.onSubmit}>{'Submit'}</button>
             </form>);
   }
 }

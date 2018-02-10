@@ -11,9 +11,10 @@ from flask import (
     jsonify,
     Blueprint
 )
+from uuid import uuid4
 # from flask_debugtoolbar import DebugToolbarExtension
 
-from model import User, Company, Contact, Application, Status, DateChange, connect_to_db, db
+from model import User, AuthId, Company, Contact, Application, Status, DateChange, connect_to_db, db
 
 app = Flask(__name__)
 app.secret_key = "abc"
@@ -25,19 +26,22 @@ bp = Blueprint('server', __name__)
 def submit_login_form():
     """Check for unique email and password. If correct, log in."""
 
-    email = request.form.get('email')
-    password = request.form.get('password')
+    email = request.json.get('email')
+    password = request.json.get('password')
 
     result = User.query.filter((User.email == email) & (User.password == password))
 
     if result.count() == 0:
-        flash('Username and/or password incorrect.')
+        data
         return redirect('/login')
     else:
         user = result.first()
-        session['user_id'] = user.user_id
-        flash('Logged in')
-        return redirect('/user/' + str(user.user_id))
+        new_auth = AuthId(user_id=user.user_id, auth_token=str(uuid4()))
+        db.session.add(new_auth)
+        db.session.commit()
+        session['token'] = new_auth.auth_token
+        data = [{'token': new_auth.auth_token}]
+        return jsonify(data)
 
 
 @bp.route('/user/app/<user_id>/<application_id>')
