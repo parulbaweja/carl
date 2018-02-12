@@ -23,10 +23,14 @@ const postRequest = (path, body, cb) => {
   });
 };
 
-export default (path, cb) => {
+export default (path, cb, err) => {
   const url = apiURL(path);
   return fetch(url, {credentials: 'include'}).then(function(response) {
-    response.json().then(cb);
+    if (response.status/100 != 2) {
+      response.json().then(cb);
+    } else {
+      err(response);
+    }
   });
 };
 

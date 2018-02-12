@@ -23,6 +23,17 @@ app.jinja_env.undefined = StrictUndefined
 
 bp = Blueprint('server', __name__)
 
+@bp.route('/check_login')
+def isLoggedIn():
+    """Checks to see if user is logged in."""
+
+    if session['token']:
+        result = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
+        user = User.query.filter(User.user_id == result.user_id).first()
+        data = [{'firstName': user.fname}]
+        return jsonify(data)
+
+
 @bp.route('/login', methods=['POST'])
 def submit_login_form():
     """Check for unique email and password. If correct, log in."""
@@ -43,6 +54,25 @@ def submit_login_form():
         session['token'] = new_auth.auth_token
         data = {'user_id': user.user_id}
         return jsonify(data)
+
+
+@bp.route('/register', methods=['POST'])
+def submit_register_form():
+    """Creates new user. Checks existing in case."""
+
+    email = request.json.get('email')
+    password = request.json.get('password')
+    fname = request.json.get('firstName')
+    lname = request.json.get('lastName')
+
+    result = User.query.filter((User.email == email) & (User.password == password))
+
+    if result.count() == 0:
+        new_user = User(email=email, password=password, fname=fname, lname=lname)
+        db.session.add(new_user)
+        db.session.commit()
+    else:
+        pass
 
 
 @bp.route('/user/app/<user_id>/<application_id>')
