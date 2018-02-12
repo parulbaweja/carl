@@ -9,7 +9,7 @@ class JobApplications extends React.Component {
       rows: [],
     };
     var self = this;
-    apiRequest('application/1', function(body) {
+    apiRequest('applications', function(body) {
       self.setState(function() {
         return {
           rows: body.map(function(row) {
@@ -18,7 +18,8 @@ class JobApplications extends React.Component {
           }),
         };
       });
-    });
+    },
+    function() {});
   }
 
   render() {

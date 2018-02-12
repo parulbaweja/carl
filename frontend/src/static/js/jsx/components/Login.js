@@ -27,7 +27,6 @@ class LoginForm extends React.Component {
     e.preventDefault();
     var self = this;
     postRequest('login', self.state, function(body) {
-      console.log(body);
       self.setState({
         userID: body.user_id,
       });

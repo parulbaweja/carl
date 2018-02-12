@@ -26,12 +26,12 @@ bp = Blueprint('server', __name__)
 @bp.route('/check_login')
 def isLoggedIn():
     """Checks to see if user is logged in."""
-
+    print session
     if session['token']:
         result = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
         user = User.query.filter(User.user_id == result.user_id).first()
         data = [{'firstName': user.fname}]
-        return jsonify(data)
+    return jsonify(data)
 
 
 @bp.route('/login', methods=['POST'])
@@ -55,6 +55,13 @@ def submit_login_form():
         data = {'user_id': user.user_id}
         return jsonify(data)
 
+
+@bp.route('/logout')
+def logout():
+    """Logs out user and drops session."""
+
+    del session['token']
+    return jsonify([{'loggedIn': 'false'}])
 
 @bp.route('/register', methods=['POST'])
 def submit_register_form():
@@ -100,11 +107,13 @@ def get_user(user_id):
     pass
 
 
-@bp.route('/application/<user_id>')
-def display_all_applications(user_id):
+@bp.route('/applications')
+def display_all_applications():
     """Displays user's application entries."""
 
-    apps = Application.query.filter(Application.user_id == user_id).all()
+    auth = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
+
+    apps = Application.query.filter(Application.user_id == auth.user_id).all()
     # date = DateChange.query.filter(DateChange.application_id == app.application_id).first()
     data = []
     for app in apps:
