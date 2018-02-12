@@ -9,7 +9,8 @@ from flask import (
     flash,
     session,
     jsonify,
-    Blueprint
+    Blueprint,
+    Response
 )
 from uuid import uuid4
 # from flask_debugtoolbar import DebugToolbarExtension
@@ -32,15 +33,15 @@ def submit_login_form():
     result = User.query.filter((User.email == email) & (User.password == password))
 
     if result.count() == 0:
-        data
-        return redirect('/login')
+        pass
+        #return Response('Could not verify your access level for that URL.\nYou have to login with proper credentials', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'})
     else:
         user = result.first()
         new_auth = AuthId(user_id=user.user_id, auth_token=str(uuid4()))
         db.session.add(new_auth)
         db.session.commit()
         session['token'] = new_auth.auth_token
-        data = [{'token': new_auth.auth_token}]
+        data = {'user_id': user.user_id}
         return jsonify(data)
 
 

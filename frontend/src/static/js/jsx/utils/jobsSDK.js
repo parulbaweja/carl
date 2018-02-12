@@ -9,6 +9,7 @@ const apiURL = (path) => {
 const postRequest = (path, body, cb) => {
   const url = apiURL(path);
   const metadata = {
+    credentials: 'include',
     method: 'post',
     headers: {
       'Accept': 'application/json',
@@ -16,14 +17,15 @@ const postRequest = (path, body, cb) => {
     },
     body: JSON.stringify(body),
   };
-  return fetch(url, metadata).then(function(response) {
+  return fetch(url,  metadata).then(function(response) {
+    console.log(response);
     response.json().then(cb);
   });
 };
 
 export default (path, cb) => {
   const url = apiURL(path);
-  return fetch(url).then(function(response) {
+  return fetch(url, {credentials: 'include'}).then(function(response) {
     response.json().then(cb);
   });
 };

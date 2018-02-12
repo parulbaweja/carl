@@ -19,7 +19,7 @@ company3 = Company(name="Twitter")
 contact3 = Contact(name="Some Guy", email="someguy@gmail.com")
 app3 = Application(user_id=2, company_id=3, contact_id=3, status_id=3, position="Software Engineer", notes="Will hear back in two weeks")
 datechange3 = DateChange(application_id=3, status_id=3, date_created="02/01/18")
-auth1 = AuthId(auth_token=str(uuid4()), user_id=1)
+#auth1 = AuthId(auth_token=str(uuid4()), user_id=1)
 auth2 = AuthId(auth_token=str(uuid4()), user_id=2)
 
 users = [user1, user2]
@@ -27,7 +27,7 @@ companies = [company1, company2, company3]
 contacts = [contact1, contact2, contact3]
 apps = [app1, app2, app3]
 datechanges = [datechange1, datechange2, datechange3]
-auths = [auth1, auth2]
+auths = [auth2]
 
 def load_data(ls):
     for obj in ls:
