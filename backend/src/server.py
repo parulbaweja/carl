@@ -30,7 +30,9 @@ def isLoggedIn():
     if session['token']:
         result = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
         user = User.query.filter(User.user_id == result.user_id).first()
-        data = [{'firstName': user.fname}]
+        data = [{
+            'firstName': user.fname,
+        }]
     return jsonify(data)
 
 
@@ -63,14 +65,15 @@ def logout():
     del session['token']
     return jsonify([{'loggedIn': 'false'}])
 
+
 @bp.route('/register', methods=['POST'])
 def submit_register_form():
     """Creates new user. Checks existing in case."""
 
     email = request.json.get('email')
     password = request.json.get('password')
-    fname = request.json.get('firstName')
-    lname = request.json.get('lastName')
+    fname = request.json.get('fname')
+    lname = request.json.get('lname')
 
     result = User.query.filter((User.email == email) & (User.password == password))
 
@@ -142,7 +145,7 @@ def send_statuses():
 
     for i, status in enumerate(statuses):
         temp = {}
-        temp['status'] = status.u_name
+        temp[status.js_name] = status.u_name
         data.append(temp)
 
     return jsonify(data)

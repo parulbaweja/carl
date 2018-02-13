@@ -8,12 +8,14 @@ class NavBar extends React.Component {
     this.state = {
       fname: '',
       loggedIn: false,
+      flashMessages: '',
     };
     var self = this;
     apiRequest('check_login', function(body) {
       self.setState({
         fname: body.firstName,
         loggedIn: true,
+        flashMessages: body.flashMessages,
       });
     }, function() {
       self.setState({
@@ -37,10 +39,11 @@ class NavBar extends React.Component {
     return (
         <div className="navbar">
           <h1>{'Jobs!'}</h1>
+          <h2>Welcome {this.state.fname}</h2>
           { this.state.loggedIn ? <h2>{' You are logged in!'}</h2> : <h2>{ 'You are not logged in'}</h2> }
             <a href={'/app/job_applications'}>{'Job Applications'}</a>
             <a href={'/app/app_form'}>{'New Entry'}</a>
-            { this.state.loggedIn ? <a onClick={this.onClick} href={'/login'}>{'Logout'}</a> : <a href={'/login'}>{'Login'}</a> }
+            { this.state.loggedIn ? <a onClick={this.onClick} href={'/app/login'}>{'Logout'}</a> : <a href={'/app/login'}>{'Login'}</a> }
           </div>
     );
   }

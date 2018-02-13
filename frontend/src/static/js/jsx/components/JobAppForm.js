@@ -1,6 +1,7 @@
 import Form from './Form';
 import React from 'react';
 import {postRequest} from '../utils/jobsSDK';
+import apiRequest from '../utils/jobsSDK';
 import Status from './Status';
 
 // class ApplicationForm extends React.Component {
@@ -25,6 +26,19 @@ class ApplicationForm extends React.Component {
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+  }
+
+  showStatus() {
+    apiRequest('/status', this.state, function(body) {
+      self.setState(function() {
+        return {
+          status: body.map(function(status) {
+            return [
+              status.interested, status.applied, status.phoneCall, status.interview, status.offer, status.accepted, status.withdrawn, status.notAFit];
+          }),
+        };
+      });
+    });
   }
 
   onChange(key) {
@@ -80,7 +94,6 @@ class ApplicationForm extends React.Component {
             <select
               onChange={this.onChange('status')}
               value={this.state.status}>
-              <Status/>
             </select>
             <br/>
             <label>{'Offer Amount'}</label>
