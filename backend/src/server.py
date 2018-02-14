@@ -30,14 +30,14 @@ def isLoggedIn():
     if session.get('token'):
         result = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
         user = User.query.filter(User.user_id == result.user_id).first()
-        data = [{
+        data = {
             'firstName': user.fname,
-            'loggedIn': 'true',
-        }]
+            'loggedIn': True,
+        }
     else:
-        data = [{
-            'loggedIn': 'false',
-        }]
+        data = {
+            'loggedIn': False,
+        }
 
     return jsonify(data)
 
@@ -60,8 +60,8 @@ def submit_login_form():
         db.session.add(new_auth)
         db.session.commit()
         session['token'] = new_auth.auth_token
-        data = [{'user_id': user.user_id,
-                'fname' : user.fname,}]
+        data = {'user_id': user.user_id,
+                'fname' : user.fname,}
         return jsonify(data)
 
 
@@ -74,7 +74,7 @@ def logout():
         db.session.delete(auth)
         db.session.commit()
     del session['token']
-    return jsonify([{'loggedIn': 'false'}])
+    return jsonify({'loggedIn': False})
 
 
 @bp.route('/register', methods=['POST'])
@@ -102,7 +102,7 @@ def display_user_app(user_id, application_id):
 
     app = Application.query.filter(Application.user_id == user_id, Application.application_id == application_id).first()
 
-    data = [{
+    data = {
         'company': app.company.name,
         'position': app.position,
         'contactName': app.contact.name,
@@ -111,7 +111,7 @@ def display_user_app(user_id, application_id):
         'offerAmount': app.offer_amount,
         'notes': app.notes,
         'url': app.url,
-    }]
+    }
 
     return jsonify(data)
 

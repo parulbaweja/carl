@@ -1,31 +1,61 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import apiRequest from '../utils/jobsSDK';
 import {Redirect} from 'react-router';
-import UserStatus from './UserStatus';
+import PropTypes from 'prop-types';
 // const NavBar = () => (<h1>{'Jobs!'}</h1>);
 
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import CircularProgress from 'material-ui/CircularProgress';
+
+const UserMenu = ({logout, myAccount}) => (
+  <div>
+    <IconMenu
+      iconButtonElement={<IconButton style={{display: 'inline'}}><MoreVertIcon/></IconButton>}
+      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+      targetOrigin={{horizontal: 'right', vertical: 'top'}}
+    >
+      <MenuItem onclick={myAccount} primaryText="My Account"/>
+      <MenuItem onClick={logout} primaryText="Logout"/>
+    </IconMenu>
+  </div>
+);
+
+UserMenu.propTypes = {
+  logout: PropTypes.func.isRequired,
+};
 
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       fname: '',
-      flashMessages: '',
       isLeftMenuOpen: false,
-      redirect: undefined,
+      redirect: '',
     };
+
+    const self = this;
+    apiRequest('check_login', function(body) {
+      console.log(body);
+      self.setState({
+        loggedIn: body.loggedIn,
+      });
+    });
 
     this.setLeftMenuState = this.setLeftMenuState.bind(this);
     this.toggleLeftMenu = this.toggleLeftMenu.bind(this);
     this.myJobApps = this.myJobApps.bind(this);
     this.createEntry = this.createEntry.bind(this);
-    this.handleUserStatus = this.handleUserStatus.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
-  handleToggle = () => this.setState({open: !this.state.open});
+  handleToggle() {
+    this.setState({open: !this.state.open});
+  }
 
   myJobApps() {
     this.setState({isLeftMenuOpen: false, redirect: '/app/job_applications'});
@@ -35,12 +65,15 @@ class NavBar extends React.Component {
     this.setState({isLeftMenuOpen: false, redirect: '/app/app_form'});
   }
 
-  handleUserStatus() {
-    if (!this.userStatus.state.loggedIn) {
-      return (<Redirect to="/app/login"/>);
-    }
-
-    //this.setState({isLeftMenuOpen: false, redirect: '/app/login'});
+  logout(e) {
+    e.preventDefault();
+    var self = this;
+    apiRequest('logout', function(body) {
+      console.log(body);
+      self.setState({
+        loggedIn: false,
+      });
+    });
   }
 
   setLeftMenuState(open) {
@@ -55,15 +88,18 @@ class NavBar extends React.Component {
   }
 
   render() {
+    console.log(this.state);
+    if (this.state.loggedIn === undefined) {
+      return (<CircularProgress size={80} thickness={5}/>);
+    }
+
+    if (this.state.loggedIn === false) {
+      return (<Redirect to={'/login'}/>);
+    }
+
     if (this.state.redirect) {
       return (<Redirect to={this.state.redirect}/>);
     }
-
-    if (!this.userStatus.state.loggedIn) {
-      return (<Redirect to="/app/login"/>);
-    }
-
-
 
     return (
       <div className="navbar">
@@ -71,11 +107,14 @@ class NavBar extends React.Component {
           label="Menu"
           onClick={this.toggleLeftMenu}
         />
-        <Drawer docked={false} open={this.state.isLeftMenuOpen} onRequestChange={this.setLeftMenuState}>
+        <Drawer
+          docked={false}
+          onRequestChange={this.setLeftMenuState}
+          open={this.state.isLeftMenuOpen}
+        >
           <MenuItem onClick={this.myJobApps}>{'My Job Apps'}</MenuItem>
           <MenuItem onClick={this.createEntry}>{'New Entry'}</MenuItem>
-          <UserStatus onClick={this.handleUserStatus} ref={(userStatus) => {this.userStatus = userStatus;}}
-            {...props}/>
+          <MenuItem onClick={this.logout}>{'Logout'}</MenuItem>
         </Drawer>
       </div>
       // <h1>{'Jobs!'}</h1>
@@ -92,7 +131,6 @@ class NavBar extends React.Component {
       this.setState({redirect: undefined});
     }
   }
-  }
-
+}
 
 export default NavBar;
