@@ -17,6 +17,7 @@ const AppRouter = () => (
       <Route component={SingleAppView} exact={true} path="/app/single_app"/>
       <Route component={LoginForm} exact={true} path="/login"/>
       <Route component={Register} exact={true} path="/app/register"/>
+      <Route component={AppBox} exact={true} path="/app/appbox"/>
     </div>
   </BrowserRouter>
 );
