@@ -14,8 +14,12 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import {render} from 'react-dom';
 import AppRouter from './routes';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 render(
-  <AppRouter/>,
+  <MuiThemeProvider muiTheme={getMuiTheme()}>
+    <AppRouter/>
+  </MuiThemeProvider>,
   document.getElementById('react-app')
 );

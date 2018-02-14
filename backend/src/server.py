@@ -27,12 +27,18 @@ bp = Blueprint('server', __name__)
 def isLoggedIn():
     """Checks to see if user is logged in."""
     print session
-    if session['token']:
+    if session.get('token'):
         result = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
         user = User.query.filter(User.user_id == result.user_id).first()
         data = [{
             'firstName': user.fname,
+            'loggedIn': 'true',
         }]
+    else:
+        data = [{
+            'loggedIn': 'false',
+        }]
+
     return jsonify(data)
 
 
@@ -54,7 +60,8 @@ def submit_login_form():
         db.session.add(new_auth)
         db.session.commit()
         session['token'] = new_auth.auth_token
-        data = {'user_id': user.user_id}
+        data = [{'user_id': user.user_id,
+                'fname' : user.fname,}]
         return jsonify(data)
 
 
@@ -62,6 +69,10 @@ def submit_login_form():
 def logout():
     """Logs out user and drops session."""
 
+    if session.get('token'):
+        auth = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
+        db.session.delete(auth)
+        db.session.commit()
     del session['token']
     return jsonify([{'loggedIn': 'false'}])
 

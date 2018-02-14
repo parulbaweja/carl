@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {postRequest} from '../utils/jobsSDK';
+import apiRequest from '../utils/jobsSDK';
 import {Redirect} from 'react-router-dom';
 
 class LoginForm extends React.Component {
@@ -9,7 +9,7 @@ class LoginForm extends React.Component {
     this.state = {
       email: '',
       password: '',
-      userID: -1,
+      userID: '',
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -34,8 +34,7 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    if (this.state.userID == -1) {
-      return (
+    return (
             <form>
                 <label>{'Email:'}</label>
                 <input
@@ -54,12 +53,7 @@ class LoginForm extends React.Component {
               />
               <button onClick={this.onSubmit}>{'Submit'}</button>
             </form>);
-    }
-    else {
-      return <Redirect to="/app/job_applications"/>;
-      console.log(this.state);
-    }
   }
-}
+  }
 
 export default LoginForm;

@@ -3,6 +3,7 @@ import React from 'react';
 import {postRequest} from '../utils/jobsSDK';
 import apiRequest from '../utils/jobsSDK';
 import Status from './Status';
+import {Redirect} from 'react-router';
 
 // class ApplicationForm extends React.Component {
 //  render() {
@@ -120,7 +121,7 @@ class ApplicationForm extends React.Component {
             />
             <br/>
             <button onClick={this.onSubmit}>{'Submit'}</button>
-        </form>);
+          </form>);
   }
 }
 
