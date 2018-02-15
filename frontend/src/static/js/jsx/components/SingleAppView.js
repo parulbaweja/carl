@@ -1,4 +1,3 @@
-// import Table from './Table';
 import React from 'react';
 import apiRequest from '../utils/jobsSDK';
 import {
@@ -9,53 +8,14 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-// import EditTable from 'material-ui-table-edit';
-
-//   {value: 'Position', type: 'TextField', width: 200},
-//   {value: 'Contact Name', type: 'TextField', width: 200},
-//   {value: 'Contact Email', type: 'TextField', width: 200},
-//   {value: 'Status', type: 'TextField', width: 200},
-//   {value: 'Offer Amount', type: 'TextField', width: 200},
-//   {value: 'Notes', type: 'TextField', width: 200},
-//   {value: 'URL', type: 'TextField', width: 200}
-// }
-
-// const rows = [
-//   {columns: [
-//     {value: 'Facebook'},
-//     {value: 'SWE'},
-//     {value: 'Me'},
-//     {value: 'me@gmail.com'},
-//     {value: 'Interested'},
-//     {value: '123456'},
-//     {value: 'hello this is me'},
-//     {value: 'www.facebook.com/jobs/posting2'}
-//   ]}
-// ]
-
-// const onChange = (row) => {
-//   console.log(row)
-// }
-
-// const onDelete = (e) => {
-//   console.log(e)
-// }
-
-// class Main extends React.Component {
-//   render () {
-//     return (
-//       <EditTable
-//         onChange={onChange}
-//         onDelete={onDelete}
-//         rows={rows}
-//         headerColumns={headers}
-//         enableDelete={true}
-//       />
-//     )
-//   }
-// })
+import RaisedButton from 'material-ui/RaisedButton';
+import {Redirect} from 'react-router';
 
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
+
+const appId = ({match}) => (
+  match.params.app_id
+);
 
 class SingleAppView extends React.Component {
   constructor(props) {
@@ -72,7 +32,7 @@ class SingleAppView extends React.Component {
     };
 
     var self = this;
-    apiRequest('user/app/1/1', function(body) {
+    apiRequest(`user/app/${appId(this.props)}`, function(body) {
       // console.log(body);
       self.setState({
         company: body.company,
@@ -84,15 +44,18 @@ class SingleAppView extends React.Component {
         notes: body.notes,
         url: body.url,
       }
-        // rows: body.map(function(row) {
-        //   return [row.company, row.position, row.contactName, row.contactEmail, row.status, row.offerAmount, row.notes, row.url];
         );
     });
+  }
+
+  editApp() {
+    return <Redirect to={`/app/apps/edit/${appId(this.props)}`}/>;
   }
 
   render() {
     console.log(this.state);
     return (
+      <div>
       <Table>
         <TableHeader
           displaySelectAll={false}
@@ -137,7 +100,10 @@ class SingleAppView extends React.Component {
             </TableRowColumn>
           </TableRow>
       </TableBody>
-    </Table>);
+    </Table>
+      <RaisedButton label="Edit" onClick={this.editApp}/>
+      </div>
+    );
   }
 }
 

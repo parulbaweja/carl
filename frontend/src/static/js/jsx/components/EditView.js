@@ -6,11 +6,12 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import DatePicker from 'material-ui/DatePicker';
 
-const date = new Date();
+const appId = ({match}) => (
+  match.params.app_id
+);
 
-class ApplicationForm extends React.Component {
+class EditView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,24 +23,27 @@ class ApplicationForm extends React.Component {
       offerAmount: '',
       notes: '',
       url: '',
-      date: date.toDateString(),
     };
+
+    var self = this;
+    apiRequest(`user/app/${appId(this.props)}`, function(body) {
+      // console.log(body);
+      self.setState({
+        company: body.company,
+        position: body.position,
+        contactName: body.contactName,
+        contactEmail: body.contactEmail,
+        status: body.status,
+        offerAmount: body.offerAmount,
+        notes: body.notes,
+        url: body.url,
+      }
+        );
+    });
+
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
   }
-
-  // showStatus() {
-  //   apiRequest('/status', this.state, function(body) {
-  //     self.setState(function() {
-  //       return {
-  //         status: body.map(function(status) {
-  //           return [
-  //             status.interested, status.applied, status.phoneCall, status.interview, status.offer, status.accepted, status.withdrawn, status.notAFit];
-  //         }),
-  //       };
-  //     });
-  //   });
-  // }
 
   onChange(key) {
     return (e) => {
@@ -56,7 +60,6 @@ class ApplicationForm extends React.Component {
     // shift v to select lines and then :sort to sort those lines
 
   render() {
-    console.log(this.state);
     return (
       <div>
       <h3>{'Job App Entry Form'}</h3>
@@ -67,6 +70,7 @@ class ApplicationForm extends React.Component {
             onChange={this.onChange('company')}
             type="text"
             value={this.state.company}
+            defaultValue={this.state.company}
             />
             <br/>
             <TextField
@@ -75,6 +79,7 @@ class ApplicationForm extends React.Component {
               onChange={this.onChange('position')}
               type="text"
               value={this.state.position}
+              defaultValue={this.state.position}
             />
             <br/>
             <TextField
@@ -83,6 +88,7 @@ class ApplicationForm extends React.Component {
               onChange={this.onChange('contactName')}
               type="text"
               value={this.state.contactName}
+              defaultValue={this.state.contactName}
             />
             <br/>
             <TextField
@@ -91,10 +97,13 @@ class ApplicationForm extends React.Component {
               onChange={this.onChange('contactEmail')}
               type="text"
               value={this.state.contactEmail}
+              defaultValue={this.state.contactEmail}
             />
             <br/>
             <DropDownMenu
+              hintText="Status"
               value={this.state.status}
+              defaultValue={this.state.status}
               onChange={this.onChange('status')}>
               <MenuItem value={1} primaryText="Interested"/>
               <MenuItem value={2} primaryText="Applied"/>
@@ -106,18 +115,13 @@ class ApplicationForm extends React.Component {
               <MenuItem value={8} primaryText="Not a Fit"/>
             </DropDownMenu>
             <br/>
-            <DatePicker
-              onChange={this.onChange('date')}
-              floatingLabelText="Date"
-              defaultDate={this.state.date}
-          />
-            <br/>
             <TextField
               hintText="Offer Amount"
               id="offerAmount"
               onChange={this.onChange('offerAmount')}
               type="text"
               value={this.state.offerAmount}
+              defaultValue={this.state.offerAmount}
             />
             <br/>
             <TextField
@@ -125,6 +129,7 @@ class ApplicationForm extends React.Component {
               id="notes"
               onChange={this.onChange('notes')}
               value={this.state.notes}
+              defaultValue={this.state.notes}
             />
             <br/>
             <TextField
@@ -133,13 +138,14 @@ class ApplicationForm extends React.Component {
               onChange={this.onChange('url')}
               type="text"
               value={this.state.url}
+              defaultValue={this.state.url}
             />
             <br/>
-            <FlatButton label="Submit" onClick={this.onSubmit}/>
+            <FlatButton label="Save" onClick={this.onSubmit}/>
           </form>
         </div>
     );
   }
 }
 
-export default ApplicationForm;
+export default EditView;

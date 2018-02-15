@@ -1,4 +1,5 @@
 //import Table from './Table';
+import SingleAppView from './SingleAppView';
 import React from 'react';
 import PropTypes from 'prop-types';
 import apiRequest from '../utils/jobsSDK';
@@ -11,7 +12,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import {BrowserRouter, Link} from 'react-router-dom';
+import {BrowserRouter, Route, Link} from 'react-router-dom';
 
 class AppBox extends React.Component {
   constructor(props) {
@@ -25,23 +26,19 @@ class AppBox extends React.Component {
       console.log(body);
       self.setState({
         rows: body.map(function(row) {
-          return [row.applicationID, row.company];
+          return [row.applicationID, row.company, row.status, row.lastDate];
         }),
       });
     });
 
-    this.getSingleApp = this.getSingleApp.bind(this);
-  }
-
-  getSingleApp(e) {
-    e.preventDefault();
-    console.log('row clicked!');
-    return (<Redirect to="/app/single_app"/>);
   }
 
   render() {
     console.log(this.state);
-    var headers = [<TableHeaderColumn key={0}>{'Companies'}</TableHeaderColumn>];
+    var headers = [
+      <TableHeaderColumn key={0}>{'Companies'}</TableHeaderColumn>,
+      <TableHeaderColumn key={1}>{'Status'}</TableHeaderColumn>, <TableHeaderColumn key={2}>{'Recent Activity'}</TableHeaderColumn>,
+    ];
     return (
       <Table>
         <TableHeader
@@ -52,19 +49,22 @@ class AppBox extends React.Component {
             {headers}
           </TableRow>
         </TableHeader>
-        <TableBody
-          displayRowCheckbox={false}
-        >
-          {
-            this.state.rows.map((company, i) => {
-              return (
-                <TableRow key={i}>
-                  <TableRowColumn><span onClick={this.getSingleApp}>{company[1]}</span></TableRowColumn>
-                </TableRow>
-              );
-            })
-          }
-        </TableBody>
+          <TableBody
+            displayRowCheckbox={false}
+          >
+            {
+              this.state.rows.map((company, i) => {
+                return (
+                  <TableRow key={i}>
+                    <TableRowColumn><Link to={`/app/apps/${company[0]}`}>{company[1]}</Link></TableRowColumn>
+                    <TableRowColumn>{company[2]}</TableRowColumn>
+                    <TableRowColumn>{company[3]}</TableRowColumn>
+                  </TableRow>
+                );
+              })
+            }
+          </TableBody>
+
       </Table>
     );
   }
