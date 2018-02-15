@@ -4,6 +4,10 @@ import {postRequest} from '../utils/jobsSDK';
 import apiRequest from '../utils/jobsSDK';
 import Status from './Status';
 import {Redirect} from 'react-router';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 // class ApplicationForm extends React.Component {
 //  render() {
@@ -20,7 +24,7 @@ class ApplicationForm extends React.Component {
       position: '',
       contactName: '',
       contactEmail: '',
-      status: '',
+      status: 1,
       offerAmount: '',
       notes: '',
       url: '',
@@ -58,70 +62,83 @@ class ApplicationForm extends React.Component {
 
   render() {
     return (
+      <div>
+      <h3>{'Job App Entry Form'}</h3>
         <form>
-            <label>{'Company'}</label>
-            <input
-              id="company"
-              onChange={this.onChange('company')}
-              type="text"
-              value={this.state.company}
+          <TextField
+            hintText="Company Name"
+            id="company"
+            onChange={this.onChange('company')}
+            type="text"
+            value={this.state.company}
             />
             <br/>
-            <label>{'Position'}</label>
-            <input
+            <TextField
+              hintText="Position"
               id="position"
               onChange={this.onChange('position')}
               type="text"
               value={this.state.position}
             />
             <br/>
-            <label>{'Contact Name'}</label>
-            <input
+            <TextField
+              hintText="Contact Name"
               id="contactName"
               onChange={this.onChange('contactName')}
               type="text"
               value={this.state.contactName}
             />
             <br/>
-            <label>{'Contact Email'}</label>
-            <input
+            <TextField
+              hintText="Contact Email"
               id="contactEmail"
               onChange={this.onChange('contactEmail')}
               type="text"
               value={this.state.contactEmail}
             />
             <br/>
-            <label>{'Status'}</label>
-            <select
-              onChange={this.onChange('status')}
-              value={this.state.status}>
-            </select>
+            <DropDownMenu
+              hintText="Status"
+              value={this.state.status}
+              onChange={this.onChange('status')}>
+
+              <MenuItem value={1} primaryText="Interested"/>
+              <MenuItem value={2} primaryText="Applied"/>
+              <MenuItem value={3} primaryText="Phone Call"/>
+              <MenuItem value={4} primaryText="Interview"/>
+              <MenuItem value={5} primaryText="Offer"/>
+              <MenuItem value={6} primaryText="Accepted"/>
+              <MenuItem value={7} primaryText="Withdrawn"/>
+              <MenuItem value={8} primaryText="Not a Fit"/>
+            </DropDownMenu>
             <br/>
-            <label>{'Offer Amount'}</label>
-            <input
+            <TextField
+              hintText="Offer Amount"
               id="offerAmount"
               onChange={this.onChange('offerAmount')}
               type="text"
               value={this.state.offerAmount}
             />
             <br/>
-            <label>{'Notes'}</label>
-            <textarea
+            <TextField
+              hintText="Notes"
               id="notes"
               onChange={this.onChange('notes')}
-              value={this.state.notes}>
-            </textarea>
+              value={this.state.notes}
+            />
             <br/>
-            <label>{'URL'}</label>
-            <input
+            <TextField
+              hintText="URL"
               id="url"
               onChange={this.onChange('url')}
               type="text"
               value={this.state.url}
             />
             <br/>
-            <button onClick={this.onSubmit}>{'Submit'}</button>
-          </form>);
+            <FlatButton label="Submit" onClick={this.onSubmit}/>
+          </form>
+        </div>
+    );
   }
 }
 

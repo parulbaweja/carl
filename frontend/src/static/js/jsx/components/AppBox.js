@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import apiRequest from '../utils/jobsSDK';
+import {Redirect} from 'react-router';
 import {
   Table,
   TableBody,
@@ -10,6 +11,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import {BrowserRouter, Link} from 'react-router-dom';
 
 class AppBox extends React.Component {
   constructor(props) {
@@ -23,10 +25,18 @@ class AppBox extends React.Component {
       console.log(body);
       self.setState({
         rows: body.map(function(row) {
-          return row.company;
+          return [row.applicationID, row.company];
         }),
       });
     });
+
+    this.getSingleApp = this.getSingleApp.bind(this);
+  }
+
+  getSingleApp(e) {
+    e.preventDefault();
+    console.log('row clicked!');
+    return (<Redirect to="/app/single_app"/>);
   }
 
   render() {
@@ -49,7 +59,7 @@ class AppBox extends React.Component {
             this.state.rows.map((company, i) => {
               return (
                 <TableRow key={i}>
-                  <TableRowColumn>{company}</TableRowColumn>
+                  <TableRowColumn><span onClick={this.getSingleApp}>{company[1]}</span></TableRowColumn>
                 </TableRow>
               );
             })
