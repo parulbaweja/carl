@@ -58,7 +58,7 @@ class AppBox extends React.Component {
                   <TableRow key={i}>
                     <TableRowColumn><Link to={`/app/apps/${company[0]}`}>{company[1]}</Link></TableRowColumn>
                     <TableRowColumn>{company[2]}</TableRowColumn>
-                    <TableRowColumn>{company[3]}</TableRowColumn>
+                    <TableRowColumn>{company[3].slice(0, -13)}</TableRowColumn>
                   </TableRow>
                 );
               })

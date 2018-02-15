@@ -14,7 +14,7 @@ class JobApplications extends React.Component {
         return {
           rows: body.map(function(row) {
             return [
-              <a href={'/app/single_app'}>{'Application'}</a>, row.company, row.position, row.contactName, row.contactEmail, row.status, row.offerAmount, row.notes, row.url];
+              row.company, row.position, row.contactName, row.contactEmail, row.status, row.offerAmount, row.notes, row.url];
           }),
         };
       });

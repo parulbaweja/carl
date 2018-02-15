@@ -104,6 +104,7 @@ def display_user_app(application_id):
         result = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
         user = User.query.filter(User.user_id == result.user_id).first()
         app = Application.query.filter(Application.user_id == user.user_id, Application.application_id == application_id).first()
+        date = DateChange.query.filter(DateChange.application_id==app.application_id).order_by(DateChange.date_id.desc()).first()
         data = {
             'company': app.company.name,
             'position': app.position,
@@ -113,6 +114,7 @@ def display_user_app(application_id):
             'offerAmount': app.offer_amount,
             'notes': app.notes,
             'url': app.url,
+            'date': date.date_created
         }
 
         return jsonify(data)
@@ -192,6 +194,7 @@ def submit_entry():
 
     new_app = Application(user_id=user.user_id, company_id=new_comp.company_id, contact_id=new_contact.contact_id, position=position, status_id=new_status.status_id, offer_amount=offerAmount, notes=notes, url=url)
     db.session.add(new_app)
+    db.session.commit()
 
     new_date = DateChange(application_id=new_app.application_id, status_id=new_status.status_id, date_created=date)
     db.session.add(new_date)

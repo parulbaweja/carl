@@ -6,6 +6,7 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
+import DatePicker from 'material-ui/DatePicker';
 
 const appId = ({match}) => (
   match.params.app_id
@@ -23,6 +24,7 @@ class EditView extends React.Component {
       offerAmount: '',
       notes: '',
       url: '',
+      date: '',
     };
 
     var self = this;
@@ -37,12 +39,14 @@ class EditView extends React.Component {
         offerAmount: body.offerAmount,
         notes: body.notes,
         url: body.url,
+        date: body.date,
       }
         );
     });
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
   }
 
   onChange(key) {
@@ -51,6 +55,13 @@ class EditView extends React.Component {
       newState[key] = e.target.value;
       this.setState(newState);
     };
+  }
+
+  handleDateChange(e, date) {
+    var newDate = date.toJSON();
+    this.setState({
+      date: newDate,
+    });
   }
 
   onSubmit() {
@@ -70,7 +81,6 @@ class EditView extends React.Component {
             onChange={this.onChange('company')}
             type="text"
             value={this.state.company}
-            defaultValue={this.state.company}
             />
             <br/>
             <TextField
@@ -79,7 +89,6 @@ class EditView extends React.Component {
               onChange={this.onChange('position')}
               type="text"
               value={this.state.position}
-              defaultValue={this.state.position}
             />
             <br/>
             <TextField
@@ -88,7 +97,6 @@ class EditView extends React.Component {
               onChange={this.onChange('contactName')}
               type="text"
               value={this.state.contactName}
-              defaultValue={this.state.contactName}
             />
             <br/>
             <TextField
@@ -97,13 +105,11 @@ class EditView extends React.Component {
               onChange={this.onChange('contactEmail')}
               type="text"
               value={this.state.contactEmail}
-              defaultValue={this.state.contactEmail}
             />
             <br/>
             <DropDownMenu
               hintText="Status"
               value={this.state.status}
-              defaultValue={this.state.status}
               onChange={this.onChange('status')}>
               <MenuItem value={1} primaryText="Interested"/>
               <MenuItem value={2} primaryText="Applied"/>
@@ -115,13 +121,18 @@ class EditView extends React.Component {
               <MenuItem value={8} primaryText="Not a Fit"/>
             </DropDownMenu>
             <br/>
+            <DatePicker
+              onChange={this.handleDateChange}
+              floatingLabelText="Date"
+              value={this.state.date}
+          />
+            <br/>
             <TextField
               hintText="Offer Amount"
               id="offerAmount"
               onChange={this.onChange('offerAmount')}
               type="text"
               value={this.state.offerAmount}
-              defaultValue={this.state.offerAmount}
             />
             <br/>
             <TextField
@@ -129,7 +140,6 @@ class EditView extends React.Component {
               id="notes"
               onChange={this.onChange('notes')}
               value={this.state.notes}
-              defaultValue={this.state.notes}
             />
             <br/>
             <TextField
@@ -138,7 +148,6 @@ class EditView extends React.Component {
               onChange={this.onChange('url')}
               type="text"
               value={this.state.url}
-              defaultValue={this.state.url}
             />
             <br/>
             <FlatButton label="Save" onClick={this.onSubmit}/>

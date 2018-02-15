@@ -4,7 +4,7 @@ import apiRequest from '../utils/jobsSDK';
 import {Redirect} from 'react-router';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import DropDownMenu from 'material-ui/DropDownMenu';
+import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 
@@ -22,10 +22,12 @@ class ApplicationForm extends React.Component {
       offerAmount: '',
       notes: '',
       url: '',
-      date: date.toDateString(),
+      date: date,
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleStatusChange = this.handleStatusChange.bind(this);
   }
 
   // showStatus() {
@@ -47,6 +49,19 @@ class ApplicationForm extends React.Component {
       newState[key] = e.target.value;
       this.setState(newState);
     };
+  }
+
+  handleDateChange(e, date) {
+    var newDate = date.toJSON();
+    this.setState({
+      date: newDate,
+    });
+  }
+
+  handleStatusChange(e, index, status) {
+    this.setState({
+      status,
+    });
   }
 
   onSubmit() {
@@ -93,9 +108,11 @@ class ApplicationForm extends React.Component {
               value={this.state.contactEmail}
             />
             <br/>
-            <DropDownMenu
+            <SelectField
+              floatingLabelText="Status"
               value={this.state.status}
-              onChange={this.onChange('status')}>
+              primarytext="Interested"
+              onChange={this.handleStatusChange}>
               <MenuItem value={1} primaryText="Interested"/>
               <MenuItem value={2} primaryText="Applied"/>
               <MenuItem value={3} primaryText="Phone Call"/>
@@ -104,12 +121,12 @@ class ApplicationForm extends React.Component {
               <MenuItem value={6} primaryText="Accepted"/>
               <MenuItem value={7} primaryText="Withdrawn"/>
               <MenuItem value={8} primaryText="Not a Fit"/>
-            </DropDownMenu>
+            </SelectField>
             <br/>
             <DatePicker
-              onChange={this.onChange('date')}
+              onChange={this.handleDateChange}
               floatingLabelText="Date"
-              defaultDate={this.state.date}
+              defaultDate={date}
           />
             <br/>
             <TextField
