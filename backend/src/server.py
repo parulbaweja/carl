@@ -110,7 +110,7 @@ def display_user_app(application_id):
             'position': app.position,
             'contactName': app.contact.name,
             'contactEmail': app.contact.email,
-            'status': app.date.status_id,
+            'status': date.status_id,
             'offerAmount': app.offer_amount,
             'notes': app.notes,
             'url': app.url,
@@ -118,6 +118,17 @@ def display_user_app(application_id):
         }
 
         return jsonify(data)
+
+
+
+# def display_status_timeline(application_id):
+#     """Displays status timeline for a specific application."""
+
+#         dates = DateChange.query.filter(DateChange.application_id==app.application_id).order_by(DateChange.date_id.desc()).all()
+#         temp =[]
+#         for date in dates:
+#         pass
+
 
 
 @bp.route('/user/<user_id>')

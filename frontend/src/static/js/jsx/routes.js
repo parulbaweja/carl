@@ -17,7 +17,6 @@ const AppRouter = () => (
       <Route component={JobApplications} exact={true} path="/app/job_applications"/>
       <Route component={JobAppForm} exact={true} path="/app/app_form"/>
       <Route component={SingleAppView} exact={true} path="/app/apps/:app_id"/>
-      <Route component={EditView} exact={true} path="/app/apps/edit/:app_id"/>
       <Route component={LoginForm} exact={true} path="/login"/>
       <Route component={Register} exact={true} path="/app/register"/>
       <Route component={AppBox} exact={true} path="/app/dashboard"/>

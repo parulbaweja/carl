@@ -10,6 +10,7 @@ import {
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Redirect, Link} from 'react-router';
+import EditView from './EditView';
 
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
 
@@ -29,6 +30,7 @@ class SingleAppView extends React.Component {
       offerAmount: '',
       notes: '',
       url: '',
+      edit: false,
     };
 
     this.editApp = this.editApp.bind(this);
@@ -52,11 +54,16 @@ class SingleAppView extends React.Component {
 
   editApp(e) {
     e.preventDefault();
-    return <Redirect to={`/app/apps/edit/${appId(this.props)}`}/>;
+    this.setState({
+      edit: true,
+    });
   }
 
   render() {
-    console.log(this.props);
+    console.log(this.state);
+    if (this.state.edit) {
+      return (<EditView appId={appId(this.props)}/>);
+    }
     return (
       <div>
       <Table>

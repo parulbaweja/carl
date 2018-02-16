@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {postRequest} from '../utils/jobsSDK';
 import apiRequest from '../utils/jobsSDK';
 import {Redirect} from 'react-router';
@@ -7,10 +8,10 @@ import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
+import AppBox from './AppBox';
 
-const appId = ({match}) => (
-  match.params.app_id
-);
+//   match.params.app_id
+// );
 
 class EditView extends React.Component {
   constructor(props) {
@@ -28,7 +29,8 @@ class EditView extends React.Component {
     };
 
     var self = this;
-    apiRequest(`user/app/${appId(this.props)}`, function(body) {
+    var id = parseInt(this.props.appId);
+    apiRequest(`user/app/${id}`, function(body) {
       // console.log(body)
       var jsonDate = new Date(body.date);
       jsonDate.setDate(jsonDate.getDate() + 1);
@@ -42,6 +44,7 @@ class EditView extends React.Component {
         notes: body.notes,
         url: body.url,
         date: jsonDate,
+        saved: false,
       }
         );
     });
@@ -74,7 +77,10 @@ class EditView extends React.Component {
   }
 
   onSubmit() {
-    postRequest(`application/update/${appId(this.props)}`, this.state, function() {
+    postRequest(`application/update/${this.props.appId}`, this.state, function() {
+    });
+    this.setState({
+      saved: true,
     });
   }
     // TODO add onChange function to handle each form input section
@@ -83,6 +89,10 @@ class EditView extends React.Component {
   render() {
 
     console.log(this.state);
+
+    if (this.state.saved) {
+      return (<AppBox/>);
+    }
 
     return (
       <div>
@@ -170,5 +180,9 @@ class EditView extends React.Component {
     );
   }
 }
+
+EditView.propTypes = {
+  appId: PropTypes.string.isRequired,
+};
 
 export default EditView;
