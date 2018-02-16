@@ -110,11 +110,11 @@ def display_user_app(application_id):
             'position': app.position,
             'contactName': app.contact.name,
             'contactEmail': app.contact.email,
-            'status': app.status.u_name,
+            'status': app.date.status_id,
             'offerAmount': app.offer_amount,
             'notes': app.notes,
             'url': app.url,
-            'date': date.date_created
+            'date': date.date_created,
         }
 
         return jsonify(data)
@@ -199,6 +199,56 @@ def submit_entry():
     new_date = DateChange(application_id=new_app.application_id, status_id=new_status.status_id, date_created=date)
     db.session.add(new_date)
 
+    db.session.commit()
+
+    return jsonify({})
+
+
+@bp.route('/application/update/<application_id>', methods=['POST'])
+def update_app(application_id):
+    """Updates current application info entry."""
+
+    # Obtain form results.
+    company = request.json.get('company')
+    position = request.json.get('position')
+    contactName = request.json.get('contactName')
+    contactEmail = request.json.get('contactEmail')
+    status = request.json.get('status')
+    offerAmount = request.json.get('offerAmount')
+    notes = request.json.get('notes')
+    url = request.json.get('url')
+    date = request.json.get('date')
+
+    app = Application.query.filter(Application.application_id == application_id).first()
+
+    comp = Company.query.filter(Company.name == company).first()
+    if comp:
+        app.company.name = company
+    else:
+        new_comp = Company(name=company)
+        db.session.add(new_comp)
+
+    contact = Contact.query.filter(Contact.name == contactName).first()
+    if contact:
+        app.contact.name = contactName
+        app.contact.email = contactEmail
+    else:
+        new_contact = Contact(name=contactName, email=contactEmail)
+        db.session.add(new_contact)
+
+    app.position = position
+    app.offer_amount = offerAmount
+    app.notes = notes
+    app.url = url
+
+    # Check to see if status has changed. If so, update to dates table.
+    if app.status_id  == status:
+        app.status_id = status
+    else:
+        new_date_change = DateChange(application_id=app.application_id, status_id=status, date_created=date)
+        db.session.add(new_date_change)
+
+    # Commit all updates.
     db.session.commit()
 
     return jsonify({})

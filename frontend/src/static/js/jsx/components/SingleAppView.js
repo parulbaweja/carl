@@ -9,7 +9,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
-import {Redirect} from 'react-router';
+import {Redirect, Link} from 'react-router';
 
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
 
@@ -31,6 +31,8 @@ class SingleAppView extends React.Component {
       url: '',
     };
 
+    this.editApp = this.editApp.bind(this);
+
     var self = this;
     apiRequest(`user/app/${appId(this.props)}`, function(body) {
       // console.log(body);
@@ -48,12 +50,13 @@ class SingleAppView extends React.Component {
     });
   }
 
-  editApp() {
+  editApp(e) {
+    e.preventDefault();
     return <Redirect to={`/app/apps/edit/${appId(this.props)}`}/>;
   }
 
   render() {
-    console.log(this.state);
+    console.log(this.props);
     return (
       <div>
       <Table>

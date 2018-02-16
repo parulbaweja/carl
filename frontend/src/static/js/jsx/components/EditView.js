@@ -4,7 +4,7 @@ import apiRequest from '../utils/jobsSDK';
 import {Redirect} from 'react-router';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import DropDownMenu from 'material-ui/DropDownMenu';
+import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 
@@ -20,16 +20,18 @@ class EditView extends React.Component {
       position: '',
       contactName: '',
       contactEmail: '',
-      status: 1,
+      status: '',
       offerAmount: '',
       notes: '',
       url: '',
-      date: '',
+      redirect: '/app/dashboard',
     };
 
     var self = this;
     apiRequest(`user/app/${appId(this.props)}`, function(body) {
-      // console.log(body);
+      // console.log(body)
+      var jsonDate = new Date(body.date);
+      jsonDate.setDate(jsonDate.getDate() + 1);
       self.setState({
         company: body.company,
         position: body.position,
@@ -39,7 +41,7 @@ class EditView extends React.Component {
         offerAmount: body.offerAmount,
         notes: body.notes,
         url: body.url,
-        date: body.date,
+        date: jsonDate,
       }
         );
     });
@@ -47,6 +49,7 @@ class EditView extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleStatusChange = this.handleStatusChange.bind(this);
   }
 
   onChange(key) {
@@ -58,22 +61,32 @@ class EditView extends React.Component {
   }
 
   handleDateChange(e, date) {
-    var newDate = date.toJSON();
+    var newDate = new Date(date);
     this.setState({
       date: newDate,
     });
   }
 
+  handleStatusChange(e, index, status) {
+    this.setState({
+      status,
+    });
+  }
+
   onSubmit() {
-    postRequest('application', this.state, function() { });
+    postRequest(`application/update/${appId(this.props)}`, this.state, function() {
+    });
   }
     // TODO add onChange function to handle each form input section
     // shift v to select lines and then :sort to sort those lines
 
   render() {
+
+    console.log(this.state);
+
     return (
       <div>
-      <h3>{'Job App Entry Form'}</h3>
+      <h3>{'Editing Form'}</h3>
         <form>
           <TextField
             hintText="Company Name"
@@ -107,10 +120,11 @@ class EditView extends React.Component {
               value={this.state.contactEmail}
             />
             <br/>
-            <DropDownMenu
-              hintText="Status"
+            <SelectField
+              floatingLabelText="Status"
               value={this.state.status}
-              onChange={this.onChange('status')}>
+              onChange={this.handleStatusChange}
+              primaryText={this.state.status}>
               <MenuItem value={1} primaryText="Interested"/>
               <MenuItem value={2} primaryText="Applied"/>
               <MenuItem value={3} primaryText="Phone Call"/>
@@ -119,7 +133,7 @@ class EditView extends React.Component {
               <MenuItem value={6} primaryText="Accepted"/>
               <MenuItem value={7} primaryText="Withdrawn"/>
               <MenuItem value={8} primaryText="Not a Fit"/>
-            </DropDownMenu>
+            </SelectField>
             <br/>
             <DatePicker
               onChange={this.handleDateChange}
