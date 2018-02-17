@@ -62,7 +62,7 @@ class SingleAppView extends React.Component {
   render() {
     console.log(this.state);
     if (this.state.edit) {
-      return (<EditView appId={appId(this.props)}/>);
+      return (<Redirect to={`/app/edit/${appId(this.props)}`}/>);
     }
     return (
       <div>

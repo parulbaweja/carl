@@ -13,6 +13,10 @@ import AppBox from './AppBox';
 //   match.params.app_id
 // );
 
+const appId = ({match}) => (
+  match.params.app_id
+);
+
 class EditView extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +33,7 @@ class EditView extends React.Component {
     };
 
     var self = this;
-    var id = parseInt(this.props.appId);
+    var id = parseInt(appId(this.props));
     apiRequest(`user/app/${id}`, function(body) {
       // console.log(body)
       var jsonDate = new Date(body.date);
@@ -77,7 +81,7 @@ class EditView extends React.Component {
   }
 
   onSubmit() {
-    postRequest(`application/update/${this.props.appId}`, this.state, function() {
+    postRequest(`application/update/${appId(this.props)}`, this.state, function() {
     });
     this.setState({
       saved: true,
@@ -89,9 +93,11 @@ class EditView extends React.Component {
   render() {
 
     console.log(this.state);
+    console.log('FOO');
+    console.log(appId(this.props));
 
     if (this.state.saved) {
-      return (<AppBox/>);
+      return (<Redirect to={`/app/apps/${appId(this.props)}`}/>);
     }
 
     return (
