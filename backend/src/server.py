@@ -45,10 +45,10 @@ def isLoggedIn():
 @bp.route('/login', methods=['POST'])
 def submit_login_form():
     """Check for unique email and password. If correct, log in."""
-    import pdb; pdb.set_trace()
+    # import ipdb; ipdb.set_trace()
     email = request.json.get('email')
     password = request.json.get('password')
-
+    # print email, password
     result = User.query.filter((User.email == email) & (User.password == password))
 
     if result.count() == 0:
@@ -68,7 +68,7 @@ def submit_login_form():
     return jsonify(data)
 
 
-@app.route('/logout')
+@bp.route('/logout')
 def logout():
     """Logs out user and drops session."""
 
@@ -271,13 +271,13 @@ def update_app(application_id):
     return jsonify({})
 
 
+app.register_blueprint(bp)
 if __name__ == "__main__":
     # app = Flask(__name__)
     # app.secret_key = "abc"
     # app.jinja_env.undefined = StrictUndefined
     app.debug = True
 
-    app.register_blueprint(bp)
 
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
