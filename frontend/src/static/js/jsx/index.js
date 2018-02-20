@@ -19,7 +19,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 render(
   <MuiThemeProvider muiTheme={getMuiTheme()}>
-    <AppRouter/>
+      <AppRouter/>
   </MuiThemeProvider>,
   document.getElementById('react-app')
 );

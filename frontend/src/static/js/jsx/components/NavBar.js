@@ -99,7 +99,7 @@ class NavBar extends React.Component {
     }
 
     if (this.state.loggedIn === false) {
-      return (<Redirect to={'/login'}/>);
+      return (<Redirect to={'/welcome'}/>);
     }
 
     if (this.state.redirect) {

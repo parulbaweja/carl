@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {postRequest} from '../utils/jobsSDK';
 import {Redirect} from 'react-router-dom';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
 class Register extends React.Component {
   constructor(props) {
@@ -38,40 +41,45 @@ class Register extends React.Component {
   render() {
     if (this.state.userID == -1) {
       return (
+        <div>
+        <h3>{'Register'}</h3>
         <form>
-          <label>{'First Name'}</label>
-          <input
+          <TextField
+            hintText="First Name"
             id="fname"
             onChange={this.onChange('fname')}
             type="text"
             value={this.state.fname}
           />
           <br/>
-          <label>{'Last Name'}</label>
-          <input
+          <TextField
+            hintText="Last Name"
             id="lname"
             onChange={this.onChange('lname')}
             type="text"
             value={this.state.lname}
           />
           <br/>
-          <label>{'Email'}</label>
-          <input
+          <TextField
+            hintText="Email"
             id="email"
             onChange={this.onChange('email')}
             type="text"
             value={this.state.email}
           />
           <br/>
-          <label>{'Password'}</label>
-          <input
+          <TextField
+            hintText="Password"
             id="password"
             onChange={this.onChange('password')}
-            type="text"
+            type="password"
             value={this.state.password}
           />
-          <button onClick={this.onSubmit}>{'Submit'}</button>
-        </form>);
+          <br/>
+            <FlatButton label="Submit" onClick={this.onSubmit}/>
+          </form>
+        </div>
+      );
     }
     else {
       return <Redirect to="/app/"/>;

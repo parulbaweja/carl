@@ -45,15 +45,14 @@ def isLoggedIn():
 @bp.route('/login', methods=['POST'])
 def submit_login_form():
     """Check for unique email and password. If correct, log in."""
-
+    import pdb; pdb.set_trace()
     email = request.json.get('email')
     password = request.json.get('password')
 
     result = User.query.filter((User.email == email) & (User.password == password))
 
     if result.count() == 0:
-        pass
-        #return Response('Could not verify your access level for that URL.\nYou have to login with proper credentials', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'})
+        data = {'error': True}
     else:
         user = result.first()
         new_auth = AuthId(user_id=user.user_id, auth_token=str(uuid4()))
@@ -61,11 +60,15 @@ def submit_login_form():
         db.session.commit()
         session['token'] = new_auth.auth_token
         data = {'user_id': user.user_id,
-                'fname' : user.fname,}
-        return jsonify(data)
+                'fname': user.fname,
+                'error': False}
+
+    print data
+
+    return jsonify(data)
 
 
-@bp.route('/logout')
+@app.route('/logout')
 def logout():
     """Logs out user and drops session."""
 
@@ -92,8 +95,11 @@ def submit_register_form():
         new_user = User(email=email, password=password, fname=fname, lname=lname)
         db.session.add(new_user)
         db.session.commit()
+        data = {'error': False}
     else:
-        pass
+        data = {'error': True}
+
+    return jsonify(data)
 
 
 @bp.route('/user/app/<application_id>')
@@ -212,7 +218,7 @@ def submit_entry():
 
     db.session.commit()
 
-    return jsonify({})
+    return jsonify({'error': True})
 
 
 @bp.route('/application/update/<application_id>', methods=['POST'])

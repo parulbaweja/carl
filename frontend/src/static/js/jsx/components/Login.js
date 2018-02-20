@@ -2,6 +2,8 @@ import React from 'react';
 import {postRequest} from '../utils/jobsSDK';
 import apiRequest from '../utils/jobsSDK';
 import {Redirect} from 'react-router-dom';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
 class LoginForm extends React.Component {
@@ -11,6 +13,7 @@ class LoginForm extends React.Component {
       email: '',
       password: '',
       userID: '',
+      error: false,
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -38,11 +41,15 @@ class LoginForm extends React.Component {
       console.log(body);
       self.setState({
         userID: body.user_id,
+        error: body.error,
       });
     });
   }
 
   render() {
+    if (this.state.error) {
+      return (<Redirect to="/welcome/"/>);
+    }
     if (this.state.loggedIn === undefined) {
       return (<CircularProgress size={80} thickness={5}/>);
     }
@@ -54,24 +61,29 @@ class LoginForm extends React.Component {
       return (<Redirect to="/app/"/>);
     }
     return (
-            <form>
-                <label>{'Email:'}</label>
-                <input
-                  id="email"
-                  onChange={this.onChange('email')}
-                  type="text"
-                  value={this.state.email}
-              />
-              <br/>
-                <label>{'Password:'}</label>
-                <input
-                  id="password"
-                  onChange={this.onChange('password')}
-                  type="text"
-                  value={this.state.password}
-              />
-              <button onClick={this.onSubmit}>{'Submit'}</button>
-            </form>);
+      <div>
+        <br/>
+        <h3>{'Login'}</h3>
+      <form>
+        <TextField
+          hintText="Email"
+          id="email"
+          onChange={this.onChange('email')}
+          type="text"
+          value={this.state.email}
+        />
+        <br/>
+        <TextField
+          hintText="Password"
+          id="password"
+          onChange={this.onChange('password')}
+          type="password"
+          value={this.state.password}
+        />
+        <br/>
+            <FlatButton label="Submit" onClick={this.onSubmit}/>
+        </form>
+      </div>);
   }
 }
 
