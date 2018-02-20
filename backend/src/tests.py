@@ -4,7 +4,6 @@ import unittest
 from server import app
 from model import connect_to_db, db
 
-PRESERVE_CONTEXT_ON_EXCEPTION = False
 
 class FlaskTests(TestCase):
 
@@ -14,6 +13,7 @@ class FlaskTests(TestCase):
         connect_to_db(app)
         app.config['TESTING'] = True
         app.config['SECRET_KEY'] = 'abc'
+        app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = False
         self.client = app.test_client()
 
         data = {'email': 'parul@gmail.com',
@@ -35,11 +35,11 @@ class FlaskTests(TestCase):
         with self.client as c:
             with c.session_transaction() as sess:
                 sess['token'] = self.session_token
-                result = c.get('/user/app/1')
-                d = json.loads(result.data)
-                self.assertEqual(d['company'], 'Hackbright')
-                self.assertEqual(result.status_code, 200)
-                self.assertEqual(result.content_type, 'application/json')
+            result = c.get('/user/app/1')
+            d = json.loads(result.data)
+            self.assertEqual(d['company'], 'Hackbright')
+            self.assertEqual(result.status_code, 200)
+            self.assertEqual(result.content_type, 'application/json')
 
 
 
