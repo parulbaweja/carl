@@ -126,14 +126,19 @@ def display_user_app(application_id):
         return jsonify(data)
 
 
+@bp.route('/timeline/<application_id>')
+def display_status_timeline(application_id):
+    """Displays status timeline for a specific application."""
 
-# def display_status_timeline(application_id):
-#     """Displays status timeline for a specific application."""
+    dates = DateChange.query.filter(DateChange.application_id==application_id).order_by(DateChange.date_id.desc()).all()
+    data = {}
+    for date in dates:
+        data[date.date_id] = {
+                                'status': date.status.js_name,
+                                'date': date.date_created,
+        }
 
-#         dates = DateChange.query.filter(DateChange.application_id==app.application_id).order_by(DateChange.date_id.desc()).all()
-#         temp =[]
-#         for date in dates:
-#         pass
+    return jsonify(data)
 
 
 
@@ -202,7 +207,13 @@ def submit_entry():
     url = request.json.get('url')
     date = request.json.get('date')
 
-    new_comp = Company(name=company)
+    comp = Company.query.filter(Company.name == company).first()
+    if comp:
+        new_comp = comp
+    else:
+        new_comp = Company(name=company)
+        db.session.add(new_comp)
+
     new_contact = Contact(name=contactName, email=contactEmail)
     db.session.add(new_comp)
     db.session.add(new_contact)

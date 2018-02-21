@@ -54,10 +54,6 @@ class NavBar extends React.Component {
     this.logout = this.logout.bind(this);
   }
 
-  handleToggle() {
-    this.setState({open: !this.state.open});
-  }
-
   myDashboard() {
     this.setState({isLeftMenuOpen: false, redirect: '/app/dashboard'});
   }

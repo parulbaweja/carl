@@ -11,12 +11,13 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import {Redirect, Link} from 'react-router';
 import EditView from './EditView';
+import PropTypes from 'prop-types';
 
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
 
-const appId = ({match}) => (
-  match.params.app_id
-);
+// const appId = ({match}) => (
+//   match.params.app_id
+// );
 
 class SingleAppView extends React.Component {
   constructor(props) {
@@ -36,8 +37,8 @@ class SingleAppView extends React.Component {
     this.editApp = this.editApp.bind(this);
 
     var self = this;
-    apiRequest(`user/app/${appId(this.props)}`, function(body) {
-      // console.log(body);
+    apiRequest(`user/app/${this.props.appid}`, function(body) {
+      console.log(body);
       self.setState({
         company: body.company,
         position: body.position,
@@ -60,9 +61,8 @@ class SingleAppView extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     if (this.state.edit) {
-      return (<Redirect to={`/app/edit/${appId(this.props)}`}/>);
+      return (<Redirect to={`/app/edit/${this.props.appid}`}/>);
     }
     return (
       <div>
@@ -116,5 +116,9 @@ class SingleAppView extends React.Component {
     );
   }
 }
+
+SingleAppView.propTypes = {
+  appid: PropTypes.number.isRequired,
+};
 
 export default SingleAppView;
