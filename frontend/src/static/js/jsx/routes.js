@@ -22,10 +22,10 @@ const AppRouter = () => (
       <Route component={LoginForm} exact={true} path="/welcome/login"/>
       <Route component={Register} exact={true} path="/welcome/register"/>
       <Route component={AppBox} exact={false} path="/app/dashboard"/>
-      <Route component={SingleAppView} exact={true} path="/app/dashboard/view"/>
     </div>
   </BrowserRouter>
 );
 
 export default AppRouter;
       // <Route component={EditView} exact={true} path="/app/edit/:app_id"/>
+      // <Route component={SingleAppView} exact={true} path="/app/dashboard/view"/>

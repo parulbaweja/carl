@@ -15,6 +15,8 @@ import {
 import {BrowserRouter, Route, Link} from 'react-router-dom';
 import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
+import AppDrawer from './AppDrawer';
+import FlatButton from 'material-ui/FlatButton';
 
 class AppBox extends React.Component {
   constructor(props) {
@@ -34,17 +36,17 @@ class AppBox extends React.Component {
     });
 
     this.setRightMenuState = this.setRightMenuState.bind(this);
-    this.toggleRightMenu = this.toggleRightMenu.bind(this);
+    this.openRightMenu = this.openRightMenu.bind(this);
     this.setAppId = this.setAppId.bind(this);
   }
 
-  handleToggle(rowNumber, columnNumber) {
-    console.log(rowNumber, columnNumber);
-    this.setState({
-      open: !this.state.open,
-      appId: this.state.rows[rowNumber][0],
-    });
-  }
+  // handleToggle(rowNumber, columnNumber) {
+  //   console.log(rowNumber, columnNumber);
+  //   this.setState({
+  //     open: !this.state.open,
+  //     appId: this.state.rows[rowNumber][0],
+  //   });
+  // }
 
   setRightMenuState(open) {
     this.setState({
@@ -58,10 +60,14 @@ class AppBox extends React.Component {
     });
   }
 
-  toggleRightMenu(rowNumber, columnNumber) {
+  openRightMenu(rowNumber, columnNumber) {
     console.log(rowNumber, columnNumber);
     console.log(this.state.rows[rowNumber][0]);
     const isRightMenuOpen = this.state.isRightMenuOpen;
+    // this.setState({
+    //   isRightMenuOpen: true,
+    //   appId: this.state.rows[rowNumber][0],
+    // });
     this.setRightMenuState(!isRightMenuOpen);
     this.setAppId(this.state.rows[rowNumber][0]);
   }
@@ -73,22 +79,30 @@ class AppBox extends React.Component {
       <TableHeaderColumn key={1}>{'Status'}</TableHeaderColumn>, <TableHeaderColumn key={2}>{'Recent Activity'}</TableHeaderColumn>,
     ];
 
-    if (this.state.appId) {
-      return(
+    // if (this.state.appId) {
+    //   return(
+    //     <Drawer
+    //       docked={false}
+    //       width={'50%'}
+    //       openSecondary={true}
+    //       onRequestChange={this.setRightMenuState}
+    //       open={this.state.isRightMenuOpen}>
+    //        <SingleAppView appid={this.state.appId}/>
+    //      </Drawer>
+    //   );
+    // }
+
+    return (
+      <div>
         <Drawer
           docked={false}
           width={'50%'}
           openSecondary={true}
           onRequestChange={this.setRightMenuState}
           open={this.state.isRightMenuOpen}>
-           <SingleAppView appid={this.state.appId}/>
+            <AppDrawer appid={this.state.appId}/>
          </Drawer>
-      );
-    }
-
-    return (
-      <div>
-      <Table onCellClick={this.toggleRightMenu}>
+      <Table onCellClick={this.openRightMenu}>
         <TableHeader
           displaySelectAll={false}
           adjustForCheckbox={false}

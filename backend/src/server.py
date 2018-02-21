@@ -102,28 +102,37 @@ def submit_register_form():
     return jsonify(data)
 
 
-@bp.route('/user/app/<application_id>')
-def display_user_app(application_id):
+@bp.route('/apps_repo')
+def display_user_app():
     """Display one application entry for a user."""
 
-    if session.get('token'):
-        result = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
-        user = User.query.filter(User.user_id == result.user_id).first()
-        app = Application.query.filter(Application.user_id == user.user_id, Application.application_id == application_id).first()
-        date = DateChange.query.filter(DateChange.application_id==app.application_id).order_by(DateChange.date_id.desc()).first()
-        data = {
-            'company': app.company.name,
-            'position': app.position,
-            'contactName': app.contact.name,
-            'contactEmail': app.contact.email,
-            'status': date.status_id,
-            'offerAmount': app.offer_amount,
-            'notes': app.notes,
-            'url': app.url,
-            'date': date.date_created,
-        }
+    auth = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
 
-        return jsonify(data)
+    apps = Application.query.filter(Application.user_id == auth.user_id).all()
+    data = {}
+    for app in apps:
+        data[app.application_id] = app.to_dict()
+
+    return jsonify(data)
+
+    # if session.get('token'):
+    #     result = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
+    #     user = User.query.filter(User.user_id == result.user_id).first()
+    #     app = Application.query.filter(Application.user_id == user.user_id, Application.application_id == application_id).first()
+    #     date = DateChange.query.filter(DateChange.application_id==app.application_id).order_by(DateChange.date_id.desc()).first()
+    #     data = {
+    #         'company': app.company.name,
+    #         'position': app.position,
+    #         'contactName': app.contact.name,
+    #         'contactEmail': app.contact.email,
+    #         'status': date.status_id,
+    #         'offerAmount': app.offer_amount,
+    #         'notes': app.notes,
+    #         'url': app.url,
+    #         'date': date.date_created,
+    #     }
+
+    #     return jsonify(data)
 
 
 @bp.route('/timeline/<application_id>')

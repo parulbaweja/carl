@@ -13,50 +13,61 @@ import AppBox from './AppBox';
 //   match.params.app_id
 // );
 
-const appId = ({match}) => (
-  match.params.app_id
-);
+// const appId = ({match}) => (
+//   match.params.app_id
+// );
 
 class EditView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      company: '',
-      position: '',
-      contactName: '',
-      contactEmail: '',
-      status: '',
-      offerAmount: '',
-      notes: '',
-      url: '',
-      redirect: '/app/dashboard',
+      apps: undefined,
+      // company: '',
+      // position: '',
+      // contactName: '',
+      // contactEmail: '',
+      // status: '',
+      // offerAmount: '',
+      // notes: '',
+      // url: '',
+      // redirect: '/app/dashboard',
     };
 
     var self = this;
-    var id = parseInt(appId(this.props));
-    apiRequest(`user/app/${id}`, function(body) {
-      // console.log(body)
-      var jsonDate = new Date(body.date);
-      jsonDate.setDate(jsonDate.getDate() + 1);
-      self.setState({
-        company: body.company,
-        position: body.position,
-        contactName: body.contactName,
-        contactEmail: body.contactEmail,
-        status: body.status,
-        offerAmount: body.offerAmount,
-        notes: body.notes,
-        url: body.url,
-        date: jsonDate,
-        saved: false,
-      }
-        );
-    });
+    // var id = parseInt(appId(this.props));
+    // apiRequest(`user/app/${this.props.appid}`, function(body) {
+    //   var jsonDate = new Date(body.date);
+    //   jsonDate.setDate(jsonDate.getDate() + 1);
+    //   self.setState({
+    //     company: body.company,
+    //     position: body.position,
+    //     contactName: body.contactName,
+    //     contactEmail: body.contactEmail,
+    //     status: body.status,
+    //     offerAmount: body.offerAmount,
+    //     notes: body.notes,
+    //     url: body.url,
+    //     date: jsonDate,
+    //     saved: false,
+    //   }
+    //     );
+    // });
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleStatusChange = this.handleStatusChange.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('component mounted');
+    var self = this;
+    apiRequest('apps_repo', function(body) {
+      console.log(body);
+      self.setState({
+        apps: body,
+      });
+    });
   }
 
   onChange(key) {
@@ -81,7 +92,7 @@ class EditView extends React.Component {
   }
 
   onSubmit() {
-    postRequest(`application/update/${appId(this.props)}`, this.state, function() {
+    postRequest(`application/update/${this.props.appid}`, this.state, function() {
     });
     this.setState({
       saved: true,
@@ -92,14 +103,10 @@ class EditView extends React.Component {
 
   render() {
 
-    console.log(this.state);
-    console.log('FOO');
-    console.log(appId(this.props));
-
-    if (this.state.saved) {
-      return (<Redirect to={`/app/apps/${appId(this.props)}`}/>);
-    }
-
+    // if (this.state.saved) {
+    //   return (<Redirect to={`/app/apps/${appId(this.props)}`}/>);
+    // }
+    console.log(this.props.appid);
     return (
       <div>
       <h3>{'Editing Form'}</h3>
@@ -109,7 +116,7 @@ class EditView extends React.Component {
             id="company"
             onChange={this.onChange('company')}
             type="text"
-            value={this.state.company}
+            value={this.state.apps[this.props.appid].company}
             />
             <br/>
             <TextField
@@ -117,7 +124,7 @@ class EditView extends React.Component {
               id="position"
               onChange={this.onChange('position')}
               type="text"
-              value={this.state.position}
+              value={this.state.apps[this.props.appid].position}
             />
             <br/>
             <TextField
@@ -125,7 +132,7 @@ class EditView extends React.Component {
               id="contactName"
               onChange={this.onChange('contactName')}
               type="text"
-              value={this.state.contactName}
+              value={this.state.apps[this.props.appid].contactName}
             />
             <br/>
             <TextField
@@ -133,14 +140,14 @@ class EditView extends React.Component {
               id="contactEmail"
               onChange={this.onChange('contactEmail')}
               type="text"
-              value={this.state.contactEmail}
+              value={this.state.apps[this.props.appid].contactEmail}
             />
             <br/>
             <SelectField
               floatingLabelText="Status"
               value={this.state.status}
               onChange={this.handleStatusChange}
-              primaryText={this.state.status}>
+              primaryText={this.state.apps[this.props.appid].status}>
               <MenuItem value={1} primaryText="Interested"/>
               <MenuItem value={2} primaryText="Applied"/>
               <MenuItem value={3} primaryText="Phone Call"/>
@@ -162,14 +169,14 @@ class EditView extends React.Component {
               id="offerAmount"
               onChange={this.onChange('offerAmount')}
               type="text"
-              value={this.state.offerAmount}
+              value={this.state.apps[this.props.appid].offerAmount}
             />
             <br/>
             <TextField
               hintText="Notes"
               id="notes"
               onChange={this.onChange('notes')}
-              value={this.state.notes}
+              value={this.state.apps[this.props.appid].notes}
             />
             <br/>
             <TextField
@@ -177,7 +184,7 @@ class EditView extends React.Component {
               id="url"
               onChange={this.onChange('url')}
               type="text"
-              value={this.state.url}
+              value={this.state.apps[this.props.appid].url}
             />
             <br/>
             <FlatButton label="Save" onClick={this.onSubmit}/>
@@ -188,7 +195,7 @@ class EditView extends React.Component {
 }
 
 EditView.propTypes = {
-  appId: PropTypes.string.isRequired,
+  appid: PropTypes.number.isRequired,
 };
 
 export default EditView;

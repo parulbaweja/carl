@@ -23,33 +23,38 @@ class SingleAppView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      company: '',
-      position: '',
-      contactName: '',
-      contactEmail: '',
-      status: '',
-      offerAmount: '',
-      notes: '',
-      url: '',
-      edit: false,
+      apps: undefined,
+      // company: '',
+      // position: '',
+      // contactName: '',
+      // contactEmail: '',
+      // status: '',
+      // offerAmount: '',
+      // notes: '',
+      // url: '',
+      // edit: false,
     };
 
     this.editApp = this.editApp.bind(this);
 
+  }
+
+  componentDidMount() {
+    console.log('component mounted');
     var self = this;
-    apiRequest(`user/app/${this.props.appid}`, function(body) {
+    apiRequest('apps_repo', function(body) {
       console.log(body);
       self.setState({
-        company: body.company,
-        position: body.position,
-        contactName: body.contactName,
-        contactEmail: body.contactEmail,
-        status: body.status,
-        offerAmount: body.offerAmount,
-        notes: body.notes,
-        url: body.url,
-      }
-        );
+        apps: body,
+          // company: body.company,
+          // position: body.position,
+          // contactName: body.contactName,
+          // contactEmail: body.contactEmail,
+          // status: body.status,
+          // offerAmount: body.offerAmount,
+          // notes: body.notes,
+          // url: body.url,
+      });
     });
   }
 
@@ -61,9 +66,16 @@ class SingleAppView extends React.Component {
   }
 
   render() {
+    console.log(this.props.appid);
+    console.log(this.state);
     if (this.state.edit) {
       return (<Redirect to={`/app/edit/${this.props.appid}`}/>);
     }
+
+    if (this.props.appid === undefined || this.state.apps === undefined) {
+      return null;
+    }
+
     return (
       <div>
       <Table>
@@ -85,28 +97,28 @@ class SingleAppView extends React.Component {
         >
           <TableRow>
             <TableRowColumn>
-              {this.state.company}
+              {this.state.apps[this.props.appid].company}
             </TableRowColumn>
             <TableRowColumn>
-              {this.state.position}
+              {this.state.apps[this.props.appid].position}
             </TableRowColumn>
             <TableRowColumn>
-              {this.state.contactName}
+              {this.state.apps[this.props.appid].contactName}
             </TableRowColumn>
             <TableRowColumn>
-              {this.state.contactEmail}
+              {this.state.apps[this.props.appid].contactEmail}
             </TableRowColumn>
             <TableRowColumn>
-              {this.state.status}
+              {this.state.apps[this.props.appid].status}
             </TableRowColumn>
             <TableRowColumn>
-              {this.state.offerAmount}
+              {this.state.apps[this.props.appid].offerAmount}
             </TableRowColumn>
             <TableRowColumn>
-              {this.state.notes}
+              {this.state.apps[this.props.appid].notes}
             </TableRowColumn>
             <TableRowColumn>
-              {this.state.url}
+              {this.state.apps[this.props.appid].url}
             </TableRowColumn>
           </TableRow>
       </TableBody>

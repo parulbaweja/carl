@@ -120,6 +120,29 @@ class Application(db.Model):
     contact = db.relationship('Contact', backref=db.backref('applications', order_by=application_id))
     status = db.relationship('Status', backref=db.backref('applications', order_by=application_id))
 
+    def to_dict(self):
+        """Turns application information into a dictionary."""
+
+        data = {
+            'appId': self.application_id,
+            'company': self.company.name,
+            'position': self.position,
+            'contactName': self.contact.name,
+            'contactEmail': self.contact.email,
+            'status': self.date.status.u_name,
+            'offerAmount': self.offer_amount,
+            'notes': self.notes,
+            'url': self.url,
+            'date': self.date.date_created,
+        }
+
+        return data
+
+    @property
+    def date(self):
+        return DateChange.query.filter(
+            DateChange.application_id == self.application_id).order_by(DateChange.date_id.desc()).first()
+
     def __repr__(self):
         """Displays application object."""
 
