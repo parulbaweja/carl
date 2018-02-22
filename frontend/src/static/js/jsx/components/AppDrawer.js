@@ -4,6 +4,7 @@ import apiRequest from '../utils/jobsSDK';
 import FlatButton from 'material-ui/FlatButton';
 import SingleAppView from './SingleAppView';
 import EditView from './EditView';
+import StatusChange from './StatusChange';
 
 class AppDrawer extends React.Component {
   constructor(props) {
@@ -16,25 +17,35 @@ class AppDrawer extends React.Component {
 
     this.setDetails = this.setDetails.bind(this);
     this.setEdit = this.setEdit.bind(this);
+    this.setActivity = this.setActivity.bind(this);
 
   }
 
   setDetails() {
-    const isDetailsOpen = this.state.details;
     this.setState({
-      details: !isDetailsOpen,
+      details: true,
+      edit: false,
+      activity: false,
     });
   }
 
   setEdit() {
     this.setState({
-      edit: !this.state.edit,
+      edit: true,
+      details: false,
+      activity: false,
+    });
+  }
+
+  setActivity() {
+    this.setState({
+      edit: false,
+      details: false,
+      activity: true,
     });
   }
 
   render() {
-    console.log(this.state);
-    console.log(!this.state.details);
     return (
       <div>
       <FlatButton
@@ -47,12 +58,16 @@ class AppDrawer extends React.Component {
       />
       <FlatButton
         label="Activity"
+        onClick={this.setActivity}
       />
-      {this.state.details && !this.state.edit &&
+      {this.state.details && !this.state.edit && !this.state.activity &&
           <SingleAppView appid={this.props.appid}/>
       }
-      {this.state.edit &&
+      {this.state.edit && !this.state.details && !this.state.activity &&
           <EditView appid={this.props.appid}/>
+      }
+      {this.state.activity && !this.state.details && !this.state.edit &&
+          <StatusChange appid={this.props.appid}/>
       }
     </div>
     );

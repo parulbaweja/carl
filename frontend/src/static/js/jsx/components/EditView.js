@@ -22,41 +22,12 @@ class EditView extends React.Component {
     super(props);
     this.state = {
       apps: undefined,
-      // company: '',
-      // position: '',
-      // contactName: '',
-      // contactEmail: '',
-      // status: '',
-      // offerAmount: '',
-      // notes: '',
-      // url: '',
-      // redirect: '/app/dashboard',
     };
 
-    var self = this;
-    // var id = parseInt(appId(this.props));
-    // apiRequest(`user/app/${this.props.appid}`, function(body) {
-    //   var jsonDate = new Date(body.date);
-    //   jsonDate.setDate(jsonDate.getDate() + 1);
-    //   self.setState({
-    //     company: body.company,
-    //     position: body.position,
-    //     contactName: body.contactName,
-    //     contactEmail: body.contactEmail,
-    //     status: body.status,
-    //     offerAmount: body.offerAmount,
-    //     notes: body.notes,
-    //     url: body.url,
-    //     date: jsonDate,
-    //     saved: false,
-    //   }
-    //     );
-    // });
-
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.handleDateChange = this.handleDateChange.bind(this);
-    this.handleStatusChange = this.handleStatusChange.bind(this);
+    // this.onSubmit = this.onSubmit.bind(this);
+    // this.onChange = this.onChange.bind(this);
+    // this.handleDateChange = this.handleDateChange.bind(this);
+    // this.handleStatusChange = this.handleStatusChange.bind(this);
   }
 
   componentDidMount() {
@@ -68,6 +39,7 @@ class EditView extends React.Component {
         apps: body,
       });
     });
+
   }
 
   onChange(key) {
@@ -107,8 +79,13 @@ class EditView extends React.Component {
     //   return (<Redirect to={`/app/apps/${appId(this.props)}`}/>);
     // }
     console.log(this.props.appid);
+    console.log(this.state.apps);
+    if (this.props.appid === undefined || this.state.apps === undefined) {
+      return null;
+    }
+
     return (
-      <div>
+      <div style={{margin: 'auto'}}>
       <h3>{'Editing Form'}</h3>
         <form>
           <TextField
@@ -147,7 +124,7 @@ class EditView extends React.Component {
               floatingLabelText="Status"
               value={this.state.status}
               onChange={this.handleStatusChange}
-              primaryText={this.state.apps[this.props.appid].status}>
+              primaryText={this.state.apps[this.props.appid].statusId}>
               <MenuItem value={1} primaryText="Interested"/>
               <MenuItem value={2} primaryText="Applied"/>
               <MenuItem value={3} primaryText="Phone Call"/>
@@ -161,7 +138,7 @@ class EditView extends React.Component {
             <DatePicker
               onChange={this.handleDateChange}
               floatingLabelText="Date"
-              value={this.state.date}
+              value={Date(this.state.apps[this.props.appid].date)}
           />
             <br/>
             <TextField

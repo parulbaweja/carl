@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import apiRequest from '../utils/jobsSDK';
 import {
   Table,
@@ -8,6 +9,12 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import {
+  Step,
+  Stepper,
+  StepLabel,
+  StepContent,
+} from 'material-ui/Stepper';
 
 const headers = ['Status', 'Date'];
 
@@ -19,56 +26,54 @@ class StatusChange extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      rows: [],
+      dates: undefined,
     };
+  }
 
+  componentDidMount() {
+    console.log('component mounted');
     var self = this;
-    apiRequest(`timeline/${appId(this.props)}`, function(body) {
+    apiRequest(`timeline/${this.props.appid}`, function(body) {
       console.log(body);
-      self.setState(function() {
-        return {
-          rows: body.map(function(row, i) {
-            return [
-            ];
-          }),
-        };
+      self.setState({
+        dates: body.map(function(row) {
+          return [row.status, row.date];
+        }),
       });
     });
   }
 
   render() {
 
-    <div>
-      <Table>
-        <TableHeader
-          displaySelectAll={false}
-          adjustForCheckbox={false}
-        >
-          <TableRow>
-            {headers.map((header, i) => {
-              return (
-        <TableHeaderColumn key={i}>{header}</TableHeaderColumn>
-              );
-            })
-            }
-          </TableRow>
-        </TableHeader>
-        <TableBody
-          displayRowCheckbox={false}
-        >
-            {this.state.rows.map((data, i) => {
-              return (
-          <TableRow>
-            <TableRowColumn>{this.state.rows[i].status}</TableRowColumn>
-            <TableRowColumn>{this.state.rows[i].date}</TableRowColumn>
-          </TableRow>
-              );
-            })
-            }
-      </TableBody>
-    </Table>
-  </div>;
+    console.log(this.state);
+
+    if (this.props.appid === undefined || this.state.dates === undefined) {
+      return null;
+    }
+    return (
+    <div style={{maxWidth: 300, maxHeight: 400, margin: 'auto'}}>
+      <Stepper orientation="vertical">
+        {this.state.dates.map((status, i) => {
+          return (
+            <Step key={i}>
+              <StepLabel key={i}>{status[0]}</StepLabel>
+              <StepContent active={true}>
+                <p>
+                  {status[1]}
+                </p>
+            </StepContent>
+            </Step>
+          );
+        })
+        }
+      </Stepper>
+    </div>
+    );
   }
 }
+
+StatusChange.propTypes = {
+  appid: PropTypes.number.isRequired,
+};
 
 export default StatusChange;

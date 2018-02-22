@@ -140,12 +140,16 @@ def display_status_timeline(application_id):
     """Displays status timeline for a specific application."""
 
     dates = DateChange.query.filter(DateChange.application_id==application_id).order_by(DateChange.date_id.desc()).all()
-    data = {}
+    data = []
     for date in dates:
-        data[date.date_id] = {
-                                'status': date.status.js_name,
-                                'date': date.date_created,
-        }
+        temp = {}
+        temp['status'] = date.status.u_name
+        temp['date'] = date.date_created
+        data.append(temp)
+        # data[date.date_id] = {
+        #                         'status': date.status.js_name,
+        #                         'date': date.date_created,
+        # }
 
     return jsonify(data)
 

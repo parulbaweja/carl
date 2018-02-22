@@ -24,36 +24,16 @@ class SingleAppView extends React.Component {
     super(props);
     this.state = {
       apps: undefined,
-      // company: '',
-      // position: '',
-      // contactName: '',
-      // contactEmail: '',
-      // status: '',
-      // offerAmount: '',
-      // notes: '',
-      // url: '',
-      // edit: false,
     };
-
     this.editApp = this.editApp.bind(this);
-
   }
 
   componentDidMount() {
-    console.log('component mounted');
     var self = this;
     apiRequest('apps_repo', function(body) {
       console.log(body);
       self.setState({
         apps: body,
-          // company: body.company,
-          // position: body.position,
-          // contactName: body.contactName,
-          // contactEmail: body.contactEmail,
-          // status: body.status,
-          // offerAmount: body.offerAmount,
-          // notes: body.notes,
-          // url: body.url,
       });
     });
   }

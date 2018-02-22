@@ -129,6 +129,7 @@ class Application(db.Model):
             'position': self.position,
             'contactName': self.contact.name,
             'contactEmail': self.contact.email,
+            'statusId': self.date.status.status_id,
             'status': self.date.status.u_name,
             'offerAmount': self.offer_amount,
             'notes': self.notes,
