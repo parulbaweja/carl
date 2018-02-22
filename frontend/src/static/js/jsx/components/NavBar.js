@@ -50,12 +50,17 @@ class NavBar extends React.Component {
     this.toggleLeftMenu = this.toggleLeftMenu.bind(this);
     this.myJobApps = this.myJobApps.bind(this);
     this.myDashboard = this.myDashboard.bind(this);
+    this.myCompare = this.myCompare.bind(this);
     this.createEntry = this.createEntry.bind(this);
     this.logout = this.logout.bind(this);
   }
 
   myDashboard() {
     this.setState({isLeftMenuOpen: false, redirect: '/app/dashboard'});
+  }
+
+  myCompare() {
+    this.setState({isLeftMenuOpen: false, redirect: '/app/compare'});
   }
 
   myJobApps() {
@@ -114,6 +119,7 @@ class NavBar extends React.Component {
           open={this.state.isLeftMenuOpen}
         >
           <MenuItem onClick={this.myDashboard}>{'Dashboard'}</MenuItem>
+          <MenuItem onClick={this.myCompare}>{'Compare'}</MenuItem>
           <MenuItem onClick={this.myJobApps}>{'My Job Apps'}</MenuItem>
           <MenuItem onClick={this.createEntry}>{'New Entry'}</MenuItem>
           <MenuItem onClick={this.logout}>{'Logout'}</MenuItem>
