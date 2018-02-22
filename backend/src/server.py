@@ -115,6 +115,15 @@ def display_user_app():
 
     return jsonify(data)
 
+
+@bp.route('/vert_app/<application_id>')
+def get_vert_app(application_id):
+    """Retrieves information for a single application."""
+
+    app = Application.query.filter(Application.application_id == application_id).first()
+    data = app.to_dict()
+    return jsonify(data)
+
     # if session.get('token'):
     #     result = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
     #     user = User.query.filter(User.user_id == result.user_id).first()

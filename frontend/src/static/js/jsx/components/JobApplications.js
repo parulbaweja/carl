@@ -1,4 +1,4 @@
-import Table from './Table';
+import Table from './old/Table';
 import React from 'react';
 import apiRequest from '../utils/jobsSDK';
 

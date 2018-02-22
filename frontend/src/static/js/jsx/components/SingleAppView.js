@@ -15,9 +15,9 @@ import PropTypes from 'prop-types';
 
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
 
-// const appId = ({match}) => (
-//   match.params.app_id
-// );
+const appId = ({match}) => (
+  match.params.app_id
+);
 
 class SingleAppView extends React.Component {
   constructor(props) {
@@ -59,43 +59,75 @@ class SingleAppView extends React.Component {
     return (
       <div>
       <Table>
-        <TableHeader
-          displaySelectAll={false}
-          adjustForCheckbox={false}
-        >
-          <TableRow>
-            {headers.map((header, i) => {
-              return (
-        <TableHeaderColumn key={i}>{header}</TableHeaderColumn>
-              );
-            })
-            }
-          </TableRow>
-        </TableHeader>
         <TableBody
           displayRowCheckbox={false}
         >
           <TableRow>
             <TableRowColumn>
+              {'Company'}
+            </TableRowColumn>
+            <TableRowColumn>
               {this.state.apps[this.props.appid].company}
+            </TableRowColumn>
+          </TableRow>
+
+          <TableRow>
+            <TableRowColumn>
+              {'Position'}
             </TableRowColumn>
             <TableRowColumn>
               {this.state.apps[this.props.appid].position}
             </TableRowColumn>
+          </TableRow>
+
+          <TableRow>
+            <TableRowColumn>
+              {'Contact Name'}
+            </TableRowColumn>
             <TableRowColumn>
               {this.state.apps[this.props.appid].contactName}
+            </TableRowColumn>
+          </TableRow>
+
+          <TableRow>
+            <TableRowColumn>
+              {'Contact Email'}
             </TableRowColumn>
             <TableRowColumn>
               {this.state.apps[this.props.appid].contactEmail}
             </TableRowColumn>
+          </TableRow>
+
+          <TableRow>
+            <TableRowColumn>
+              {'Status'}
+            </TableRowColumn>
             <TableRowColumn>
               {this.state.apps[this.props.appid].status}
+            </TableRowColumn>
+          </TableRow>
+
+          <TableRow>
+            <TableRowColumn>
+              {'Offer Amount'}
             </TableRowColumn>
             <TableRowColumn>
               {this.state.apps[this.props.appid].offerAmount}
             </TableRowColumn>
+          </TableRow>
+
+          <TableRow>
+            <TableRowColumn>
+              {'Notes'}
+            </TableRowColumn>
             <TableRowColumn>
               {this.state.apps[this.props.appid].notes}
+            </TableRowColumn>
+          </TableRow>
+
+          <TableRow>
+            <TableRowColumn>
+              {'URL'}
             </TableRowColumn>
             <TableRowColumn>
               {this.state.apps[this.props.appid].url}
@@ -103,7 +135,7 @@ class SingleAppView extends React.Component {
           </TableRow>
       </TableBody>
     </Table>
-      <RaisedButton label="Edit" onClick={this.editApp}/>
+      <RaisedButton label="Save" onClick={this.editApp}/>
       </div>
     );
   }

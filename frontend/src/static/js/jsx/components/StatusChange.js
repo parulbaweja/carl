@@ -30,8 +30,7 @@ class StatusChange extends React.Component {
     };
   }
 
-  componentDidMount() {
-    console.log('component mounted');
+  getTimeline() {
     var self = this;
     apiRequest(`timeline/${this.props.appid}`, function(body) {
       console.log(body);
@@ -41,6 +40,17 @@ class StatusChange extends React.Component {
         }),
       });
     });
+  }
+
+  componentDidMount() {
+    console.log('component mounted');
+    this.getTimeline();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps != this.props) {
+      this.getTimeline();
+    }
   }
 
   render() {

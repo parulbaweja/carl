@@ -10,6 +10,9 @@ import AppBox from './components/AppBox';
 import EditView from './components/EditView';
 import Welcome from './components/Welcome';
 import StatusChange from './components/StatusChange';
+import Container from './components/dnd/Container';
+import AppDrawer from './components/AppDrawer';
+import Compare from './components/Compare';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -22,10 +25,12 @@ const AppRouter = () => (
       <Route component={LoginForm} exact={true} path="/welcome/login"/>
       <Route component={Register} exact={true} path="/welcome/register"/>
       <Route component={AppBox} exact={false} path="/app/dashboard"/>
+      <Route component={Container} exact={true} path="/dnd"/>
+      <Route component={AppDrawer} exact={true} path="/app/dashboard/:app_id"/>
+      <Route component={Compare} exact={true} path="/app/compare"/>
     </div>
   </BrowserRouter>
 );
 
 export default AppRouter;
       // <Route component={EditView} exact={true} path="/app/edit/:app_id"/>
-      // <Route component={SingleAppView} exact={true} path="/app/dashboard/view"/>
