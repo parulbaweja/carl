@@ -3,6 +3,7 @@ import SingleAppView from './SingleAppView';
 import React from 'react';
 import PropTypes from 'prop-types';
 import apiRequest from '../utils/jobsSDK';
+import {postRequest} from '../utils/jobsSDK';
 import {Redirect} from 'react-router';
 import {
   Table,
@@ -17,6 +18,12 @@ import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
 import AppDrawer from './AppDrawer';
 import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import AddCircleOutlineIcon from 'material-ui/svg-icons/content/add-circle-outline';
+import ArchiveIcon from 'material-ui/svg-icons/content/archive';
+import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import Paper from 'material-ui/Paper';
+import JobAppForm from './JobAppForm';
 
 class AppBox extends React.Component {
   constructor(props) {
@@ -24,29 +31,37 @@ class AppBox extends React.Component {
     this.state = {
       rows: [],
       isRightMenuOpen: false,
+      showPaper: false,
     };
 
     var self = this;
     apiRequest('applications', function(body) {
       self.setState({
-        rows: body.map(function(row) {
-          return [row.applicationID, row.company, row.status, row.lastDate];
-        }),
+        rows: body,
       });
     });
 
     this.setRightMenuState = this.setRightMenuState.bind(this);
     this.openRightMenu = this.openRightMenu.bind(this);
     this.setAppId = this.setAppId.bind(this);
+    this.showPaper = this.showPaper.bind(this);
+    this.updateOnSubmission = this.updateOnSubmission.bind(this);
+    this.archive = this.archive.bind(this);
   }
 
-  // handleToggle(rowNumber, columnNumber) {
-  //   console.log(rowNumber, columnNumber);
-  //   this.setState({
-  //     open: !this.state.open,
-  //     appId: this.state.rows[rowNumber][0],
-  //   });
-  // }
+  updateOnSubmission() {
+    console.log('this is parent udpateonsub');
+    this.setState({
+      showPaper: false,
+    });
+    var self = this;
+    apiRequest('applications', function(body) {
+      console.log(body);
+      self.setState({
+        rows: body,
+      });
+    });
+  }
 
   setRightMenuState(open) {
     this.setState({
@@ -60,37 +75,48 @@ class AppBox extends React.Component {
     });
   }
 
-  openRightMenu(rowNumber, columnNumber) {
-    console.log(rowNumber, columnNumber);
-    console.log(this.state.rows[rowNumber][0]);
-    const isRightMenuOpen = this.state.isRightMenuOpen;
-    // this.setState({
-    //   isRightMenuOpen: true,
-    //   appId: this.state.rows[rowNumber][0],
-    // });
-    this.setRightMenuState(!isRightMenuOpen);
-    this.setAppId(this.state.rows[rowNumber][0]);
+  showPaper() {
+    this.setState({
+      showPaper: true,
+    });
+  }
+
+  archive(rowNumber) {
+    var self = this;
+    return (e) => {
+      e.preventDefault();
+      postRequest(
+        `archive/${self.state.rows[rowNumber].applicationID}`,
+        self.state,
+        function () {
+          const rows = self.state.rows;
+          rows[rowNumber].archive = true;
+          self.setState({
+            rows,
+          });
+          console.log(self.state);
+        }
+      );
+    };
+  }
+
+  openRightMenu(rowNumber) {
+    return (e) => {
+      e.preventDefault();
+      const isRightMenuOpen = this.state.isRightMenuOpen;
+      this.setRightMenuState(!isRightMenuOpen);
+      this.setAppId(this.state.rows[rowNumber][0]);
+    };
   }
 
   render() {
-    console.log('NEW STATE:' + this.state.appId);
+    console.log(this.state);
     var headers = [
       <TableHeaderColumn key={0}>{'Companies'}</TableHeaderColumn>,
-      <TableHeaderColumn key={1}>{'Status'}</TableHeaderColumn>, <TableHeaderColumn key={2}>{'Recent Activity'}</TableHeaderColumn>,
+      <TableHeaderColumn key={1}>{'Status'}</TableHeaderColumn>,
+      <TableHeaderColumn key={2}>{'Last Modified'}</TableHeaderColumn>,
+      <TableHeaderColumn key={3}></TableHeaderColumn>,
     ];
-
-    // if (this.state.appId) {
-    //   return(
-    //     <Drawer
-    //       docked={false}
-    //       width={'50%'}
-    //       openSecondary={true}
-    //       onRequestChange={this.setRightMenuState}
-    //       open={this.state.isRightMenuOpen}>
-    //        <SingleAppView appid={this.state.appId}/>
-    //      </Drawer>
-    //   );
-    // }
 
     return (
       <div>
@@ -102,7 +128,7 @@ class AppBox extends React.Component {
           open={this.state.isRightMenuOpen}>
             <AppDrawer appid={this.state.appId}/>
          </Drawer>
-      <Table onCellClick={this.openRightMenu}>
+      <Table>
         <TableHeader
           displaySelectAll={false}
           adjustForCheckbox={false}
@@ -115,12 +141,17 @@ class AppBox extends React.Component {
             displayRowCheckbox={false}
           >
             {
-              this.state.rows.map((company) => {
+              this.state.rows.map((company, i) => {
+                if (company.archive) {
+                  console.log('archive');
+                  return null;
+                }
                 return (
-                  <TableRow key={company[0]}>
-                      <TableRowColumn>{company[1]}</TableRowColumn>
-                    <TableRowColumn>{company[2]}</TableRowColumn>
-                    <TableRowColumn>{company[3].slice(0, -13)}</TableRowColumn>
+                  <TableRow key={company.applicationID}>
+                    <TableRowColumn><a href={''} onClick={this.openRightMenu(i)}>{company.company}</a></TableRowColumn>
+                    <TableRowColumn>{company.status}</TableRowColumn>
+                    <TableRowColumn>{company.lastDate.slice(0, -13)}</TableRowColumn>
+                    <TableRowColumn><ArchiveIcon onClick={this.archive(i)}/></TableRowColumn>
                   </TableRow>
                 );
               })
@@ -128,6 +159,28 @@ class AppBox extends React.Component {
           </TableBody>
 
         </Table>
+        <IconButton
+          iconStyle={{width: 48, height: 48, position: 'fixed', right: 0, bottom: 0}}
+          style={{width: 96, height: 96, padding: 24, position: 'fixed', right: 0, bottom: 0, margin: 20}}
+          onClick={this.showPaper}
+        >
+          <AddCircleOutlineIcon/>
+        </IconButton>
+
+        {this.state.showPaper &&
+              <Paper
+                style={{overflow: 'auto', height: 600, width: 400, margin: 20, textAlign: 'center', display: 'inline-block', position: 'fixed', bottom: 0, right: 50}}
+                zDepth={2}
+              >
+                <IconButton
+                  style={{position: 'absolute', right: 0, top: 0}}
+                  onClick={this.closePaper}
+                >
+                  <CloseIcon/>
+                </IconButton>
+                <JobAppForm callback={this.updateOnSubmission}/>
+              </Paper>
+        }
       </div>
     );
   }

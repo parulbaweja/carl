@@ -113,6 +113,7 @@ class Application(db.Model):
     # Misc columns
     notes = db.Column(db.String(200), nullable=True)
     url = db.Column(db.String(100), nullable=True)
+    archive = db.Column(db.Boolean, nullable=False, default=False)
 
     # Relationships to other tables
     user = db.relationship('User', backref=db.backref('applications', order_by=application_id))

@@ -18,7 +18,6 @@ const postRequest = (path, body, cb) => {
     body: JSON.stringify(body),
   };
   return fetch(url,  metadata).then(function(response) {
-    console.log(response);
     response.json().then(cb);
   });
 };

@@ -189,6 +189,7 @@ def display_all_applications():
         temp['offerAmount'] = app.offer_amount
         temp['notes'] = app.notes
         temp['url'] = app.url
+        temp['archive'] = app.archive
 
         last_date = DateChange.query.filter(DateChange.application_id == app.application_id).order_by(DateChange.date_id.desc()).first()
         temp['lastDate'] = last_date.date_created
@@ -358,12 +359,20 @@ def get_date_applied():
     return jsonify(stats)
 
 
-@bp.rotue('/analytics/time_stats')
+@bp.route('/analytics/time_stats')
 def get_time_stats():
     """Retrieves specific time statistics regarding user activity."""
 
+    pass
 
+@bp.route('/archive/<application_id>', methods=['POST'])
+def archive(application_id):
 
+    app = Application.query.filter(Application.application_id == application_id).first()
+    app.archive = True
+    db.session.commit()
+
+    return jsonify({})
 
 
 

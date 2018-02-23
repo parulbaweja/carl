@@ -7,6 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
+import PropTypes from 'prop-types';
 
 const date = new Date();
 
@@ -65,13 +66,13 @@ class ApplicationForm extends React.Component {
   }
 
   onSubmit() {
-    postRequest('application', this.state, function() { });
+    var self = this;
+    postRequest('application', this.state, function() {self.props.callback();});
   }
     // TODO add onChange function to handle each form input section
     // shift v to select lines and then :sort to sort those lines
 
   render() {
-    console.log(this.state);
     return (
       <div>
       <h3>{'Job App Entry Form'}</h3>
@@ -158,5 +159,13 @@ class ApplicationForm extends React.Component {
     );
   }
 }
+
+ApplicationForm.propTypes = {
+  callback: PropTypes.func,
+};
+
+ApplicationForm.defaultProps  = {
+  callback: () => {},
+};
 
 export default ApplicationForm;
