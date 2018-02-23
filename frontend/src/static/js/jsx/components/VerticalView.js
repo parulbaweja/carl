@@ -8,9 +8,10 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import {Redirect, Link} from 'react-router';
 import PropTypes from 'prop-types';
+import AddCircleOutlineIcon from 'material-ui/svg-icons/content/add-circle-outline';
 
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
 
@@ -109,6 +110,24 @@ class VerticalView extends React.Component {
                 <TableRowColumn key={i}>
                   {this.state.apps[company].offerAmount}
                 </TableRowColumn>
+                );
+              })
+            }
+          </TableRow>
+
+          <TableRow>
+            <TableRowColumn>
+              <b>{'Pro/Con'}</b>
+            </TableRowColumn>a
+            {
+              this.props.appid.map((i) => {
+                return (
+                  <TableRowColumn>
+                    <FlatButton
+                      key={i} label={'add pro/con'}
+                      icon={<AddCircleOutlineIcon/>}
+                    />
+                  </TableRowColumn>
                 );
               })
             }

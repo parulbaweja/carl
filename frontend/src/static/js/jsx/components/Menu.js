@@ -10,15 +10,39 @@ import RaisedButton from 'material-ui/RaisedButton';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import ExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import CircularProgress from 'material-ui/CircularProgress';
+import HomeIcon from 'material-ui/svg-icons/action/home';
+import MenuIcon from 'material-ui/svg-icons/navigation/menu';
+import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
+import CreateIcon from 'material-ui/svg-icons/content/create';
+import AppBar from 'material-ui/AppBar';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
+
+const Logged = (props) => (
+  <IconMenu
+    {...props}
+    iconButtonElement={
+      <IconButton><MoreVertIcon/></IconButton>
+    }
+    targetOrigin={{horizontal: 'right', vertical: 'top'}}
+    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+  >
+    <MenuItem primaryText="Profile"/>
+    <MenuItem primaryText="Settings"/>
+    <MenuItem primaryText="Sign out"/>
+  </IconMenu>
+);
+
+Logged.muiName = 'IconMenu';
 
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       fname: '',
-      isLeftMenuOpen: false,
       redirect: '',
+      isLeftMenuOpen: false,
     };
 
     const self = this;
@@ -31,7 +55,7 @@ class NavBar extends React.Component {
 
     this.setLeftMenuState = this.setLeftMenuState.bind(this);
     this.toggleLeftMenu = this.toggleLeftMenu.bind(this);
-    this.myJobApps = this.myJobApps.bind(this);
+    this.myAnalytics = this.myAnalytics.bind(this);
     this.myDashboard = this.myDashboard.bind(this);
     this.myCompare = this.myCompare.bind(this);
     this.createEntry = this.createEntry.bind(this);
@@ -46,8 +70,8 @@ class NavBar extends React.Component {
     this.setState({isLeftMenuOpen: false, redirect: '/app/compare'});
   }
 
-  myJobApps() {
-    this.setState({isLeftMenuOpen: false, redirect: '/app/job_applications'});
+  myAnalytics() {
+    this.setState({isLeftMenuOpen: false, redirect: '/app/analytics'});
   }
 
   createEntry() {
@@ -91,22 +115,30 @@ class NavBar extends React.Component {
     }
 
     return (
-      <div className="navbar">
-        <RaisedButton
-          label="Menu"
-          onClick={this.toggleLeftMenu}
+      <div>
+
+        <AppBar
+          title="Jobs"
+          iconElementLeft={<MenuIcon style={{padding: 16}} onClick={this.toggleLeftMenu}/>}
+          iconElementRight={<Logged/>}
         />
+      <div className="navbar">
         <Drawer
-          docked={true}
+          docked={false}
+          width={'15%'}
           onRequestChange={this.setLeftMenuState}
           open={this.state.isLeftMenuOpen}
         >
-          <MenuItem onClick={this.myDashboard}>{'Dashboard'}</MenuItem>
-          <MenuItem onClick={this.myCompare}>{'Compare'}</MenuItem>
-          <MenuItem onClick={this.myJobApps}>{'My Job Apps'}</MenuItem>
-          <MenuItem onClick={this.createEntry}>{'New Entry'}</MenuItem>
+          <MenuItem onClick={this.myDashboard} leftIcon={<HomeIcon/>} primaryText={'Home'}/>
+          <br/>
+          <MenuItem onClick={this.myCompare} leftIcon={<AssessmentIcon/>} primaryText={'Compare'}/>
+          <br/>
+          <MenuItem onClick={this.createEntry} leftIcon={<CreateIcon/>} primaryText={'Create'}/>
+          <br/>
+          <MenuItem onClick={this.myAnalytics} leftIcon={<AssessmentIcon/>} primaryText={'Analytics'}/>
           <MenuItem onClick={this.logout}>{'Logout'}</MenuItem>
         </Drawer>
+      </div>
       </div>
       // <h1>{'Jobs!'}</h1>
       //     <h2>{'Welcome'} {this.state.fname}</h2>

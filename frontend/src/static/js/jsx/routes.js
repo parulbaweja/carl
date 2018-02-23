@@ -14,13 +14,14 @@ import Container from './components/dnd/Container';
 import AppDrawer from './components/AppDrawer';
 import Compare from './components/Compare';
 import Analytics from './components/Analytics';
+import Menu from './components/Menu';
 
 const AppRouter = () => (
   <BrowserRouter>
     <div>
 
       <Route component={Welcome} exact={false} path="/welcome"/>
-      <Route component={NavBar} exact={false} path="/app"/>
+      <Route component={Menu} exact={false} path="/app"/>
       <Route component={JobApplications} exact={true} path="/app/job_applications"/>
       <Route component={JobAppForm} exact={true} path="/app/app_form"/>
       <Route component={LoginForm} exact={true} path="/welcome/login"/>

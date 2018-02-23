@@ -358,6 +358,13 @@ def get_date_applied():
     return jsonify(stats)
 
 
+@bp.rotue('/analytics/time_stats')
+def get_time_stats():
+    """Retrieves specific time statistics regarding user activity."""
+
+
+
+
 
 
 
