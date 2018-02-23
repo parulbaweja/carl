@@ -13,6 +13,7 @@ import StatusChange from './components/StatusChange';
 import Container from './components/dnd/Container';
 import AppDrawer from './components/AppDrawer';
 import Compare from './components/Compare';
+import Analytics from './components/Analytics';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -28,6 +29,7 @@ const AppRouter = () => (
       <Route component={Container} exact={true} path="/dnd"/>
       <Route component={AppDrawer} exact={true} path="/app/dashboard/:app_id"/>
       <Route component={Compare} exact={true} path="/app/compare"/>
+      <Route component={Analytics} exact={true} path="/app/analytics"/>
     </div>
   </BrowserRouter>
 );

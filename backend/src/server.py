@@ -304,6 +304,63 @@ def update_app(application_id):
     return jsonify({})
 
 
+@bp.route('/analytics/status')
+def get_status_analytics():
+    """Retrieves status summary statistics."""
+
+    auth = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
+    apps = Application.query.filter(Application.user_id == auth.user_id).all()
+
+    data = {}
+    for app in apps:
+        if data.get(app.status.u_name):
+            data[app.status.u_name] += 1
+        else:
+            data[app.status.u_name] = 1
+
+    # data = {'interested': 3, 'applied': 2}
+
+    stats = []
+    for status, total in data.iteritems():
+        temp = {}
+        temp['x'] = status
+        temp['y'] = total
+        stats.append(temp)
+
+    return jsonify(stats)
+
+
+@bp.route('/analytics/date_applied')
+def get_date_applied():
+    """Retrieves applications per date."""
+
+    auth = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
+    apps = Application.query.filter(Application.user_id == auth.user_id, Application.status_id > 1).all()
+
+    data = {}
+    for app in apps:
+        date = DateChange.query.filter(DateChange.application_id == app.application_id).order_by(DateChange.date_id.desc()).first()
+        if date.status_id > 1:
+            if data.get(date.date_created):
+                data[date.date_created][0] += 1
+                data[date.date_created][1].append(app.company.name)
+            else:
+                data[date.date_created] = [1, [app.company.name]]
+
+    stats = []
+    for date_key, info in data.iteritems():
+        temp = {}
+        temp['x'] = date_key
+        temp['y'] = info[0]
+        temp['label'] = info[1]
+        stats.append(temp)
+
+    return jsonify(stats)
+
+
+
+
+
 app.register_blueprint(bp)
 if __name__ == "__main__":
     # app = Flask(__name__)
