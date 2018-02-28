@@ -12,6 +12,7 @@ import FlatButton from 'material-ui/FlatButton';
 import {Redirect, Link} from 'react-router';
 import PropTypes from 'prop-types';
 import AddCircleOutlineIcon from 'material-ui/svg-icons/content/add-circle-outline';
+import TextField from 'material-ui/TextField';
 
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
 
@@ -20,31 +21,40 @@ class VerticalView extends React.Component {
     super(props);
     this.state = {
       apps: undefined,
+      isAdding: [],
+      pro: '',
     };
+
+    this.handleProCon = this.handleProCon.bind(this);
   }
 
   componentDidMount() {
     var self = this;
     apiRequest('apps_repo', function(body) {
-      console.log(body);
+      console.log('body', body);
+      console.log(Object.keys(body).length);
+      var isAdding = [];
+      for (var i=0; i<Object.keys(body).length + 1; i++) {
+        isAdding.push(false);
+      }
       self.setState({
         apps: body,
+        isAdding: isAdding,
       });
     });
   }
-  // componentDidMount() {
-  //   var self = this;
-  //   apiRequest(`vert_app/${this.props.appid}`, function(body) {
-  //     self.setState({
-  //       rows: body,
-  //     });
-  //   });
-  // }
+
+  handleProCon(columnNumber) {
+    const isAdding = this.state.isAdding;
+    isAdding[columnNumber] = true;
+    this.setState({
+      isAdding,
+    });
+  }
 
   render() {
     console.log('vertical view');
     console.log(this.state);
-    console.log(this.props);
 
     if (this.props.appid === undefined || this.state.apps === undefined) {
       return null;
@@ -116,23 +126,29 @@ class VerticalView extends React.Component {
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
-              <b>{'Pro/Con'}</b>
-            </TableRowColumn>a
-            {
-              this.props.appid.map((i) => {
-                return (
-                  <TableRowColumn>
-                    <FlatButton
-                      key={i} label={'add pro/con'}
-                      icon={<AddCircleOutlineIcon/>}
+            <TableRowColumn>{'Pro/Cons'}
+            </TableRowColumn>
+              {this.props.appid.map((i) => {
+                if (!this.state.isAdding[i]) {
+                  return(<TableRowColumn>
+                      <FlatButton
+                        key={i} label={'add pro/con'}
+                        icon={<AddCircleOutlineIcon/>}
+                        onClick={this.handleProCon(i)}
+                      />
+                  </TableRowColumn>);
+                }
+                else {
+                  return(<TableRowColumn>
+                    <TextField
+                      key={i}
+                      type="text"
                     />
-                  </TableRowColumn>
-                );
+                  </TableRowColumn>);
+                }
               })
-            }
+              }
           </TableRow>
-
       </TableBody>
     </Table>
       </div>

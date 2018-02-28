@@ -26,9 +26,8 @@ const AppRouter = () => (
       <Route component={JobAppForm} exact={true} path="/app/app_form"/>
       <Route component={LoginForm} exact={true} path="/welcome/login"/>
       <Route component={Register} exact={true} path="/welcome/register"/>
-      <Route component={AppBox} exact={false} path="/app/dashboard"/>
+      <Route component={AppBox} exact={false} path="/app/dashboard/"/>
       <Route component={Container} exact={true} path="/dnd"/>
-      <Route component={AppDrawer} exact={true} path="/app/dashboard/:app_id"/>
       <Route component={Compare} exact={true} path="/app/compare"/>
       <Route component={Analytics} exact={true} path="/app/analytics"/>
     </div>

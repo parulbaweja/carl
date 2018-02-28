@@ -13,6 +13,7 @@ from flask import (
     Response
 )
 from uuid import uuid4
+import datetime
 # from flask_debugtoolbar import DebugToolbarExtension
 
 from model import User, AuthId, Company, Contact, Application, Status, DateChange, connect_to_db, db
@@ -264,7 +265,7 @@ def update_app(application_id):
     position = request.json.get('position')
     contactName = request.json.get('contactName')
     contactEmail = request.json.get('contactEmail')
-    status = request.json.get('status')
+    status = request.json.get('statusId')
     offerAmount = request.json.get('offerAmount')
     notes = request.json.get('notes')
     url = request.json.get('url')
@@ -293,16 +294,17 @@ def update_app(application_id):
     app.url = url
 
     # Check to see if status has changed. If so, update to dates table.
-    if app.status_id  == status:
+    if app.status_id != status:
         app.status_id = status
-    else:
-        new_date_change = DateChange(application_id=app.application_id, status_id=status, date_created=date)
+        long_date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ')
+        short_date = long_date.date()
+        new_date_change = DateChange(application_id=app.application_id, status_id=status, date_created=short_date)
         db.session.add(new_date_change)
 
     # Commit all updates.
     db.session.commit()
 
-    return jsonify({})
+    return jsonify(app.to_dict())
 
 
 @bp.route('/analytics/status')
@@ -326,6 +328,7 @@ def get_status_analytics():
         temp = {}
         temp['x'] = status
         temp['y'] = total
+        temp['label'] = status + ': ' + str(total)
         stats.append(temp)
 
     return jsonify(stats)
@@ -338,41 +341,101 @@ def get_date_applied():
     auth = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
     apps = Application.query.filter(Application.user_id == auth.user_id, Application.status_id > 1).all()
 
-    data = {}
+    data = []
+
     for app in apps:
-        date = DateChange.query.filter(DateChange.application_id == app.application_id).order_by(DateChange.date_id.desc()).first()
-        if date.status_id > 1:
-            if data.get(date.date_created):
-                data[date.date_created][0] += 1
-                data[date.date_created][1].append(app.company.name)
-            else:
-                data[date.date_created] = [1, [app.company.name]]
+        dates = DateChange.query.filter(DateChange.application_id == app.application_id).all()
 
-    stats = []
-    for date_key, info in data.iteritems():
-        temp = {}
-        temp['x'] = date_key
-        temp['y'] = info[0]
-        temp['label'] = info[1]
-        stats.append(temp)
+        for date in dates:
+            data.append({
+                'x': date.date_created,
+                'y': app.company.name,
+                'label': date.status.u_name,
+            })
 
-    return jsonify(stats)
+
+        # if date.status_id > 1:
+        #     if data.get(date.date_created):
+        #         data[date.date_created][0] += 1
+        #         data[date.date_created][1].append(app.company.name)
+        #     else:
+        #         data[date.date_created] = [1, [app.company.name]]
+
+    # stats = []
+    # for date_key, info in data.iteritems():
+        # temp = {}
+        # temp['x'] = date_key
+        # temp['y'] = info[0]
+        # temp['label'] = info[1]
+        # stats.append(temp)
+
+    return jsonify(data)
 
 
 @bp.route('/analytics/time_stats')
-def get_time_stats():
+def get_stat_averages():
     """Retrieves specific time statistics regarding user activity."""
 
-    pass
+    auth = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
+    apps = Application.query.filter(Application.user_id == auth.user_id).all()
+
+    interest_to_apply = get_time_stats(apps, 1, 2)
+    apply_to_interview = get_time_stats(apps, 2, 4)
+    interview_to_offer = get_time_stats(apps, 4, 5)
+    print type(interview_to_offer)
+
+    data = [
+        {'x': 'Interest-to-Apply', 'y': interest_to_apply, 'label': interest_to_apply},
+        {'x': 'Apply-to-Interview', 'y': apply_to_interview, 'label': apply_to_interview},
+        {'x': 'Interview-to-Offer', 'y': interview_to_offer, 'label': interview_to_offer},
+    ]
+
+    return jsonify(data)
+
+
+def get_time_stats(apps, status1, status2):
+
+    # Time to apply - interest to apply
+    time_diffs = []
+    for app in apps:
+        interest_date = DateChange.query.filter(DateChange.application_id == app.application_id, DateChange.status_id == status1).first()
+        apply_date = DateChange.query.filter(DateChange.application_id == app.application_id, DateChange.status_id == status2).first()
+        if interest_date and apply_date:
+            diff = apply_date.date_created - interest_date.date_created
+            time_diffs.append(diff.days)
+
+    if time_diffs:
+        return sum(time_diffs) / float(len(time_diffs))
+    else:
+        return 0
+
+
+@bp.route('/analytics/offer_amounts')
+def get_offer_amounts():
+
+    auth = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
+    apps = Application.query.filter(Application.user_id == auth.user_id).all()
+
+    data = []
+    for app in apps:
+        if app.offer_amount:
+            data.append({
+                'x': app.company.name,
+                'y': app.offer_amount,
+                'label': app.offer_amount
+            })
+
+    return jsonify(data)
+
 
 @bp.route('/archive/<application_id>', methods=['POST'])
 def archive(application_id):
 
     app = Application.query.filter(Application.application_id == application_id).first()
-    app.archive = True
+    app.archive = not app.archive
     db.session.commit()
 
-    return jsonify({})
+    return jsonify({'archive': app.archive})
 
 
 

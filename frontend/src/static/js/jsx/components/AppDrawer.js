@@ -11,12 +11,10 @@ class AppDrawer extends React.Component {
     super(props);
     this.state = {
       details: true,
-      edit: false,
       activity: false,
     };
 
     this.setDetails = this.setDetails.bind(this);
-    this.setEdit = this.setEdit.bind(this);
     this.setActivity = this.setActivity.bind(this);
 
   }
@@ -24,28 +22,19 @@ class AppDrawer extends React.Component {
   setDetails() {
     this.setState({
       details: true,
-      edit: false,
-      activity: false,
-    });
-  }
-
-  setEdit() {
-    this.setState({
-      edit: true,
-      details: false,
       activity: false,
     });
   }
 
   setActivity() {
     this.setState({
-      edit: false,
       details: false,
       activity: true,
     });
   }
 
   render() {
+    console.log('this.props.appid in singleappview', this.props.appid);
     return (
       <div>
       <FlatButton
@@ -53,18 +42,11 @@ class AppDrawer extends React.Component {
         label="Details"
       />
       <FlatButton
-        label="Edit"
-        onClick={this.setEdit}
-      />
-      <FlatButton
         label="Activity"
         onClick={this.setActivity}
       />
-      {this.state.details && !this.state.edit && !this.state.activity &&
+      {this.props.appid && this.state.details && !this.state.edit && !this.state.activity &&
           <SingleAppView appid={this.props.appid}/>
-      }
-      {this.state.edit && !this.state.details && !this.state.activity &&
-          <EditView appid={this.props.appid}/>
       }
       {this.state.activity && !this.state.details && !this.state.edit &&
           <StatusChange appid={this.props.appid}/>

@@ -56,8 +56,6 @@ class Compare extends React.Component {
   }
 
   render() {
-    console.log(this.state.companies);
-    console.log(this.state.checkedValues);
     return (
       <div style={styles.compare}>
       <div>

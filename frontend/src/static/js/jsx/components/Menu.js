@@ -1,6 +1,6 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import apiRequest from '../utils/jobsSDK';
-import {Redirect} from 'react-router';
+import {Redirect, Link} from 'react-router';
 import PropTypes from 'prop-types';
 // const NavBar = () => (<h1>{'Jobs!'}</h1>);
 
@@ -18,12 +18,15 @@ import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
 import CreateIcon from 'material-ui/svg-icons/content/create';
 import AppBar from 'material-ui/AppBar';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import ArchiveIcon from 'material-ui/svg-icons/content/archive';
+import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
+import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
 const Logged = (props) => (
   <IconMenu
     {...props}
     iconButtonElement={
-      <IconButton><MoreVertIcon/></IconButton>
+      <IconButton><KeyboardArrowDown/></IconButton>
     }
     targetOrigin={{horizontal: 'right', vertical: 'top'}}
     anchorOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -58,24 +61,24 @@ class NavBar extends React.Component {
     this.myAnalytics = this.myAnalytics.bind(this);
     this.myDashboard = this.myDashboard.bind(this);
     this.myCompare = this.myCompare.bind(this);
-    this.createEntry = this.createEntry.bind(this);
+    this.myArchive = this.myArchive.bind(this);
     this.logout = this.logout.bind(this);
   }
 
   myDashboard() {
-    this.setState({isLeftMenuOpen: false, redirect: '/app/dashboard'});
+    this.setState({isLeftMenuOpen: false, redirect: '/app/dashboard/'});
   }
 
   myCompare() {
     this.setState({isLeftMenuOpen: false, redirect: '/app/compare'});
   }
 
-  myAnalytics() {
-    this.setState({isLeftMenuOpen: false, redirect: '/app/analytics'});
+  myArchive() {
+    this.setState({isLeftMenuOpen: false, redirect: '/app/dashboard/archive'});
   }
 
-  createEntry() {
-    this.setState({isLeftMenuOpen: false, redirect: '/app/app_form'});
+  myAnalytics() {
+    this.setState({isLeftMenuOpen: false, redirect: '/app/analytics'});
   }
 
   logout(e) {
@@ -118,7 +121,7 @@ class NavBar extends React.Component {
       <div>
 
         <AppBar
-          title="Jobs"
+          title="Joblands"
           iconElementLeft={<MenuIcon style={{padding: 16}} onClick={this.toggleLeftMenu}/>}
           iconElementRight={<Logged/>}
         />
@@ -128,13 +131,16 @@ class NavBar extends React.Component {
           width={'15%'}
           onRequestChange={this.setLeftMenuState}
           open={this.state.isLeftMenuOpen}
+          containerStyle={{height: 'calc(100% - 64px)', top: 80}}
         >
           <MenuItem onClick={this.myDashboard} leftIcon={<HomeIcon/>} primaryText={'Home'}/>
           <br/>
-          <MenuItem onClick={this.myCompare} leftIcon={<AssessmentIcon/>} primaryText={'Compare'}/>
+          <MenuItem onClick={this.myCompare} leftIcon={<CompareArrowsIcon/>} primaryText={'Compare'}/>
           <br/>
-          <MenuItem onClick={this.createEntry} leftIcon={<CreateIcon/>} primaryText={'Create'}/>
-          <br/>
+          <MenuItem
+            onClick={this.myArchive}
+            leftIcon={<ArchiveIcon/>}
+            primaryText={'Archive'}/>
           <MenuItem onClick={this.myAnalytics} leftIcon={<AssessmentIcon/>} primaryText={'Analytics'}/>
           <MenuItem onClick={this.logout}>{'Logout'}</MenuItem>
         </Drawer>

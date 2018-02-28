@@ -3,22 +3,37 @@ import PropTypes from 'prop-types';
 import apiRequest from '../utils/jobsSDK';
 import {
   VictoryPie,
+  VictoryBar,
   VictoryChart,
   VictoryTheme,
   VictoryScatter,
-  VictoryZoomContainer,
-  VictoryBrushContainer,
-  VictoryAxis,
-  VictoryLine,
-  VictoryToolTip,
+  VictoryTooltip,
+  VictoryContainer,
+  VictoryStack,
+  VictoryLegend,
+  VictoryVoronoiContainer,
 } from 'victory';
+import {
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Bar,
+} from 'recharts';
 
 const styles = {
-  circle: {
-    height: 300,
-    width: 300,
+  graph: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  circle: {
+    height: 300,
+    width: 500,
   },
 };
 
@@ -28,6 +43,8 @@ class Analytics extends React.Component {
     this.state = {
       status: undefined,
       dates: [],
+      averages: undefined,
+      offers: undefined,
     };
 
     var self = this;
@@ -39,15 +56,19 @@ class Analytics extends React.Component {
 
     apiRequest('analytics/date_applied', function(body) {
       self.setState({
-        dates: body.map(date => {
-          const marker = new Date(date.x);
-          const count = date.y;
-          const company = date.label;
+        dates: body,
+      });
+    });
 
-          return (
-            {x: marker, y: count, label: company}
-          );
-        }),
+    apiRequest('analytics/time_stats', function(body) {
+      self.setState({
+        averages: body,
+      });
+    });
+
+    apiRequest('analytics/offer_amounts', function(body) {
+      self.setState({
+        offers: body,
       });
     });
   }
@@ -62,86 +83,185 @@ class Analytics extends React.Component {
 
   render() {
     console.log(this.state);
+
+    const statuses = ['Interested', 'Applied', 'Phone Call', 'Interview', 'Offer', 'Accepted', 'Withdrawn', 'Not a fit'];
+    const statusColors = ['#B2DFDB', '#80CBC4', '#4DB6AC', '#26A69A', '#009688', '#00897B', '#00695C', '#004D40'];
+    const data = [
+      {name: 'Hackbright', uv: 4000, amt: 2400},
+    ];
+
     if (this.state.dates === undefined) {
       return null;
     }
     return (
       <div>
-      <div style={styles.circle}>
-      <VictoryPie
-        padAngle={3}
-        innerRadius={100}
-        data={this.state.status}
-        labels={(d) => `${d.x}: ${d.y}`}
-        theme={VictoryTheme.material}
-      />
-    </div>
-
-    <div style={styles.circle}>
-          <VictoryChart
-            width={600} height={350} scale={{x: 'time'}}
-            domain={{y: [0, 3]}}
-            containerComponent={
-              <VictoryZoomContainer
-                responsive={false}
-                zoomDimension="x"
-                zoomDomain={this.state.zoomDomain}
-                onZoomDomainChange={this.handleZoom.bind(this)}
+        <div className={'row1'} style={styles.graph}>
+          <div style={styles.circle}>
+            <h3 style={{position: 'relative'}}>{'Averages'}</h3>
+            <VictoryChart
+              theme={VictoryTheme.material}
+              domainPadding={{y: 50}}
+            >
+              <VictoryBar
+                horizontal={true}
+                style={{data: {fill: '#c43a31'}}}
+                data={this.state.averages}
+                padding={200}
+                labelComponent={<VictoryTooltip/>}
+                events={[{
+                  target: 'data',
+                  eventHandlers: {
+                    onMouseOver: () => {
+                      return [
+                        {
+                          target: 'data',
+                          mutation: () => ({style: {fill: 'gold', width: 30}}),
+                        }, {
+                          target: 'labels',
+                          mutation: () => ({active: true}),
+                        },
+                      ];
+                    },
+                    onMouseOut: () => {
+                      return [
+                        {
+                          target: 'data',
+                          mutation: () => {},
+                        }, {
+                          target: 'labels',
+                          mutation: () => ({active: false}),
+                        },
+                      ];
+                    },
+                  },
+                }]}
               />
-            }
-          >
-            <VictoryScatter
-              style={{
-                data: {stroke: 'tomato'},
-              }}
-              data={this.state.dates}
+            </VictoryChart>
+          </div>
 
-            />
-
-          </VictoryChart>
-
-          <VictoryChart
-            padding={{top: 0, left: 50, right: 50, bottom: 30}}
-            width={600} height={90} scale={{x: 'time'}}
-            containerComponent={
-              <VictoryBrushContainer
-                responsive={false}
-                brushDimension="x"
-                brushDomain={this.state.selectedDomain}
-                onBrushDomainChange={this.handleBrush.bind(this)}
-              />
-            }
-          >
-            <VictoryAxis
-              tickValues={[
-                new Date(2017, 1, 1),
-                new Date(2018, 1, 1),
-              ]}
-              tickFormat={(x) => new Date(x).getFullYear()}
-            />
-            <VictoryLine
-              style={{
-                data: {stroke: 'tomato'},
-              }}
-              data={this.state.dates}
-            />
-          </VictoryChart>
+        <div style={styles.circle}>
+          <h3>{'Applications by Status'}</h3>
+          <VictoryPie
+            padAngle={3}
+            innerRadius={100}
+            data={this.state.status}
+            labels={(d) => `${d.x}`}
+            theme={VictoryTheme.material}
+            labelComponent={<VictoryTooltip/>}
+            events={[{
+              target: 'data',
+              eventHandlers: {
+                onMouseOver: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => ({style: {fill: 'gold', width: 30}}),
+                    }, {
+                      target: 'labels',
+                      mutation: () => ({active: true}),
+                    },
+                  ];
+                },
+                onMouseOut: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => {},
+                    }, {
+                      target: 'labels',
+                      mutation: () => ({active: false}),
+                    },
+                  ];
+                },
+              },
+            }]}
+          />
         </div>
+      </div>
+
+      <div className={'row2'} style={styles.graph}>
 
         <div style={styles.circle}>
           <VictoryChart
             theme={VictoryTheme.material}
-            domain={{y: [0, 7]}}
-            scale={{x: 'time'}}
+            domain={{x: [0, 5], y: [0, 7]}}
+            containerComponent={<VictoryVoronoiContainer/>}
           >
-            <VictoryScatter
-              style={{data: {fill: '#c43a31'}}}
-              size={7}
-              data={this.state.dates}
+            {statuses.map((status, i) => {
+              return(
+                <VictoryScatter
+                  key={i}
+                  style={{data: {fill: statusColors[i]}}}
+                  size={7}
+                  data={this.state.dates.filter(date => date.label == status)}
+                  labelComponent={<VictoryTooltip/>}
+                  labels={(d) => d.label}
+                />
+              );
+            })
+            }
+            <VictoryLegend
+              x={-125}
+              y={75}
+              gutter={20}
+              colorScale={statusColors}
+              data={[
+                {name: 'Interested'},
+                {name: 'Applied'},
+                {name: 'Phone Call'},
+                {name: 'Interview'},
+                {name: 'Offer'},
+                {name: 'Accepted'},
+                {name: 'Withdrawn'},
+                {name: 'Not a fit'},
+              ]}
             />
           </VictoryChart>
+
         </div>
 
+        <div  style={styles.circle}>
+            <VictoryChart
+              theme={VictoryTheme.material}
+              domainPadding={50}
+            >
+              <VictoryBar
+                style={{data: {fill: '#c43a31'}}}
+                data={this.state.offers}
+                barRatio={.5}
+                labelComponent={<VictoryTooltip/>}
+                events={[{
+                  target: 'data',
+                  eventHandlers: {
+                    onMouseOver: () => {
+                      return [
+                        {
+                          target: 'data',
+                          mutation: () => ({style: {fill: 'gold', width: 30}}),
+                        }, {
+                          target: 'labels',
+                          mutation: () => ({active: true}),
+                        },
+                      ];
+                    },
+                    onMouseOut: () => {
+                      return [
+                        {
+                          target: 'data',
+                          mutation: () => {},
+                        }, {
+                          target: 'labels',
+                          mutation: () => ({active: false}),
+                        },
+                      ];
+                    },
+                  },
+                }]}
+              />
+            </VictoryChart>
+          </div>
+
+      </div>
     </div>
     );
   }
