@@ -15,8 +15,11 @@ from flask import (
 from uuid import uuid4
 import datetime
 # from flask_debugtoolbar import DebugToolbarExtension
-
+from newsapi import NewsApiClient
+import os
 from model import User, AuthId, Company, Contact, Application, Status, DateChange, connect_to_db, db
+
+newsapi = NewsApiClient(api_key=os.environ['SECRET_KEY'])
 
 app = Flask(__name__)
 app.secret_key = "abc"
@@ -214,6 +217,22 @@ def send_statuses():
     return jsonify(data)
 
 
+@bp.route('/news/<application_id>')
+def get_news(application_id):
+    """Sends API request to News API. Sends JSON response to frontend."""
+
+    app = Application.query.filter(Application.application_id == application_id).first()
+    company = str(app.company.name)
+    top_headlines = newsapi.get_everything(q=company,
+                                           sources='the-verge,techcrunch,hacker-news,wired,bloomberg,the-new-york-times,engadget,the-wall-street-journal,ars-technica',
+                                           from_parameter='2017-01-01',
+                                           sort_by='relevancy',
+                                           language='en')
+
+
+    return jsonify(top_headlines)
+
+
 @bp.route('/application', methods=['POST'])
 def submit_entry():
     """Processes user's new entry."""
@@ -312,7 +331,7 @@ def get_status_analytics():
     """Retrieves status summary statistics."""
 
     auth = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
-    apps = Application.query.filter(Application.user_id == auth.user_id).all()
+    apps = Application.query.filter(Application.user_id == auth.user_id, Application.archive == False).all()
 
     data = {}
     for app in apps:
@@ -339,7 +358,7 @@ def get_date_applied():
     """Retrieves applications per date."""
 
     auth = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
-    apps = Application.query.filter(Application.user_id == auth.user_id, Application.status_id > 1).all()
+    apps = Application.query.filter(Application.user_id == auth.user_id, Application.status_id > 1, Application.archive == False).all()
 
     data = []
 
@@ -377,7 +396,7 @@ def get_stat_averages():
     """Retrieves specific time statistics regarding user activity."""
 
     auth = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
-    apps = Application.query.filter(Application.user_id == auth.user_id).all()
+    apps = Application.query.filter(Application.user_id == auth.user_id, Application.archive == False).all()
 
     interest_to_apply = get_time_stats(apps, 1, 2)
     apply_to_interview = get_time_stats(apps, 2, 4)
@@ -414,7 +433,7 @@ def get_time_stats(apps, status1, status2):
 def get_offer_amounts():
 
     auth = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
-    apps = Application.query.filter(Application.user_id == auth.user_id).all()
+    apps = Application.query.filter(Application.user_id == auth.user_id, Application.archive == False).all()
 
     data = []
     for app in apps:

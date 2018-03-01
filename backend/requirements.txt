@@ -7,3 +7,4 @@ Faker==0.8.10
 sqlalchemy_utils==0.32.21
 flask-cors
 ipdb
+newsapi-python

@@ -33,7 +33,6 @@ class StatusChange extends React.Component {
   getTimeline() {
     var self = this;
     apiRequest(`timeline/${this.props.appid}`, function(body) {
-      console.log(body);
       self.setState({
         dates: body.map(function(row) {
           return [row.status, row.date];
@@ -43,7 +42,6 @@ class StatusChange extends React.Component {
   }
 
   componentDidMount() {
-    console.log('component mounted');
     this.getTimeline();
   }
 
@@ -54,8 +52,6 @@ class StatusChange extends React.Component {
   }
 
   render() {
-
-    console.log(this.state);
 
     if (this.props.appid === undefined || this.state.dates === undefined) {
       return null;
