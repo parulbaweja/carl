@@ -13,6 +13,9 @@ import {Redirect, Link} from 'react-router';
 import PropTypes from 'prop-types';
 import AddCircleOutlineIcon from 'material-ui/svg-icons/content/add-circle-outline';
 import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+import CheckIcon from 'material-ui/svg-icons/navigation/check';
+import CloseIcon from 'material-ui/svg-icons/navigation/close';
 
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
 
@@ -21,35 +24,62 @@ class VerticalView extends React.Component {
     super(props);
     this.state = {
       apps: undefined,
-      isAdding: [],
+      isAddingPro: -1,
+      isAddingCon: -1,
       pro: '',
+      con: '',
     };
 
-    this.handleProCon = this.handleProCon.bind(this);
+    this.handlePro = this.handlePro.bind(this);
+    this.handleCon = this.handleCon.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.closePro = this.closePro.bind(this);
+    this.closeCon = this.closeCon.bind(this);
   }
 
   componentDidMount() {
     var self = this;
     apiRequest('apps_repo', function(body) {
-      console.log('body', body);
-      console.log(Object.keys(body).length);
-      var isAdding = [];
-      for (var i=0; i<Object.keys(body).length + 1; i++) {
-        isAdding.push(false);
-      }
       self.setState({
         apps: body,
-        isAdding: isAdding,
       });
     });
   }
 
-  handleProCon(columnNumber) {
-    const isAdding = this.state.isAdding;
-    isAdding[columnNumber] = true;
+  handlePro(appid) {
+    return () => {
+      this.setState({
+        isAddingPro: appid,
+      });
+    };
+  }
+
+  handleCon(appid) {
+    return () => {
+      this.setState({
+        isAddingCon: appid,
+      });
+    };
+  }
+
+  closePro() {
     this.setState({
-      isAdding,
+      isAddingPro: -1,
     });
+  }
+
+  closeCon() {
+    this.setState({
+      isAddingCon: -1,
+    });
+  }
+
+  onChange(key) {
+    return (e) => {
+      var newState = {};
+      newState[key] = e.target.value;
+      this.setState(newState);
+    };
   }
 
   render() {
@@ -126,29 +156,80 @@ class VerticalView extends React.Component {
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>{'Pro/Cons'}
+            <TableRowColumn>{'Pros'}
             </TableRowColumn>
               {this.props.appid.map((i) => {
-                if (!this.state.isAdding[i]) {
+                if (this.state.isAddingPro != i) {
                   return(<TableRowColumn>
                       <FlatButton
-                        key={i} label={'add pro/con'}
+                        key={i} label={'add pro'}
                         icon={<AddCircleOutlineIcon/>}
-                        onClick={this.handleProCon(i)}
+                        onClick={this.handlePro(i)}
                       />
-                  </TableRowColumn>);
-                }
-                else {
+                    </TableRowColumn>);
+                } else {
                   return(<TableRowColumn>
                     <TextField
-                      key={i}
+                      id="pro"
+                      onChange={this.onChange('pro')}
                       type="text"
                     />
-                  </TableRowColumn>);
+                    <div>
+                    <IconButton tooltip="Submit">
+                      <CheckIcon/>
+                    </IconButton>
+                    <IconButton
+                      onClick={this.closePro}
+                      tooltip="Close">
+                      <CloseIcon/>
+                    </IconButton>
+                  </div>
+                  <br/>
+                  <br/>
+                  </TableRowColumn>
+                  );
                 }
-              })
               }
-          </TableRow>
+              )}
+            </TableRow>
+
+          <TableRow>
+            <TableRowColumn>{'Con'}
+            </TableRowColumn>
+              {this.props.appid.map((i) => {
+                if (this.state.isAddingCon != i) {
+                  return(<TableRowColumn>
+                      <FlatButton
+                        key={i} label={'add con'}
+                        icon={<AddCircleOutlineIcon/>}
+                        onClick={this.handleCon(i)}
+                      />
+                    </TableRowColumn>);
+                } else {
+                  return(<TableRowColumn>
+                    <TextField
+                      id="con"
+                      onChange={this.onChange('con')}
+                      type="text"
+                    />
+                    <div>
+                    <IconButton tooltip="Submit">
+                      <CheckIcon/>
+                    </IconButton>
+                    <IconButton
+                      onClick={this.closeCon}
+                      tooltip="Close">
+                      <CloseIcon/>
+                    </IconButton>
+                  </div>
+                  <br/>
+                  <br/>
+                  </TableRowColumn>
+                  );
+                }
+              }
+              )}
+            </TableRow>
       </TableBody>
     </Table>
       </div>
