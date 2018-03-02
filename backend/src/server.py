@@ -17,7 +17,7 @@ import datetime
 # from flask_debugtoolbar import DebugToolbarExtension
 from newsapi import NewsApiClient
 import os
-from model import User, AuthId, Company, Contact, Application, Status, DateChange, connect_to_db, db
+from model import User, AuthId, Company, Contact, Application, Status, DateChange, ProCon, connect_to_db, db
 
 newsapi = NewsApiClient(api_key=os.environ['SECRET_KEY'])
 
@@ -128,25 +128,6 @@ def get_vert_app(application_id):
     data = app.to_dict()
     return jsonify(data)
 
-    # if session.get('token'):
-    #     result = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
-    #     user = User.query.filter(User.user_id == result.user_id).first()
-    #     app = Application.query.filter(Application.user_id == user.user_id, Application.application_id == application_id).first()
-    #     date = DateChange.query.filter(DateChange.application_id==app.application_id).order_by(DateChange.date_id.desc()).first()
-    #     data = {
-    #         'company': app.company.name,
-    #         'position': app.position,
-    #         'contactName': app.contact.name,
-    #         'contactEmail': app.contact.email,
-    #         'status': date.status_id,
-    #         'offerAmount': app.offer_amount,
-    #         'notes': app.notes,
-    #         'url': app.url,
-    #         'date': date.date_created,
-    #     }
-
-    #     return jsonify(data)
-
 
 @bp.route('/timeline/<application_id>')
 def display_status_timeline(application_id):
@@ -159,18 +140,8 @@ def display_status_timeline(application_id):
         temp['status'] = date.status.u_name
         temp['date'] = date.date_created
         data.append(temp)
-        # data[date.date_id] = {
-        #                         'status': date.status.js_name,
-        #                         'date': date.date_created,
-        # }
 
     return jsonify(data)
-
-
-
-@bp.route('/user/<user_id>')
-def get_user(user_id):
-    pass
 
 
 @bp.route('/applications')
@@ -372,22 +343,6 @@ def get_date_applied():
                 'label': date.status.u_name,
             })
 
-
-        # if date.status_id > 1:
-        #     if data.get(date.date_created):
-        #         data[date.date_created][0] += 1
-        #         data[date.date_created][1].append(app.company.name)
-        #     else:
-        #         data[date.date_created] = [1, [app.company.name]]
-
-    # stats = []
-    # for date_key, info in data.iteritems():
-        # temp = {}
-        # temp['x'] = date_key
-        # temp['y'] = info[0]
-        # temp['label'] = info[1]
-        # stats.append(temp)
-
     return jsonify(data)
 
 
@@ -457,6 +412,36 @@ def archive(application_id):
     return jsonify({'archive': app.archive})
 
 
+@bp.route('/add/pro_con/<application_id>', methods=['POST'])
+def add_pro(application_id):
+    """Adds pro for specific application to Pro/Con Table"""
+
+    app = Application.query.filter(Application.application_id == application_id).first()
+    pro = request.json.get('pro')
+    con = request.json.get('con')
+
+    if pro:
+        new_pro = ProCon(is_pro=True, notes=pro, application_id=app.application_id)
+        db.session.add(new_pro)
+
+    if con:
+        new_con = ProCon(is_pro=False, notes=con, application_id=app.application_id)
+        db.session.add(new_con)
+
+    db.session.commit()
+
+    return jsonify(app.to_dict())
+
+
+@bp.route('/add/con/<application_id>', methods=['POST'])
+def add_con(application_id):
+    """Adds con for specific application to Pro/Con Table"""
+
+    app = Application.query.filter(Application.application_id == application_id).first()
+    con = request.json.get('con')
+    new_con = ProCon(is_pro=False, text=con, application_id=app.application_id)
+    db.session.add(new_con)
+    db.session.commit()
 
 
 app.register_blueprint(bp)

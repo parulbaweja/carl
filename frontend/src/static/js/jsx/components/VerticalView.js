@@ -1,5 +1,6 @@
 import React from 'react';
 import apiRequest from '../utils/jobsSDK';
+import {postRequest} from '../utils/jobsSDK';
 import {
   Table,
   TableBody,
@@ -35,6 +36,8 @@ class VerticalView extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.closePro = this.closePro.bind(this);
     this.closeCon = this.closeCon.bind(this);
+    this.onSubmitPro = this.onSubmitPro.bind(this);
+    this.onSubmitCon = this.onSubmitCon.bind(this);
   }
 
   componentDidMount() {
@@ -82,8 +85,33 @@ class VerticalView extends React.Component {
     };
   }
 
+  onSubmitPro() {
+    var self = this;
+    postRequest(`add/pro_con/${self.state.isAddingPro}`, self.state, function(body) {
+      var apps = {...self.state.apps};
+      apps[self.state.isAddingPro] = body;
+      self.setState({
+        isAddingPro: -1,
+        isAddingCon: -1,
+        apps,
+      });
+    });
+  }
+
+  onSubmitCon() {
+    var self = this;
+    postRequest(`add/pro_con/${self.state.isAddingCon}`, self.state, function(body) {
+      var apps = {...self.state.apps};
+      apps[self.state.isAddingCon] = body;
+      self.setState({
+        isAddingPro: -1,
+        isAddingCon: -1,
+        apps,
+      });
+    });
+  }
+
   render() {
-    console.log('vertical view');
     console.log(this.state);
 
     if (this.props.appid === undefined || this.state.apps === undefined) {
@@ -158,13 +186,53 @@ class VerticalView extends React.Component {
           <TableRow>
             <TableRowColumn>{'Pros'}
             </TableRowColumn>
-              {this.props.appid.map((i) => {
-                if (this.state.isAddingPro != i) {
+            {this.props.appid.map((appid, i) => {
+              return (
+                <TableRowColumn key={i}>
+                  {this.state.apps[appid].pros.map((pro) => {
+                    return (
+                      <div>
+                      {pro}
+                    </div>
+                    );
+                  })
+                  }
+                </TableRowColumn>
+              );
+            })
+            }
+          </TableRow>
+
+          <TableRow>
+            <TableRowColumn>{'Cons'}
+            </TableRowColumn>
+            {this.props.appid.map((appid, i) => {
+              return (
+                <TableRowColumn key={i}>
+                  {this.state.apps[appid].cons.map((con) => {
+                    return (
+                      <div>
+                        {con}
+                      </div>
+                    );
+                  })
+                  }
+                </TableRowColumn>
+              );
+            })
+            }
+          </TableRow>
+
+              <TableRow>
+            <TableRowColumn>
+            </TableRowColumn>
+              {this.props.appid.map((appid, i) => {
+                if (this.state.isAddingPro != appid) {
                   return(<TableRowColumn>
                       <FlatButton
                         key={i} label={'add pro'}
                         icon={<AddCircleOutlineIcon/>}
-                        onClick={this.handlePro(i)}
+                        onClick={this.handlePro(appid)}
                       />
                     </TableRowColumn>);
                 } else {
@@ -173,9 +241,12 @@ class VerticalView extends React.Component {
                       id="pro"
                       onChange={this.onChange('pro')}
                       type="text"
+                      key={i}
                     />
                     <div>
-                    <IconButton tooltip="Submit">
+                      <IconButton
+                        onClick={this.onSubmitPro}
+                        tooltip="Submit">
                       <CheckIcon/>
                     </IconButton>
                     <IconButton
@@ -194,31 +265,36 @@ class VerticalView extends React.Component {
             </TableRow>
 
           <TableRow>
-            <TableRowColumn>{'Con'}
+            <TableRowColumn>
             </TableRowColumn>
-              {this.props.appid.map((i) => {
-                if (this.state.isAddingCon != i) {
+              {this.props.appid.map((appid, i) => {
+                if (this.state.isAddingCon != appid) {
                   return(<TableRowColumn>
                       <FlatButton
                         key={i} label={'add con'}
                         icon={<AddCircleOutlineIcon/>}
-                        onClick={this.handleCon(i)}
+                        onClick={this.handleCon(appid)}
                       />
                     </TableRowColumn>);
                 } else {
                   return(<TableRowColumn>
                     <TextField
                       id="con"
+                      key={i}
                       onChange={this.onChange('con')}
                       type="text"
                     />
                     <div>
-                    <IconButton tooltip="Submit">
+                      <IconButton
+                        tooltip="Submit"
+                        onClick={this.onSubmitCon}
+                      >
                       <CheckIcon/>
                     </IconButton>
                     <IconButton
                       onClick={this.closeCon}
-                      tooltip="Close">
+                      tooltip="Close"
+                    >
                       <CloseIcon/>
                     </IconButton>
                   </div>

@@ -95,6 +95,17 @@ class DateChange(db.Model):
     status = db.relationship('Status', backref=db.backref('status'), order_by=status_id)
 
 
+class ProCon(db.Model):
+    """Pros and cons for each application."""
+
+    __tablename__ = "procons"
+
+    procon_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    application_id = db.Column(db.Integer, db.ForeignKey('applications.application_id'), nullable=False)
+    is_pro = db.Column(db.Boolean, nullable=False, default=False)
+    notes = db.Column(db.String(200), nullable=True)
+
+
 class Application(db.Model):
     """Application from job search website."""
 
@@ -136,6 +147,8 @@ class Application(db.Model):
             'notes': self.notes,
             'url': self.url,
             'date': self.date.date_created,
+            'pros': self.pros,
+            'cons': self.cons,
         }
 
         return data
@@ -144,6 +157,28 @@ class Application(db.Model):
     def date(self):
         return DateChange.query.filter(
             DateChange.application_id == self.application_id).order_by(DateChange.date_id.desc()).first()
+
+    @property
+    def pros(self):
+        pro_objs = ProCon.query.filter(ProCon.is_pro == True, ProCon.application_id == self.application_id).all()
+
+        pro_lst = []
+
+        for pro in pro_objs:
+            pro_lst.append(pro.notes)
+
+        return pro_lst
+
+    @property
+    def cons(self):
+        con_objs = ProCon.query.filter(ProCon.is_pro == False, ProCon.application_id == self.application_id).all()
+
+        con_lst = []
+
+        for pro in con_objs:
+            con_lst.append(pro.notes)
+
+        return con_lst
 
     def __repr__(self):
         """Displays application object."""
