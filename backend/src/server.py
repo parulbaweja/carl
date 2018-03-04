@@ -20,12 +20,11 @@ import os
 from model import User, AuthId, Company, Contact, Application, Status, DateChange, ProCon, connect_to_db, db
 
 newsapi = NewsApiClient(api_key=os.environ['SECRET_KEY'])
-
 app = Flask(__name__)
 app.secret_key = "abc"
 app.jinja_env.undefined = StrictUndefined
-
 bp = Blueprint('server', __name__)
+
 
 @bp.route('/check_login')
 def isLoggedIn():
@@ -66,8 +65,6 @@ def submit_login_form():
         data = {'user_id': user.user_id,
                 'fname': user.fname,
                 'error': False}
-
-    print data
 
     return jsonify(data)
 
@@ -153,22 +150,7 @@ def display_all_applications():
     apps = Application.query.filter(Application.user_id == auth.user_id).all()
     data = []
     for app in apps:
-        temp = {}
-        temp['userID'] = app.user_id
-        temp['applicationID'] = app.application_id
-        temp['company'] = app.company.name
-        temp['position'] = app.position
-        temp['contactName'] = app.contact.name
-        temp['contactEmail'] = app.contact.email
-        temp['status'] = app.status.u_name
-        temp['offerAmount'] = app.offer_amount
-        temp['notes'] = app.notes
-        temp['url'] = app.url
-        temp['archive'] = app.archive
-
-        last_date = DateChange.query.filter(DateChange.application_id == app.application_id).order_by(DateChange.date_id.desc()).first()
-        temp['lastDate'] = last_date.date_created
-        data.append(temp)
+        data.append(app.to_dict())
 
     return jsonify(data)
 

@@ -17,7 +17,6 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
-import Snackbar from 'material-ui/Snackbar';
 
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
 
@@ -55,7 +54,7 @@ class SingleAppView extends React.Component {
     apiRequest('apps_repo', function(body) {
       self.setState(Object.assign({
         apps: body,
-      }, body[self.props.appid]
+      }, body[self.props.appId]
       ));
       var date = new Date(self.state.date);
       date.setDate(date.getDate() + 1);
@@ -95,9 +94,9 @@ class SingleAppView extends React.Component {
 
   onSubmit() {
     var self = this;
-    postRequest(`application/update/${self.props.appid}`, self.state, function(body) {
+    postRequest(`application/update/${self.props.appId}`, self.state, function(body) {
       var apps = [...self.state.apps];
-      apps[self.props.appid] = body;
+      apps[self.props.appId] = body;
       self.setState({
         isEditing: false,
         apps,
@@ -106,7 +105,6 @@ class SingleAppView extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     if (this.state.apps === undefined) {
       return null;
     }
@@ -134,7 +132,7 @@ class SingleAppView extends React.Component {
                   />
                   :
                   <div>
-                  {this.state.apps[this.props.appid].company}
+                  {this.state.apps[this.props.appId].company}
                 </div>
               }
             </TableRowColumn>
@@ -154,7 +152,7 @@ class SingleAppView extends React.Component {
                   />
                   :
                   <div>
-                  {this.state.apps[this.props.appid].position}
+                  {this.state.apps[this.props.appId].position}
                 </div>
               }
             </TableRowColumn>
@@ -174,7 +172,7 @@ class SingleAppView extends React.Component {
                   />
                   :
                   <div>
-                  {this.state.apps[this.props.appid].contactName}
+                  {this.state.apps[this.props.appId].contactName}
                 </div>
               }
             </TableRowColumn>
@@ -194,7 +192,7 @@ class SingleAppView extends React.Component {
                   />
                   :
                   <div>
-                  {this.state.apps[this.props.appid].contactEmail}
+                  {this.state.apps[this.props.appId].contactEmail}
                 </div>
               }
             </TableRowColumn>
@@ -246,7 +244,7 @@ class SingleAppView extends React.Component {
                 </SelectField>
                   :
                   <div>
-                    {this.state.apps[this.props.appid].status}
+                    {this.state.apps[this.props.appId].status}
                   </div>
               }
             </TableRowColumn>
@@ -265,7 +263,7 @@ class SingleAppView extends React.Component {
                 />
                   :
                   <div>
-                    {this.state.apps[this.props.appid].date.slice(0, 16)}
+                    {this.state.apps[this.props.appId].date.slice(0, 16)}
                   </div>
               }
             </TableRowColumn>
@@ -285,7 +283,7 @@ class SingleAppView extends React.Component {
                   />
                   :
                   <div>
-                    {this.state.apps[this.props.appid].offerAmount}
+                    {this.state.apps[this.props.appId].offerAmount}
                   </div>
               }
             </TableRowColumn>
@@ -306,7 +304,7 @@ class SingleAppView extends React.Component {
                   />
                   :
                   <div>
-                    {this.state.apps[this.props.appid].notes}
+                    {this.state.apps[this.props.appId].notes}
                   </div>
               }
             </TableRowColumn>
@@ -326,7 +324,7 @@ class SingleAppView extends React.Component {
                   />
                   :
                   <div>
-                    {this.state.apps[this.props.appid].url}
+                    {this.state.apps[this.props.appId].url}
                   </div>
               }
             </TableRowColumn>
@@ -340,7 +338,7 @@ class SingleAppView extends React.Component {
 }
 
 SingleAppView.propTypes = {
-  appid: PropTypes.number.isRequired,
+  appId: PropTypes.number.isRequired,
 };
 
 export default SingleAppView;

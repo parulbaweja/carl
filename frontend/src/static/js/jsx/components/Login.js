@@ -38,7 +38,6 @@ class LoginForm extends React.Component {
     e.preventDefault();
     var self = this;
     postRequest('login', self.state, function(body) {
-      console.log(body);
       self.setState({
         userID: body.user_id,
         error: body.error,
@@ -55,10 +54,10 @@ class LoginForm extends React.Component {
     }
 
     if (this.state.loggedIn === true) {
-      return (<Redirect to={'/app'}/>);
+      return (<Redirect to={'/app/dashboard/'}/>);
     }
     if (this.state.userID) {
-      return (<Redirect to="/app/"/>);
+      return (<Redirect to="/app/dashboard/"/>);
     }
     return (
       <div>

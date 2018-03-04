@@ -23,18 +23,11 @@ class EditView extends React.Component {
     this.state = {
       apps: undefined,
     };
-
-    // this.onSubmit = this.onSubmit.bind(this);
-    // this.onChange = this.onChange.bind(this);
-    // this.handleDateChange = this.handleDateChange.bind(this);
-    // this.handleStatusChange = this.handleStatusChange.bind(this);
   }
 
   componentDidMount() {
-    console.log('component mounted');
     var self = this;
     apiRequest('apps_repo', function(body) {
-      console.log(body);
       self.setState({
         apps: body,
       });
@@ -75,12 +68,7 @@ class EditView extends React.Component {
 
   render() {
 
-    // if (this.state.saved) {
-    //   return (<Redirect to={`/app/apps/${appId(this.props)}`}/>);
-    // }
-    console.log(this.props.appid);
-    console.log(this.state.apps);
-    if (this.props.appid === undefined || this.state.apps === undefined) {
+    if (this.props.appId === undefined || this.state.apps === undefined) {
       return null;
     }
 
@@ -93,7 +81,7 @@ class EditView extends React.Component {
             id="company"
             onChange={this.onChange('company')}
             type="text"
-            value={this.state.apps[this.props.appid].company}
+            value={this.state.apps[this.props.appId].company}
             />
             <br/>
             <TextField
@@ -101,7 +89,7 @@ class EditView extends React.Component {
               id="position"
               onChange={this.onChange('position')}
               type="text"
-              value={this.state.apps[this.props.appid].position}
+              value={this.state.apps[this.props.appId].position}
             />
             <br/>
             <TextField
@@ -109,7 +97,7 @@ class EditView extends React.Component {
               id="contactName"
               onChange={this.onChange('contactName')}
               type="text"
-              value={this.state.apps[this.props.appid].contactName}
+              value={this.state.apps[this.props.appId].contactName}
             />
             <br/>
             <TextField
@@ -117,14 +105,14 @@ class EditView extends React.Component {
               id="contactEmail"
               onChange={this.onChange('contactEmail')}
               type="text"
-              value={this.state.apps[this.props.appid].contactEmail}
+              value={this.state.apps[this.props.appId].contactEmail}
             />
             <br/>
             <SelectField
               floatingLabelText="Status"
               value={this.state.status}
               onChange={this.handleStatusChange}
-              primaryText={this.state.apps[this.props.appid].statusId}>
+              primaryText={this.state.apps[this.props.appId].statusId}>
               <MenuItem value={1} primaryText="Interested"/>
               <MenuItem value={2} primaryText="Applied"/>
               <MenuItem value={3} primaryText="Phone Call"/>
@@ -138,7 +126,7 @@ class EditView extends React.Component {
             <DatePicker
               onChange={this.handleDateChange}
               floatingLabelText="Date"
-              value={Date(this.state.apps[this.props.appid].date)}
+              value={Date(this.state.apps[this.props.appId].date)}
           />
             <br/>
             <TextField
@@ -146,14 +134,14 @@ class EditView extends React.Component {
               id="offerAmount"
               onChange={this.onChange('offerAmount')}
               type="text"
-              value={this.state.apps[this.props.appid].offerAmount}
+              value={this.state.apps[this.props.appId].offerAmount}
             />
             <br/>
             <TextField
               hintText="Notes"
               id="notes"
               onChange={this.onChange('notes')}
-              value={this.state.apps[this.props.appid].notes}
+              value={this.state.apps[this.props.appId].notes}
             />
             <br/>
             <TextField
@@ -161,7 +149,7 @@ class EditView extends React.Component {
               id="url"
               onChange={this.onChange('url')}
               type="text"
-              value={this.state.apps[this.props.appid].url}
+              value={this.state.apps[this.props.appId].url}
             />
             <br/>
             <FlatButton label="Save" onClick={this.onSubmit}/>
@@ -172,7 +160,7 @@ class EditView extends React.Component {
 }
 
 EditView.propTypes = {
-  appid: PropTypes.number.isRequired,
+  appId: PropTypes.number.isRequired,
 };
 
 export default EditView;

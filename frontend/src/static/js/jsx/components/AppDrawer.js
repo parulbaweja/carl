@@ -6,77 +6,49 @@ import SingleAppView from './SingleAppView';
 import EditView from './EditView';
 import StatusChange from './StatusChange';
 import News from './News';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 class AppDrawer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      details: true,
-      activity: false,
-      news: false,
+      section: 'details',
     };
 
-    this.setDetails = this.setDetails.bind(this);
-    this.setActivity = this.setActivity.bind(this);
-    this.setNews = this.setNews.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 
   }
 
-  setDetails() {
+  handleChange(value) {
     this.setState({
-      details: true,
-      activity: false,
-      news: false,
-    });
-  }
-
-  setActivity() {
-    this.setState({
-      details: false,
-      activity: true,
-      news: false,
-    });
-  }
-
-  setNews() {
-    this.setState({
-      details: false,
-      activity: false,
-      news: true,
+      section: value,
     });
   }
 
   render() {
     return (
       <div>
-      <FlatButton
-        onClick={this.setDetails}
-        label="Details"
-      />
-      <FlatButton
-        label="Activity"
-        onClick={this.setActivity}
-      />
-      <FlatButton
-        label="News"
-        onClick={this.setNews}
-      />
-      {this.props.appid && this.state.details && !this.state.edit && !this.state.activity &&
-          <SingleAppView appid={this.props.appid}/>
-      }
-      {this.state.activity && !this.state.details && !this.state.edit &&
-          <StatusChange appid={this.props.appid}/>
-      }
-      {this.state.news && !this.state.details && !this.state.activity &&
-          <News appid={this.props.appid}/>
-      }
+        <Tabs
+          value={this.state.section}
+          onChange={this.handleChange}
+        >
+          <Tab label="Details" value="details">
+            <SingleAppView appId={this.props.appId}/>
+          </Tab>
+          <Tab label="Activity" value="activity">
+            <StatusChange appId={this.props.appId}/>
+          </Tab>
+          <Tab label="News" value="news">
+            <News appId={this.props.appId}/>
+          </Tab>
+        </Tabs>
     </div>
     );
   }
 }
 
 AppDrawer.propTypes = {
-  appid: PropTypes.number.isRequired,
+  appId: PropTypes.number.isRequired,
 };
 
 export default AppDrawer;

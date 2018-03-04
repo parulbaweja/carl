@@ -1,23 +1,15 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import apiRequest from '../utils/jobsSDK';
-import {Redirect, Link} from 'react-router';
-import PropTypes from 'prop-types';
-// const NavBar = () => (<h1>{'Jobs!'}</h1>);
-
+import {Redirect} from 'react-router';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import ExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import CircularProgress from 'material-ui/CircularProgress';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
-import CreateIcon from 'material-ui/svg-icons/content/create';
 import AppBar from 'material-ui/AppBar';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
 import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
@@ -50,7 +42,6 @@ class NavBar extends React.Component {
 
     const self = this;
     apiRequest('check_login', function(body) {
-      console.log(body);
       self.setState({
         loggedIn: body.loggedIn,
       });
@@ -85,7 +76,6 @@ class NavBar extends React.Component {
     e.preventDefault();
     var self = this;
     apiRequest('logout', function(body) {
-      console.log(body);
       self.setState({
         loggedIn: false,
       });
@@ -104,7 +94,6 @@ class NavBar extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     if (this.state.loggedIn === undefined) {
       return (<CircularProgress size={80} thickness={5}/>);
     }
@@ -121,37 +110,43 @@ class NavBar extends React.Component {
       <div>
 
         <AppBar
-          title="Joblands"
           iconElementLeft={<MenuIcon style={{padding: 16}} onClick={this.toggleLeftMenu}/>}
           iconElementRight={<Logged/>}
+          title="Joblands"
         />
       <div className="navbar">
         <Drawer
+          containerStyle={{height: 'calc(100% - 64px)', top: 80}}
           docked={false}
-          width={'15%'}
           onRequestChange={this.setLeftMenuState}
           open={this.state.isLeftMenuOpen}
-          containerStyle={{height: 'calc(100% - 64px)', top: 80}}
+          width={'15%'}
         >
-          <MenuItem onClick={this.myDashboard} leftIcon={<HomeIcon/>} primaryText={'Home'}/>
-          <br/>
-          <MenuItem onClick={this.myCompare} leftIcon={<CompareArrowsIcon/>} primaryText={'Compare'}/>
+          <MenuItem
+            leftIcon={<HomeIcon/>}
+            onClick={this.myDashboard}
+            primaryText={'Home'}/>
           <br/>
           <MenuItem
-            onClick={this.myArchive}
+            leftIcon={<CompareArrowsIcon/>}
+            onClick={this.myCompare}
+            primaryText={'Compare'}
+          />
+          <br/>
+          <MenuItem
             leftIcon={<ArchiveIcon/>}
-            primaryText={'Archive'}/>
-          <MenuItem onClick={this.myAnalytics} leftIcon={<AssessmentIcon/>} primaryText={'Analytics'}/>
+            onClick={this.myArchive}
+            primaryText={'Archive'}
+          />
+          <MenuItem
+            leftIcon={<AssessmentIcon/>}
+            onClick={this.myAnalytics}
+            primaryText={'Analytics'}
+          />
           <MenuItem onClick={this.logout}>{'Logout'}</MenuItem>
         </Drawer>
       </div>
       </div>
-      // <h1>{'Jobs!'}</h1>
-      //     <h2>{'Welcome'} {this.state.fname}</h2>
-      //      <a href={'/app/job_applications'}>{'Job Applications'}</a>
-      //     <a href={'/app/app_form'}>{'New Entry'}</a>
-      //     { this.state.loggedIn ? <a onClick={this.onClick} href={'/app/login'}>{'Logout'}</a> : <a href={'/app/login'}>{'Login'}</a> }
-      //   </div>
     );
   }
 

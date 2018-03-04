@@ -12,7 +12,8 @@ import {
 import FlatButton from 'material-ui/FlatButton';
 import {Redirect, Link} from 'react-router';
 import PropTypes from 'prop-types';
-import AddCircleOutlineIcon from 'material-ui/svg-icons/content/add-circle-outline';
+import AddIcon from 'material-ui/svg-icons/content/add';
+import RemoveIcon from 'material-ui/svg-icons/content/remove';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
@@ -49,18 +50,18 @@ class VerticalView extends React.Component {
     });
   }
 
-  handlePro(appid) {
+  handlePro(appId) {
     return () => {
       this.setState({
-        isAddingPro: appid,
+        isAddingPro: appId,
       });
     };
   }
 
-  handleCon(appid) {
+  handleCon(appId) {
     return () => {
       this.setState({
-        isAddingCon: appid,
+        isAddingCon: appId,
       });
     };
   }
@@ -114,7 +115,7 @@ class VerticalView extends React.Component {
   render() {
     console.log(this.state);
 
-    if (this.props.appid === undefined || this.state.apps === undefined) {
+    if (this.props.appId === undefined || this.state.apps === undefined) {
       return null;
     }
 
@@ -129,7 +130,7 @@ class VerticalView extends React.Component {
               <b>{'Company'}</b>
             </TableRowColumn>
             {
-              this.props.appid.map((company, i) => {
+              this.props.appId.map((company, i) => {
                 return (
                 <TableRowColumn key={i}>
                   {this.state.apps[company].company}
@@ -144,7 +145,7 @@ class VerticalView extends React.Component {
               <b>{'Position'}</b>
             </TableRowColumn>
             {
-              this.props.appid.map((company, i) => {
+              this.props.appId.map((company, i) => {
                 return (
                 <TableRowColumn key={i}>
                   {this.state.apps[company].position}
@@ -159,7 +160,7 @@ class VerticalView extends React.Component {
               <b>{'Status'}</b>
             </TableRowColumn>
             {
-              this.props.appid.map((company, i) => {
+              this.props.appId.map((company, i) => {
                 return (
                 <TableRowColumn key={i}>
                   {this.state.apps[company].status}
@@ -173,7 +174,7 @@ class VerticalView extends React.Component {
               <b>{'Offer Amount'}</b>
             </TableRowColumn>
             {
-              this.props.appid.map((company, i) => {
+              this.props.appId.map((company, i) => {
                 return (
                 <TableRowColumn key={i}>
                   {this.state.apps[company].offerAmount}
@@ -186,10 +187,11 @@ class VerticalView extends React.Component {
           <TableRow>
             <TableRowColumn>{'Pros'}
             </TableRowColumn>
-            {this.props.appid.map((appid, i) => {
+            {this.props.appId.map((appId, i) => {
               return (
                 <TableRowColumn key={i}>
-                  {this.state.apps[appid].pros.map((pro) => {
+                  <div>
+                  {this.state.apps[appId].pros.map((pro) => {
                     return (
                       <div>
                       {pro}
@@ -197,6 +199,40 @@ class VerticalView extends React.Component {
                     );
                   })
                   }
+
+                  {this.state.isAddingPro != appId ?
+                      <FlatButton
+                        icon={<AddIcon/>}
+                        key={i}
+                        label={'add pro'}
+                        onClick={this.handlePro(appId)}
+                      />
+                      :
+                      <div>
+                      <TextField
+                        id="pro"
+                        key={i}
+                        onChange={this.onChange('pro')}
+                        type="text"
+                      />
+                      <div>
+                        <IconButton
+                          onClick={this.onSubmitPro}
+                          tooltip="Submit">
+                          <CheckIcon/>
+                        </IconButton>
+                        <IconButton
+                          onClick={this.closePro}
+                          tooltip="Close">
+                          <CloseIcon/>
+                        </IconButton>
+                      </div>
+                      <br/>
+                      <br/>
+                    </div>
+                  }
+                  </div>
+
                 </TableRowColumn>
               );
             })
@@ -206,106 +242,58 @@ class VerticalView extends React.Component {
           <TableRow>
             <TableRowColumn>{'Cons'}
             </TableRowColumn>
-            {this.props.appid.map((appid, i) => {
+            {this.props.appId.map((appId, i) => {
               return (
                 <TableRowColumn key={i}>
-                  {this.state.apps[appid].cons.map((con) => {
+                  <div>
+                  {this.state.apps[appId].cons.map((con) => {
                     return (
                       <div>
-                        {con}
-                      </div>
+                      {con}
+                    </div>
                     );
                   })
                   }
+
+                  {this.state.isAddingCon != appId ?
+                      <FlatButton
+                        icon={<RemoveIcon/>}
+                        key={i}
+                        label={'add con'}
+                        onClick={this.handleCon(appId)}
+                      />
+                      :
+                      <div>
+                      <TextField
+                        id="con"
+                        key={i}
+                        onChange={this.onChange('con')}
+                        type="text"
+                      />
+                      <div>
+                        <IconButton
+                          onClick={this.onSubmitCon}
+                          tooltip="Submit">
+                          <CheckIcon/>
+                        </IconButton>
+                        <IconButton
+                          onClick={this.closeCon}
+                          tooltip="Close">
+                          <CloseIcon/>
+                        </IconButton>
+                      </div>
+                      <br/>
+                      <br/>
+                    </div>
+                  }
+                  </div>
+
                 </TableRowColumn>
               );
             })
             }
           </TableRow>
 
-              <TableRow>
-            <TableRowColumn>
-            </TableRowColumn>
-              {this.props.appid.map((appid, i) => {
-                if (this.state.isAddingPro != appid) {
-                  return(<TableRowColumn>
-                      <FlatButton
-                        key={i} label={'add pro'}
-                        icon={<AddCircleOutlineIcon/>}
-                        onClick={this.handlePro(appid)}
-                      />
-                    </TableRowColumn>);
-                } else {
-                  return(<TableRowColumn>
-                    <TextField
-                      id="pro"
-                      onChange={this.onChange('pro')}
-                      type="text"
-                      key={i}
-                    />
-                    <div>
-                      <IconButton
-                        onClick={this.onSubmitPro}
-                        tooltip="Submit">
-                      <CheckIcon/>
-                    </IconButton>
-                    <IconButton
-                      onClick={this.closePro}
-                      tooltip="Close">
-                      <CloseIcon/>
-                    </IconButton>
-                  </div>
-                  <br/>
-                  <br/>
-                  </TableRowColumn>
-                  );
-                }
-              }
-              )}
-            </TableRow>
-
-          <TableRow>
-            <TableRowColumn>
-            </TableRowColumn>
-              {this.props.appid.map((appid, i) => {
-                if (this.state.isAddingCon != appid) {
-                  return(<TableRowColumn>
-                      <FlatButton
-                        key={i} label={'add con'}
-                        icon={<AddCircleOutlineIcon/>}
-                        onClick={this.handleCon(appid)}
-                      />
-                    </TableRowColumn>);
-                } else {
-                  return(<TableRowColumn>
-                    <TextField
-                      id="con"
-                      key={i}
-                      onChange={this.onChange('con')}
-                      type="text"
-                    />
-                    <div>
-                      <IconButton
-                        tooltip="Submit"
-                        onClick={this.onSubmitCon}
-                      >
-                      <CheckIcon/>
-                    </IconButton>
-                    <IconButton
-                      onClick={this.closeCon}
-                      tooltip="Close"
-                    >
-                      <CloseIcon/>
-                    </IconButton>
-                  </div>
-                  <br/>
-                  <br/>
-                  </TableRowColumn>
-                  );
-                }
-              }
-              )}
-            </TableRow>
       </TableBody>
     </Table>
       </div>
@@ -314,7 +302,7 @@ class VerticalView extends React.Component {
 }
 
 VerticalView.propTypes = {
-  appid: PropTypes.array.isRequired,
+  appId: PropTypes.array.isRequired,
 };
 
 export default VerticalView;

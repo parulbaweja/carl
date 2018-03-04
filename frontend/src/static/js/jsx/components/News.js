@@ -38,7 +38,7 @@ class News extends React.Component {
   getNews() {
     var self = this;
     console.log('in component mounting');
-    apiRequest(`news/${this.props.appid}`, function(body) {
+    apiRequest(`news/${this.props.appId}`, function(body) {
       console.log(body);
       self.setState({
         articles: body.articles,
@@ -99,7 +99,7 @@ class News extends React.Component {
 }
 
 News.propTypes = {
-  appid: PropTypes.number.isRequired,
+  appId: PropTypes.number.isRequired,
 };
 
 export default News;

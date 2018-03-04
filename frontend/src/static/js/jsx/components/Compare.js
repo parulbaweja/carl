@@ -26,7 +26,7 @@ class Compare extends React.Component {
     super(props);
     this.state = {
       companies: [],
-      appids: [],
+      appIds: [],
       checkedValues: [],
     };
 
@@ -34,7 +34,7 @@ class Compare extends React.Component {
     apiRequest('applications', function(body) {
       self.setState({
         companies: body.map(function(company) {
-          return [company.applicationID, company.company];
+          return [company.appId, company.company];
         }),
       });
     });
@@ -42,15 +42,15 @@ class Compare extends React.Component {
     this.handleCheck = this.handleCheck.bind(this);
   }
 
-  handleCheck(appid) {
-    const found = this.state.checkedValues.includes(appid);
+  handleCheck(appId) {
+    const found = this.state.checkedValues.includes(appId);
     if (found) {
       this.setState({
-        checkedValues: this.state.checkedValues.filter(x => x !== appid),
+        checkedValues: this.state.checkedValues.filter(x => x !== appId),
       });
     } else {
       this.setState({
-        checkedValues: [...this.state.checkedValues, appid],
+        checkedValues: [...this.state.checkedValues, appId],
       });
     }
   }
@@ -74,7 +74,7 @@ class Compare extends React.Component {
       </div>
 
       <div>
-            <VerticalView appid={this.state.checkedValues}/>
+            <VerticalView appId={this.state.checkedValues}/>
       </div>
       </div>
     );

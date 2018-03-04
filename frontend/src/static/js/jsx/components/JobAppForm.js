@@ -31,19 +31,6 @@ class ApplicationForm extends React.Component {
     this.handleStatusChange = this.handleStatusChange.bind(this);
   }
 
-  // showStatus() {
-  //   apiRequest('/status', this.state, function(body) {
-  //     self.setState(function() {
-  //       return {
-  //         status: body.map(function(status) {
-  //           return [
-  //             status.interested, status.applied, status.phoneCall, status.interview, status.offer, status.accepted, status.withdrawn, status.notAFit];
-  //         }),
-  //       };
-  //     });
-  //   });
-  // }
-
   onChange(key) {
     return (e) => {
       var newState = {...this.state};
@@ -112,7 +99,6 @@ class ApplicationForm extends React.Component {
             <SelectField
               floatingLabelText="Status"
               value={this.state.status}
-              primarytext="Interested"
               onChange={this.handleStatusChange}>
               <MenuItem value={1} primaryText="Interested"/>
               <MenuItem value={2} primaryText="Applied"/>

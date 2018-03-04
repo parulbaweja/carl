@@ -136,6 +136,7 @@ class Application(db.Model):
         """Turns application information into a dictionary."""
 
         data = {
+            'userId': self.user_id,
             'appId': self.application_id,
             'company': self.company.name,
             'position': self.position,
@@ -149,6 +150,7 @@ class Application(db.Model):
             'date': self.date.date_created,
             'pros': self.pros,
             'cons': self.cons,
+            'archive': self.archive,
         }
 
         return data

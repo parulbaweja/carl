@@ -89,7 +89,7 @@ class AppsTable extends React.Component {
     return (e) => {
       e.preventDefault();
       postRequest(
-        `archive/${self.state.rows[rowNumber].applicationID}`,
+        `archive/${self.state.rows[rowNumber].appId}`,
         self.state,
         function (body) {
           const rows = self.state.rows;
@@ -108,11 +108,13 @@ class AppsTable extends React.Component {
       e.preventDefault();
       const isRightMenuOpen = this.state.isRightMenuOpen;
       this.setRightMenuState(!isRightMenuOpen);
-      this.setAppId(this.state.rows[rowNumber].applicationID);
+      this.setAppId(this.state.rows[rowNumber].appId);
     };
   }
 
   render() {
+
+    console.log(this.state);
     var headers = [
       <TableHeaderColumn key={0}>{'Companies'}</TableHeaderColumn>,
       <TableHeaderColumn key={1}>{'Status'}</TableHeaderColumn>,
@@ -129,7 +131,9 @@ class AppsTable extends React.Component {
             openSecondary={true}
             onRequestChange={this.setRightMenuState}
             open={this.state.isRightMenuOpen}>
-              <AppDrawer appid={this.state.appId}/>
+              <AppDrawer
+                appId={this.state.appId}
+                key={this.state.appId}/>
           </Drawer>
         }
       <Table>
@@ -150,10 +154,10 @@ class AppsTable extends React.Component {
                   return null;
                 }
                 return (
-                  <TableRow key={company.applicationID}>
+                  <TableRow key={company.appId}>
                     <TableRowColumn><a href={''} onClick={this.openRightMenu(i)}>{company.company}</a></TableRowColumn>
                     <TableRowColumn>{company.status}</TableRowColumn>
-                    <TableRowColumn>{company.lastDate.slice(0, -13)}</TableRowColumn>
+                    <TableRowColumn>{company.date.slice(0, -13)}</TableRowColumn>
                     <TableRowColumn>
                     {!company.archive ?
                         <ArchiveIcon onClick={this.archive(i)}/>

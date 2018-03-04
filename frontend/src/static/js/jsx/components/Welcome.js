@@ -1,10 +1,6 @@
 import React from 'react';
-import apiRequest from '../utils/jobsSDK';
 import {Redirect} from 'react-router';
-import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
-import Login from './Login';
-import Register from './Register';
 
 class Welcome extends React.Component {
   constructor(props) {

@@ -22,12 +22,10 @@ const AppRouter = () => (
 
       <Route component={Welcome} exact={false} path="/welcome"/>
       <Route component={Menu} exact={false} path="/app"/>
-      <Route component={JobApplications} exact={true} path="/app/job_applications"/>
       <Route component={JobAppForm} exact={true} path="/app/app_form"/>
       <Route component={LoginForm} exact={true} path="/welcome/login"/>
       <Route component={Register} exact={true} path="/welcome/register"/>
       <Route component={AppBox} exact={false} path="/app/dashboard/"/>
-      <Route component={Container} exact={true} path="/dnd"/>
       <Route component={Compare} exact={true} path="/app/compare"/>
       <Route component={Analytics} exact={true} path="/app/analytics"/>
     </div>
@@ -35,4 +33,3 @@ const AppRouter = () => (
 );
 
 export default AppRouter;
-      // <Route component={EditView} exact={true} path="/app/edit/:app_id"/>
