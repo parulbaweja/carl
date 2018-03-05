@@ -47,13 +47,11 @@ class AppsTable extends React.Component {
   }
 
   updateOnSubmission() {
-    console.log('this is parent udpateonsub');
     this.setState({
       showPaper: false,
     });
     var self = this;
     apiRequest('applications', function(body) {
-      console.log(body);
       self.setState({
         rows: body,
       });

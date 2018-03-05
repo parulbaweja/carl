@@ -31,7 +31,6 @@ class SingleAppView extends React.Component {
     super(props);
     this.state = {
       apps: undefined,
-      isEditing: false,
       company: '',
       position: '',
       contactName: '',
@@ -42,11 +41,6 @@ class SingleAppView extends React.Component {
       url: '',
       date: undefined,
     };
-    this.editSection = this.editSection.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.handleDateChange = this.handleDateChange.bind(this);
-    this.handleStatusChange = this.handleStatusChange.bind(this);
   }
 
   componentDidMount() {
@@ -65,45 +59,6 @@ class SingleAppView extends React.Component {
 
   }
 
-  editSection() {
-    this.setState({
-      isEditing: true,
-    });
-  }
-
-  onChange(key) {
-    return (e) => {
-      var newState = {};
-      newState[key] = e.target.value;
-      this.setState(newState);
-    };
-  }
-
-  handleDateChange(e, date) {
-    var newDate = new Date(date);
-    this.setState({
-      date: newDate,
-    });
-  }
-
-  handleStatusChange(e, index, statusId) {
-    this.setState({
-      statusId,
-    });
-  }
-
-  onSubmit() {
-    var self = this;
-    postRequest(`application/update/${self.props.appId}`, self.state, function(body) {
-      var apps = [...self.state.apps];
-      apps[self.props.appId] = body;
-      self.setState({
-        isEditing: false,
-        apps,
-      });
-    });
-  }
-
   render() {
     if (this.state.apps === undefined) {
       return null;
@@ -111,9 +66,6 @@ class SingleAppView extends React.Component {
 
     return (
       <div>
-        <IconButton onClick={this.editSection} style={{top:0, right:0}}>
-          <CreateIcon style={{top:0, right:0}}/>
-        </IconButton>
       <Table>
         <TableBody
           displayRowCheckbox={false}
@@ -123,18 +75,7 @@ class SingleAppView extends React.Component {
               {'Company'}
             </TableRowColumn>
             <TableRowColumn>
-            {this.state.isEditing ?
-                  <TextField
-                    id="company"
-                    onChange={this.onChange('company')}
-                    type="text"
-                    value={this.state.company}
-                  />
-                  :
-                  <div>
                   {this.state.apps[this.props.appId].company}
-                </div>
-              }
             </TableRowColumn>
           </TableRow>
 
@@ -143,18 +84,7 @@ class SingleAppView extends React.Component {
               {'Position'}
             </TableRowColumn>
             <TableRowColumn>
-            {this.state.isEditing ?
-                  <TextField
-                    id="position"
-                    onChange={this.onChange('position')}
-                    type="text"
-                    value={this.state.position}
-                  />
-                  :
-                  <div>
                   {this.state.apps[this.props.appId].position}
-                </div>
-              }
             </TableRowColumn>
           </TableRow>
 
@@ -163,18 +93,7 @@ class SingleAppView extends React.Component {
               {'Contact Name'}
             </TableRowColumn>
             <TableRowColumn>
-            {this.state.isEditing ?
-                  <TextField
-                    id="contactName"
-                    onChange={this.onChange('contactName')}
-                    type="text"
-                    value={this.state.contactName}
-                  />
-                  :
-                  <div>
                   {this.state.apps[this.props.appId].contactName}
-                </div>
-              }
             </TableRowColumn>
           </TableRow>
 
@@ -183,18 +102,7 @@ class SingleAppView extends React.Component {
               {'Contact Email'}
             </TableRowColumn>
             <TableRowColumn>
-            {this.state.isEditing ?
-                  <TextField
-                    id="contactEmail"
-                    onChange={this.onChange('contactEmail')}
-                    type="text"
-                    value={this.state.contactEmail}
-                  />
-                  :
-                  <div>
                   {this.state.apps[this.props.appId].contactEmail}
-                </div>
-              }
             </TableRowColumn>
           </TableRow>
 
@@ -203,50 +111,7 @@ class SingleAppView extends React.Component {
               {'Status'}
             </TableRowColumn>
             <TableRowColumn>
-              {this.state.isEditing ?
-                <SelectField
-                  floatingLabelText="Status"
-                  onChange={this.handleStatusChange}
-                  value={this.state.statusId}
-                >
-                  <MenuItem
-                    primaryText="Interested"
-                    value={1}
-                  />
-                  <MenuItem
-                    primaryText="Applied"
-                    value={2}
-                  />
-                  <MenuItem
-                    primaryText="Phone Call"
-                    value={3}
-                  />
-                  <MenuItem
-                    primaryText="Interview"
-                    value={4}
-                  />
-                  <MenuItem
-                    primaryText="Offer"
-                    value={5}
-                  />
-                  <MenuItem
-                    primaryText="Accepted"
-                    value={6}
-                  />
-                  <MenuItem
-                    primaryText="Withdrawn"
-                    value={7}
-                  />
-                  <MenuItem
-                    primaryText="Not a Fit"
-                    value={8}
-                  />
-                </SelectField>
-                  :
-                  <div>
                     {this.state.apps[this.props.appId].status}
-                  </div>
-              }
             </TableRowColumn>
           </TableRow>
 
@@ -255,17 +120,7 @@ class SingleAppView extends React.Component {
               {'Date'}
             </TableRowColumn>
             <TableRowColumn>
-              {this.state.isEditing ?
-                <DatePicker
-                  onChange={this.handleDateChange}
-                  floatingLabelText="Date"
-                  value={this.state.date}
-                />
-                  :
-                  <div>
                     {this.state.apps[this.props.appId].date.slice(0, 16)}
-                  </div>
-              }
             </TableRowColumn>
           </TableRow>
 
@@ -274,18 +129,7 @@ class SingleAppView extends React.Component {
               {'Offer Amount'}
             </TableRowColumn>
             <TableRowColumn>
-              {this.state.isEditing ?
-                  <TextField
-                    id="offerAmount"
-                    onChange={this.onChange('offerAmount')}
-                    type="text"
-                    value={this.state.offerAmount}
-                  />
-                  :
-                  <div>
                     {this.state.apps[this.props.appId].offerAmount}
-                  </div>
-              }
             </TableRowColumn>
           </TableRow>
 
@@ -294,19 +138,7 @@ class SingleAppView extends React.Component {
               {'Notes'}
             </TableRowColumn>
             <TableRowColumn>
-              {this.state.isEditing ?
-                  <TextField
-                    id="notes"
-                    multiLine={true}
-                    onChange={this.onChange('notes')}
-                    type="text"
-                    value={this.state.notes}
-                  />
-                  :
-                  <div>
                     {this.state.apps[this.props.appId].notes}
-                  </div>
-              }
             </TableRowColumn>
           </TableRow>
 
@@ -315,18 +147,7 @@ class SingleAppView extends React.Component {
               {'URL'}
             </TableRowColumn>
             <TableRowColumn>
-              {this.state.isEditing ?
-                  <TextField
-                    id="notes"
-                    onChange={this.onChange('url')}
-                    type="text"
-                    value={this.state.url}
-                  />
-                  :
-                  <div>
                     {this.state.apps[this.props.appId].url}
-                  </div>
-              }
             </TableRowColumn>
           </TableRow>
       </TableBody>

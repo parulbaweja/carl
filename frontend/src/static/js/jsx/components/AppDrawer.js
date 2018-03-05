@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import apiRequest from '../utils/jobsSDK';
-import FlatButton from 'material-ui/FlatButton';
-import SingleAppView from './SingleAppView';
-import EditView from './EditView';
+import AppView from './AppView';
 import StatusChange from './StatusChange';
 import News from './News';
 import {Tabs, Tab} from 'material-ui/Tabs';
@@ -29,11 +26,11 @@ class AppDrawer extends React.Component {
     return (
       <div>
         <Tabs
-          value={this.state.section}
           onChange={this.handleChange}
+          value={this.state.section}
         >
           <Tab label="Details" value="details">
-            <SingleAppView appId={this.props.appId}/>
+            <AppView appId={this.props.appId}/>
           </Tab>
           <Tab label="Activity" value="activity">
             <StatusChange appId={this.props.appId}/>
