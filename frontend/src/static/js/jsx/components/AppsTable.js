@@ -20,6 +20,7 @@ import UnarchiveIcon from 'material-ui/svg-icons/content/unarchive';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import Paper from 'material-ui/Paper';
 import JobAppForm from './JobAppForm';
+import TextField from 'material-ui/TextField';
 
 class AppsTable extends React.Component {
   constructor(props) {
@@ -110,6 +111,24 @@ class AppsTable extends React.Component {
     };
   }
 
+  filterList(e) {
+    console.log('in filterlist');
+    var self = this;
+    var updatedList = self.state.rows;
+    console.log(updatedList);
+    updatedList = updatedList.filter((row) => {
+      var company = row.company.toLowerCase();
+      return (company.search(e.target.value.toLowerCase()) !== -1);
+    });
+    this.setState({rows: updatedList});
+  }
+
+  componentWillMount() {
+    this.setState({
+      rows: this.state.rows,
+    });
+  }
+
   render() {
 
     console.log(this.state);
@@ -134,6 +153,10 @@ class AppsTable extends React.Component {
                 key={this.state.appId}/>
           </Drawer>
         }
+        <TextField
+          hintText="Search"
+          onChange={this.filterList}
+        />
       <Table>
         <TableHeader
           displaySelectAll={false}

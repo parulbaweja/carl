@@ -1,5 +1,5 @@
-# Joblands
-An app to manage your job search.
+# Carl
+A personal assistant to manage your job search.
 
 ## Getting Started
 
