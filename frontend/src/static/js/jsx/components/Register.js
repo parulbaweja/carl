@@ -44,6 +44,7 @@ class Register extends React.Component {
         <form>
           <TextField
             id="fname"
+            label="First Name"
             onChange={this.onChange('fname')}
             type="text"
             value={this.state.fname}
@@ -51,6 +52,7 @@ class Register extends React.Component {
           <br/>
           <TextField
             id="lname"
+            label="Last Name"
             onChange={this.onChange('lname')}
             type="text"
             value={this.state.lname}
@@ -58,6 +60,7 @@ class Register extends React.Component {
           <br/>
           <TextField
             id="email"
+            label="Email"
             onChange={this.onChange('email')}
             type="text"
             value={this.state.email}
@@ -65,6 +68,7 @@ class Register extends React.Component {
           <br/>
           <TextField
             id="password"
+            label="Password"
             onChange={this.onChange('password')}
             type="password"
             value={this.state.password}

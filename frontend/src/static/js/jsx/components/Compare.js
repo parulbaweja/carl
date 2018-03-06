@@ -1,10 +1,9 @@
 import React from 'react';
 import apiRequest from '../utils/jobsSDK';
-import RaisedButton from 'material-ui/RaisedButton';
-import {Redirect, Link} from 'react-router';
-import PropTypes from 'prop-types';
 import Checkbox from 'material-ui/Checkbox';
 import VerticalView from './VerticalView';
+import Grid from 'material-ui/Grid';
+import List, {ListItem, ListItemSecondaryAction, ListItemText} from 'material-ui/List';
 
 const styles = {
   compare: {
@@ -49,25 +48,36 @@ class Compare extends React.Component {
 
   render() {
     return (
-      <div style={styles.compare}>
       <div>
+        <Grid container={true} spacing={16} direction='row' alignItems='flex-start' justify='flex-start'>
+          <Grid item={true} md={true} style={{flexGrow: 0}}>
+        <List>
         {
           this.state.companies.map((company) => {
             return (
-              <Checkbox
+              <ListItem
                 key={company[0]}
-                label={company[1]}
-                onCheck={() => this.handleCheck(company[0])}
+                role={undefined}
+                dense={true}
+                button={true}
+                onClick={() => this.handleCheck(company[0])}
+                style={{padding: 0}}
+              >
+              <Checkbox
                 checked={this.state.checkedValues.includes(company[0])}
               />
+              <ListItemText primary={company[1]}/>
+            </ListItem>
             );
           })
         }
-      </div>
+      </List>
+    </Grid>
 
-      <div>
+    <Grid item={true} md={true} style={{flexGrow: 0}}>
             <VerticalView appId={this.state.checkedValues}/>
-      </div>
+          </Grid>
+        </Grid>
       </div>
     );
   }

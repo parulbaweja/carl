@@ -12,23 +12,16 @@ import Grid from 'material-ui/Grid';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
+import NavBar from './components/NavBar';
 
 const AppRouter = () => (
   <BrowserRouter>
-    <div>
-      <Grid container={true} spacing={0} direction='column' justify='flex-start' alignItems='flex-start'>
-        <Grid item={true} md={12}>
-        <AppBar position="absolute">
-          <Toolbar>
-          <Typography variant="title" color="inherit">
-            Jobs
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </Grid>
-
-    <Grid item={true} md={12}>
+    <div style={{height:'100%',width:'100%'}}>
       <Route component={Welcome} exact={false} path="/welcome"/>
+      <Grid container={true} spacing={0} direction='column' justify='flex-start' alignItems='flex-start'>
+
+        <Grid item={true} md={12}>
+          <Route component={NavBar} exact={false} path="/app/"/>
     </Grid>
 
       <Grid container={true} spacing={0} direction='row' alignItems='flex-start' justify='flex-start' wrap={'wrap'}>

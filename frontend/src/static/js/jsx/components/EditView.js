@@ -116,6 +116,7 @@ class EditView extends React.Component {
                   <TextField
                     id="company"
                     onChange={this.onChange('company')}
+                    inputStyle={{fontSize: '0.8125rem'}}
                     type="text"
                     value={this.state.company}
                   />

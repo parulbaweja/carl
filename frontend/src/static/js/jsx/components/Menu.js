@@ -4,18 +4,11 @@ import {withStyles} from 'material-ui/styles';
 import apiRequest from '../utils/jobsSDK';
 import {Redirect} from 'react-router';
 import Drawer from 'material-ui/Drawer';
-import Menu, {MenuItem} from 'material-ui/Menu';
 import {CircularProgress} from 'material-ui/Progress';
 import HomeIcon from 'material-ui-icons/Home';
-import MenuIcon from 'material-ui-icons/Menu';
 import AssessmentIcon from 'material-ui-icons/Assessment';
-import AppBar from 'material-ui/AppBar';
 import ArchiveIcon from 'material-ui-icons/Archive';
 import CompareArrowsIcon from 'material-ui-icons/CompareArrows';
-import Toolbar from 'material-ui/Toolbar';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import Typography from 'material-ui/Typography';
 import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
 
 const styles = theme => ({
@@ -43,7 +36,7 @@ const styles = theme => ({
   toolbar: theme.mixins.toolbar,
 });
 
-class NavBar extends React.Component {
+class Menu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -65,7 +58,6 @@ class NavBar extends React.Component {
     this.myDashboard = this.myDashboard.bind(this);
     this.myCompare = this.myCompare.bind(this);
     this.myArchive = this.myArchive.bind(this);
-    this.logout = this.logout.bind(this);
   }
 
   myDashboard() {
@@ -82,16 +74,6 @@ class NavBar extends React.Component {
 
   myAnalytics() {
     this.setState({isLeftMenuOpen: false, redirect: '/app/analytics'});
-  }
-
-  logout(e) {
-    e.preventDefault();
-    var self = this;
-    apiRequest('logout', function(body) {
-      self.setState({
-        loggedIn: false,
-      });
-    });
   }
 
   setLeftMenuState(open) {
@@ -152,12 +134,6 @@ class NavBar extends React.Component {
               </ListItemIcon>
               <ListItemText primary="Analytics"/>
             </ListItem>
-            <ListItem button={true} onClick={this.logout}>
-              <ListItemIcon>
-                <HomeIcon/>
-              </ListItemIcon>
-              <ListItemText primary="Logout"/>
-            </ListItem>
           </List>
         </Drawer>
       </div>
@@ -171,8 +147,8 @@ class NavBar extends React.Component {
   }
 }
 
-NavBar.propTypes = {
+Menu.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NavBar);
+export default withStyles(styles)(Menu);

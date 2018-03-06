@@ -2,12 +2,16 @@ import React from 'react';
 import {Redirect} from 'react-router';
 import Button from 'material-ui/Button';
 import ReactPlayer from 'react-player';
+import Login from './Login';
+import Register from './Register';
+import Paper from 'material-ui/Paper';
+import Typography from 'material-ui/Typography';
 
 class Welcome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      login: false,
+      login: true,
       register: false,
     };
 
@@ -24,29 +28,37 @@ class Welcome extends React.Component {
   }
 
   render() {
-    if (this.state.login) {
-      return (<Redirect to="/welcome/login"/>);
-    }
-    if (this.state.register) {
-      return (<Redirect to="/welcome/register"/>);
-    }
 
     return (
-      <div style={{margin: 0, padding: 'none'}}>
+      <div>
+        <div style={{position: 'fixed'}}>
         <video
-          id="background-video" loop={true} autoPlay={true} height={800} width={1440}
+          id="background-video" loop={true} autoPlay={true} height={'100%'} width={'100%'}
           style={{padding: 'none', position: 'fixed', height: '100%', width: '100%', float: 'left'}}
         >
-                <source src={'https://storage.googleapis.com/coverr-main/mp4/Black_Keys.mp4'} type="video/mp4"/>
-                <h3>{'Testing'}</h3>
-            </video>
-      <h3>{'Welcome'}</h3>
-      <Button onClick={this.goToLogin}>
-        {'Login'}
-      </Button>
-      <Button onClick={this.goToRegister}>
-        {'Register'}
-      </Button>
+          <source src={'https://storage.googleapis.com/coverr-main/mp4/Black_Keys.mp4'} type="video/mp4"/>
+        </video>
+        </div>
+
+            <Paper style={{width: 300, height: 400, zIndex: '1', position: 'fixed', marginLeft: '37%', marginTop: '10%', backgroundColor: 'rgba(255, 255, 255, 0.7', textAlign: 'center'}}>
+              <Typography>{'carl'}</Typography>
+            {this.state.login &&
+                <div>
+                  <Login/>
+              <Button onClick={this.goToRegister}>
+                {'Register'}
+              </Button>
+            </div>
+            }
+            {this.state.register &&
+                <div>
+                <Register/>
+              <Button onClick={this.goToLogin}>
+                {'Login'}
+              </Button>
+            </div>
+            }
+          </Paper>
     </div>
     );
   }

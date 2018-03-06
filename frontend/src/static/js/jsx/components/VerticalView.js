@@ -16,6 +16,13 @@ import IconButton from 'material-ui/IconButton';
 import CheckIcon from 'material-ui-icons/Check';
 import CloseIcon from 'material-ui-icons/Close';
 
+const styles = {
+  cell: {
+    borderBottom: 0,
+    flexGrow: 1,
+  },
+};
+
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
 
 class VerticalView extends React.Component {
@@ -111,6 +118,7 @@ class VerticalView extends React.Component {
 
   render() {
     console.log(this.state);
+    const classes = this.props;
 
     if (this.props.appId === undefined || this.state.apps === undefined) {
       return null;
@@ -121,13 +129,13 @@ class VerticalView extends React.Component {
       <Table>
         <TableBody>
           <TableRow>
-            <TableCell>
+            <TableCell style={styles.cell}>
               <b>{'Company'}</b>
             </TableCell>
             {
               this.props.appId.map((company, i) => {
                 return (
-                <TableCell key={i}>
+                <TableCell key={i} style={styles.cell}>
                   {this.state.apps[company].company}
                 </TableCell>
                 );
@@ -136,13 +144,13 @@ class VerticalView extends React.Component {
           </TableRow>
 
           <TableRow>
-            <TableCell>
+            <TableCell style={styles.cell}>
               <b>{'Position'}</b>
             </TableCell>
             {
               this.props.appId.map((company, i) => {
                 return (
-                <TableCell key={i}>
+                <TableCell key={i} style={styles.cell}>
                   {this.state.apps[company].position}
                 </TableCell>
                 );
@@ -151,13 +159,13 @@ class VerticalView extends React.Component {
           </TableRow>
 
           <TableRow>
-            <TableCell>
+            <TableCell style={styles.cell}>
               <b>{'Status'}</b>
             </TableCell>
             {
               this.props.appId.map((company, i) => {
                 return (
-                <TableCell key={i}>
+                <TableCell key={i} style={styles.cell}>
                   {this.state.apps[company].status}
                 </TableCell>
                 );
@@ -165,13 +173,13 @@ class VerticalView extends React.Component {
             }
           </TableRow>
           <TableRow>
-            <TableCell>
+            <TableCell style={styles.cell}>
               <b>{'Offer Amount'}</b>
             </TableCell>
             {
               this.props.appId.map((company, i) => {
                 return (
-                <TableCell key={i}>
+                <TableCell key={i} style={styles.cell}>
                   {this.state.apps[company].offerAmount}
                 </TableCell>
                 );
@@ -180,11 +188,11 @@ class VerticalView extends React.Component {
           </TableRow>
 
           <TableRow>
-            <TableCell>{'Pros'}
+            <TableCell style={styles.cell}><b>{'Pros'}</b>
             </TableCell>
             {this.props.appId.map((appId, i) => {
               return (
-                <TableCell key={i}>
+                <TableCell key={i} style={styles.cell}>
                   <div>
                   {this.state.apps[appId].pros.map((pro) => {
                     return (
@@ -235,11 +243,11 @@ class VerticalView extends React.Component {
           </TableRow>
 
           <TableRow>
-            <TableCell>{'Cons'}
+            <TableCell style={styles.cell}><b>{'Cons'}</b>
             </TableCell>
             {this.props.appId.map((appId, i) => {
               return (
-                <TableCell key={i}>
+                <TableCell key={i} style={styles.cell}>
                   <div>
                   {this.state.apps[appId].cons.map((con) => {
                     return (

@@ -170,7 +170,7 @@ class AppsTable extends React.Component {
           </TableBody>
 
         </Table>
-        <Button variant="fab" color="secondary" aria-label="add" onClick={this.showPaper}>
+        <Button variant="fab" color="secondary" aria-label="add" onClick={this.showPaper} style={{marginLeft: '95%'}}>
           <AddIcon/>
         </Button>
 

@@ -66,6 +66,7 @@ class LoginForm extends React.Component {
       <form>
         <TextField
           id="email"
+          label="Email"
           onChange={this.onChange('email')}
           type="text"
           value={this.state.email}
@@ -73,6 +74,7 @@ class LoginForm extends React.Component {
         <br/>
         <TextField
           id="password"
+          label="Password"
           onChange={this.onChange('password')}
           type="password"
           value={this.state.password}
