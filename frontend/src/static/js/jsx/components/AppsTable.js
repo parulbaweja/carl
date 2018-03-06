@@ -1,23 +1,21 @@
-//import Table from './Table';
 import React from 'react';
 import PropTypes from 'prop-types';
 import apiRequest from '../utils/jobsSDK';
 import {postRequest} from '../utils/jobsSDK';
-import {
-  Table,
+import Table, {
   TableBody,
-  TableHeader,
-  TableHeaderColumn,
+  TableHead,
   TableRow,
-  TableRowColumn,
+  TableCell,
 } from 'material-ui/Table';
 import Drawer from 'material-ui/Drawer';
 import AppDrawer from './AppDrawer';
+import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
-import AddCircleOutlineIcon from 'material-ui/svg-icons/content/add-circle-outline';
-import ArchiveIcon from 'material-ui/svg-icons/content/archive';
-import UnarchiveIcon from 'material-ui/svg-icons/content/unarchive';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import AddIcon from 'material-ui-icons/Add';
+import ArchiveIcon from 'material-ui-icons/Archive';
+import UnarchiveIcon from 'material-ui-icons/Unarchive';
+import CloseIcon from 'material-ui-icons/Close';
 import Paper from 'material-ui/Paper';
 import JobAppForm from './JobAppForm';
 import TextField from 'material-ui/TextField';
@@ -27,6 +25,7 @@ class AppsTable extends React.Component {
     super(props);
     this.state = {
       rows: [],
+      searchRows: [],
       isRightMenuOpen: false,
       showPaper: false,
     };
@@ -35,6 +34,7 @@ class AppsTable extends React.Component {
     apiRequest('applications', function(body) {
       self.setState({
         rows: body,
+        searchRows: body,
       });
     });
 
@@ -111,42 +111,23 @@ class AppsTable extends React.Component {
     };
   }
 
-  filterList(e) {
-    console.log('in filterlist');
-    var self = this;
-    var updatedList = self.state.rows;
-    console.log(updatedList);
-    updatedList = updatedList.filter((row) => {
-      var company = row.company.toLowerCase();
-      return (company.search(e.target.value.toLowerCase()) !== -1);
-    });
-    this.setState({rows: updatedList});
-  }
-
-  componentWillMount() {
-    this.setState({
-      rows: this.state.rows,
-    });
-  }
-
   render() {
 
     console.log(this.state);
     var headers = [
-      <TableHeaderColumn key={0}>{'Companies'}</TableHeaderColumn>,
-      <TableHeaderColumn key={1}>{'Status'}</TableHeaderColumn>,
-      <TableHeaderColumn key={2}>{'Last Modified'}</TableHeaderColumn>,
-      <TableHeaderColumn key={3}></TableHeaderColumn>,
+      <TableCell key={0}>{'Companies'}</TableCell>,
+      <TableCell key={1}>{'Status'}</TableCell>,
+      <TableCell key={2}>{'Last Modified'}</TableCell>,
+      <TableCell key={3}></TableCell>,
     ];
 
     return (
       <div>
         {this.state.appId &&
           <Drawer
-            docked={false}
             width={'50%'}
-            openSecondary={true}
-            onRequestChange={this.setRightMenuState}
+            onClose={() => this.setRightMenuState(false)}
+            anchor="right"
             open={this.state.isRightMenuOpen}>
               <AppDrawer
                 appId={this.state.appId}
@@ -154,20 +135,16 @@ class AppsTable extends React.Component {
           </Drawer>
         }
         <TextField
-          hintText="Search"
           onChange={this.filterList}
         />
       <Table>
-        <TableHeader
-          displaySelectAll={false}
-          adjustForCheckbox={false}
+        <TableHead
         >
           <TableRow>
             {headers}
           </TableRow>
-        </TableHeader>
+        </TableHead>
           <TableBody
-            displayRowCheckbox={false}
           >
             {
               this.state.rows.map((company, i) => {
@@ -176,16 +153,16 @@ class AppsTable extends React.Component {
                 }
                 return (
                   <TableRow key={company.appId}>
-                    <TableRowColumn><a href={''} onClick={this.openRightMenu(i)}>{company.company}</a></TableRowColumn>
-                    <TableRowColumn>{company.status}</TableRowColumn>
-                    <TableRowColumn>{company.date.slice(0, -13)}</TableRowColumn>
-                    <TableRowColumn>
+                    <TableCell><a href={''} onClick={this.openRightMenu(i)}>{company.company}</a></TableCell>
+                    <TableCell>{company.status}</TableCell>
+                    <TableCell>{company.date.slice(0, -13)}</TableCell>
+                    <TableCell>
                     {!company.archive ?
                         <ArchiveIcon onClick={this.archive(i)}/>
                         :
                         <UnarchiveIcon onClick={this.archive(i)}/>
                     }
-                  </TableRowColumn>
+                  </TableCell>
                   </TableRow>
                 );
               })
@@ -193,13 +170,9 @@ class AppsTable extends React.Component {
           </TableBody>
 
         </Table>
-        <IconButton
-          iconStyle={{width: 48, height: 48, position: 'fixed', right: 0, bottom: 0}}
-          style={{width: 96, height: 96, padding: 24, position: 'fixed', right: 0, bottom: 0, margin: 20}}
-          onClick={this.showPaper}
-        >
-          <AddCircleOutlineIcon/>
-        </IconButton>
+        <Button variant="fab" color="secondary" aria-label="add" onClick={this.showPaper}>
+          <AddIcon/>
+        </Button>
 
         {this.state.showPaper &&
               <Paper

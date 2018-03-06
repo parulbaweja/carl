@@ -1,13 +1,11 @@
 import React from 'react';
 import {postRequest} from '../utils/jobsSDK';
-import apiRequest from '../utils/jobsSDK';
-import {Redirect} from 'react-router';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import DatePicker from 'material-ui/DatePicker';
+import Button from 'material-ui/Button';
+import Select from 'material-ui/Select';
+import {MenuItem} from 'material-ui/Menu';
 import PropTypes from 'prop-types';
+import Input, {InputLabel} from 'material-ui/Input';
 
 const date = new Date();
 
@@ -65,7 +63,7 @@ class ApplicationForm extends React.Component {
       <h3>{'Job App Entry Form'}</h3>
         <form>
           <TextField
-            hintText="Company Name"
+            label="Company Name"
             id="company"
             onChange={this.onChange('company')}
             type="text"
@@ -73,7 +71,7 @@ class ApplicationForm extends React.Component {
             />
             <br/>
             <TextField
-              hintText="Position"
+              label="Position"
               id="position"
               onChange={this.onChange('position')}
               type="text"
@@ -81,7 +79,7 @@ class ApplicationForm extends React.Component {
             />
             <br/>
             <TextField
-              hintText="Contact Name"
+              label="Contact Name"
               id="contactName"
               onChange={this.onChange('contactName')}
               type="text"
@@ -89,35 +87,42 @@ class ApplicationForm extends React.Component {
             />
             <br/>
             <TextField
-              hintText="Contact Email"
+              label="Contact Email"
               id="contactEmail"
               onChange={this.onChange('contactEmail')}
               type="text"
               value={this.state.contactEmail}
             />
             <br/>
-            <SelectField
-              floatingLabelText="Status"
-              value={this.state.status}
-              onChange={this.handleStatusChange}>
-              <MenuItem value={1} primaryText="Interested"/>
-              <MenuItem value={2} primaryText="Applied"/>
-              <MenuItem value={3} primaryText="Phone Call"/>
-              <MenuItem value={4} primaryText="Interview"/>
-              <MenuItem value={5} primaryText="Offer"/>
-              <MenuItem value={6} primaryText="Accepted"/>
-              <MenuItem value={7} primaryText="Withdrawn"/>
-              <MenuItem value={8} primaryText="Not a Fit"/>
-            </SelectField>
+            <InputLabel>Status</InputLabel>
             <br/>
-            <DatePicker
-              onChange={this.handleDateChange}
-              floatingLabelText="Date"
-              defaultDate={date}
+            <Select
+              value={this.state.status}
+              onChange={this.handleStatusChange}
+              input={<Input name="status" id="status-helper"/>}>
+              <MenuItem value={1}>{'Interested'}</MenuItem>
+              <MenuItem value={2}>{'Applied'}</MenuItem>
+              <MenuItem value={3}>{'Phone Call'}</MenuItem>
+              <MenuItem value={4}>{'Interview'}</MenuItem>
+              <MenuItem value={5}>{'Offer'}</MenuItem>
+              <MenuItem value={6}>{'Accepted'}</MenuItem>
+              <MenuItem value={7}>{'Withdrawn'}</MenuItem>
+              <MenuItem value={8}>{'Not a Fit'}</MenuItem>
+            </Select>
+            <br/>
+              <TextField
+                id="date"
+                label="Date"
+                type="date"
+                defaultValue={this.state.date}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={this.handleDateChange}
           />
             <br/>
             <TextField
-              hintText="Offer Amount"
+              label="Offer Amount"
               id="offerAmount"
               onChange={this.onChange('offerAmount')}
               type="text"
@@ -125,21 +130,23 @@ class ApplicationForm extends React.Component {
             />
             <br/>
             <TextField
-              hintText="Notes"
+              label="Notes"
               id="notes"
               onChange={this.onChange('notes')}
               value={this.state.notes}
             />
             <br/>
             <TextField
-              hintText="URL"
+              label="URL"
               id="url"
               onChange={this.onChange('url')}
               type="text"
               value={this.state.url}
             />
             <br/>
-            <FlatButton label="Submit" onClick={this.onSubmit}/>
+            <Button onClick={this.onSubmit}>
+              {'Submit'}
+            </Button>
           </form>
         </div>
     );

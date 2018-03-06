@@ -1,25 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import apiRequest from '../utils/jobsSDK';
-import {
+import Stepper, {
   Step,
-  Stepper,
   StepLabel,
   StepContent,
 } from 'material-ui/Stepper';
-import SendIcon from 'material-ui/svg-icons/content/send';
-import BookmarkIcon from 'material-ui/svg-icons/action/bookmark';
-import PhoneIcon from 'material-ui/svg-icons/communication/phone';
-import AttachMoneyIcon from 'material-ui/svg-icons/editor/attach-money';
-import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle';
-import FeedbackIcon from 'material-ui/svg-icons/action/feedback';
-import WarningIcon from 'material-ui/svg-icons/alert/warning';
-import WorkIcon from 'material-ui/svg-icons/action/work';
-import AddCircleIcon from 'material-ui/svg-icons/content/add-circle';
+import SendIcon from 'material-ui-icons/Send';
+import BookmarkIcon from 'material-ui-icons/Bookmark';
+import PhoneIcon from 'material-ui-icons/Phone';
+import AttachMoneyIcon from 'material-ui-icons/AttachMoney';
+import CheckCircleIcon from 'material-ui-icons/CheckCircle';
+import FeedbackIcon from 'material-ui-icons/Feedback';
+import WarningIcon from 'material-ui-icons/Warning';
+import WorkIcon from 'material-ui-icons/Work';
+import AddCircleIcon from 'material-ui-icons/AddCircle';
 import IconButton from 'material-ui/IconButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import DatePicker from 'material-ui/DatePicker';
 
 const headers = ['Status', 'Date'];
 

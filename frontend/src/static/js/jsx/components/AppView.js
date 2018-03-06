@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import EditView from './EditView';
 import SingleAppView from './SingleAppView';
 import IconButton from 'material-ui/IconButton';
-import CreateIcon from 'material-ui/svg-icons/content/create';
+import CreateIcon from 'material-ui-icons/Create';
 
 class AppView extends React.Component {
   constructor(props) {

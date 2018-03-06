@@ -1,22 +1,17 @@
 import React from 'react';
 import apiRequest from '../utils/jobsSDK';
 import {postRequest} from '../utils/jobsSDK';
-import {
-  Table,
+import Table, {
   TableBody,
-  TableHeader,
-  TableHeaderColumn,
+  TableHead,
   TableRow,
-  TableRowColumn,
+  TableCell,
 } from 'material-ui/Table';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import PropTypes from 'prop-types';
-import IconButton from 'material-ui/IconButton';
-import CreateIcon from 'material-ui/svg-icons/content/create';
 import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import DatePicker from 'material-ui/DatePicker';
+import Select from 'material-ui/Select';
+import {MenuItem} from 'material-ui/Menu';
 
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
 
@@ -112,72 +107,69 @@ class EditView extends React.Component {
     return (
       <div>
       <Table>
-        <TableBody
-          displayRowCheckbox={false}
-        >
+        <TableBody>
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Company'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                   <TextField
                     id="company"
                     onChange={this.onChange('company')}
                     type="text"
                     value={this.state.company}
                   />
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Position'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                   <TextField
                     id="position"
                     onChange={this.onChange('position')}
                     type="text"
                     value={this.state.position}
                   />
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Contact Name'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                   <TextField
                     id="contactName"
                     onChange={this.onChange('contactName')}
                     type="text"
                     value={this.state.contactName}
                   />
-                </TableRowColumn>
+                </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Contact Email'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                   <TextField
                     id="contactEmail"
                     onChange={this.onChange('contactEmail')}
                     type="text"
                     value={this.state.contactEmail}
                   />
-                </TableRowColumn>
+                </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Status'}
-            </TableRowColumn>
-            <TableRowColumn>
-                <SelectField
-                  floatingLabelText="Status"
+            </TableCell>
+            <TableCell>
+                <Select
                   onChange={this.handleStatusChange}
                   value={this.state.statusId}
                 >
@@ -213,68 +205,73 @@ class EditView extends React.Component {
                     primaryText="Not a Fit"
                     value={8}
                   />
-                </SelectField>
-              </TableRowColumn>
+                </Select>
+              </TableCell>
           </TableRow>
-
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Date'}
-            </TableRowColumn>
-            <TableRowColumn>
-                <DatePicker
-                  onChange={this.handleDateChange}
-                  floatingLabelText="Date"
-                  value={this.state.date}
-                />
-            </TableRowColumn>
+            </TableCell>
+            <TableCell>
+              <TextField
+                id="date"
+                label="Date"
+                type="date"
+                defaultValue={this.state.date}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+      />
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Offer Amount'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                   <TextField
                     id="offerAmount"
                     onChange={this.onChange('offerAmount')}
                     type="text"
                     value={this.state.offerAmount}
                   />
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Notes'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                   <TextField
                     id="notes"
-                    multiLine={true}
+                    multiline={true}
                     onChange={this.onChange('notes')}
                     type="text"
                     value={this.state.notes}
                   />
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'URL'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                   <TextField
                     id="notes"
                     onChange={this.onChange('url')}
                     type="text"
                     value={this.state.url}
                   />
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
       </TableBody>
     </Table>
-      <RaisedButton label="Save" onClick={this.onSubmit}/>
+    <Button onClick={this.onSubmit}>
+      {'Save'}
+    </Button>
       </div>
     );
   }

@@ -1,35 +1,47 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
+import PropTypes from 'prop-types';
+import {withStyles} from 'material-ui/styles';
 import apiRequest from '../utils/jobsSDK';
 import {Redirect} from 'react-router';
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
-import CircularProgress from 'material-ui/CircularProgress';
-import HomeIcon from 'material-ui/svg-icons/action/home';
-import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
+import Menu, {MenuItem} from 'material-ui/Menu';
+import {CircularProgress} from 'material-ui/Progress';
+import HomeIcon from 'material-ui-icons/Home';
+import MenuIcon from 'material-ui-icons/Menu';
+import AssessmentIcon from 'material-ui-icons/Assessment';
 import AppBar from 'material-ui/AppBar';
-import ArchiveIcon from 'material-ui/svg-icons/content/archive';
-import CompareArrowsIcon from 'material-ui/svg-icons/action/compare-arrows';
-import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import ArchiveIcon from 'material-ui-icons/Archive';
+import CompareArrowsIcon from 'material-ui-icons/CompareArrows';
+import Toolbar from 'material-ui/Toolbar';
+import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
+import Typography from 'material-ui/Typography';
+import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
 
-const Logged = (props) => (
-  <IconMenu
-    {...props}
-    iconButtonElement={
-      <IconButton><KeyboardArrowDown/></IconButton>
-    }
-    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-  >
-    <MenuItem primaryText="Profile"/>
-    <MenuItem primaryText="Settings"/>
-    <MenuItem primaryText="Sign out"/>
-  </IconMenu>
-);
-
-Logged.muiName = 'IconMenu';
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    height: 430,
+    zIndex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    display: 'flex',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  drawerPaper: {
+    position: 'relative',
+    width: 200,
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
+    minWidth: 0, // So the Typography noWrap works
+  },
+  toolbar: theme.mixins.toolbar,
+});
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -95,7 +107,7 @@ class NavBar extends React.Component {
 
   render() {
     if (this.state.loggedIn === undefined) {
-      return (<CircularProgress size={80} thickness={5}/>);
+      return (<CircularProgress variant="determinate" size={50}/>);
     }
 
     if (this.state.loggedIn === false) {
@@ -106,46 +118,48 @@ class NavBar extends React.Component {
       return (<Redirect to={this.state.redirect}/>);
     }
 
-    return (
-      <div>
+    const {classes} = this.props;
 
-        <AppBar
-          iconElementLeft={<MenuIcon style={{padding: 16}} onClick={this.toggleLeftMenu}/>}
-          iconElementRight={<Logged/>}
-          title="Joblands"
-        />
-      <div className="navbar">
+    return (
+      <div className={classes.root}>
+
         <Drawer
-          containerStyle={{height: 'calc(100% - 64px)', top: 80}}
-          docked={false}
-          onRequestChange={this.setLeftMenuState}
-          open={this.state.isLeftMenuOpen}
-          width={'15%'}
-        >
-          <MenuItem
-            leftIcon={<HomeIcon/>}
-            onClick={this.myDashboard}
-            primaryText={'Home'}/>
-          <br/>
-          <MenuItem
-            leftIcon={<CompareArrowsIcon/>}
-            onClick={this.myCompare}
-            primaryText={'Compare'}
-          />
-          <br/>
-          <MenuItem
-            leftIcon={<ArchiveIcon/>}
-            onClick={this.myArchive}
-            primaryText={'Archive'}
-          />
-          <MenuItem
-            leftIcon={<AssessmentIcon/>}
-            onClick={this.myAnalytics}
-            primaryText={'Analytics'}
-          />
-          <MenuItem onClick={this.logout}>{'Logout'}</MenuItem>
+          variant="permanent"
+          classes={{paper: classes.drawerPaper}}>
+          <div className={classes.toolbar}/>
+          <List>
+            <ListItem button={true} onClick={this.myDashboard}>
+              <ListItemIcon>
+                <HomeIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Home"/>
+            </ListItem>
+            <ListItem button={true} onClick={this.myCompare}>
+              <ListItemIcon>
+                <CompareArrowsIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Compare"/>
+            </ListItem>
+            <ListItem button={true} onClick={this.myArchive}>
+              <ListItemIcon>
+                <ArchiveIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Archive"/>
+            </ListItem>
+            <ListItem button={true} onClick={this.myAnalytics}>
+              <ListItemIcon>
+                <AssessmentIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Analytics"/>
+            </ListItem>
+            <ListItem button={true} onClick={this.logout}>
+              <ListItemIcon>
+                <HomeIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Logout"/>
+            </ListItem>
+          </List>
         </Drawer>
-      </div>
       </div>
     );
   }
@@ -157,4 +171,8 @@ class NavBar extends React.Component {
   }
 }
 
-export default NavBar;
+NavBar.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(NavBar);

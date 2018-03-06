@@ -1,6 +1,7 @@
 import React from 'react';
 import {Redirect} from 'react-router';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
+import ReactPlayer from 'react-player';
 
 class Welcome extends React.Component {
   constructor(props) {
@@ -31,10 +32,21 @@ class Welcome extends React.Component {
     }
 
     return (
-    <div>
+      <div style={{margin: 0, padding: 'none'}}>
+        <video
+          id="background-video" loop={true} autoPlay={true} height={800} width={1440}
+          style={{padding: 'none', position: 'fixed', height: '100%', width: '100%', float: 'left'}}
+        >
+                <source src={'https://storage.googleapis.com/coverr-main/mp4/Black_Keys.mp4'} type="video/mp4"/>
+                <h3>{'Testing'}</h3>
+            </video>
       <h3>{'Welcome'}</h3>
-      <RaisedButton label="Login" onClick={this.goToLogin}/>
-      <RaisedButton label="Register" onClick={this.goToRegister}/>
+      <Button onClick={this.goToLogin}>
+        {'Login'}
+      </Button>
+      <Button onClick={this.goToRegister}>
+        {'Register'}
+      </Button>
     </div>
     );
   }

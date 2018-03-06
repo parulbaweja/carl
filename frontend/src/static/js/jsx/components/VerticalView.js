@@ -1,23 +1,20 @@
 import React from 'react';
 import apiRequest from '../utils/jobsSDK';
 import {postRequest} from '../utils/jobsSDK';
-import {
-  Table,
+import Table, {
   TableBody,
-  TableHeader,
-  TableHeaderColumn,
+  TableHead,
   TableRow,
-  TableRowColumn,
+  TableCell,
 } from 'material-ui/Table';
-import FlatButton from 'material-ui/FlatButton';
-import {Redirect, Link} from 'react-router';
+import Button from 'material-ui/Button';
 import PropTypes from 'prop-types';
-import AddIcon from 'material-ui/svg-icons/content/add';
-import RemoveIcon from 'material-ui/svg-icons/content/remove';
+import AddIcon from 'material-ui-icons/Add';
+import RemoveIcon from 'material-ui-icons/Remove';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import CheckIcon from 'material-ui-icons/Check';
+import CloseIcon from 'material-ui-icons/Close';
 
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
 
@@ -122,74 +119,72 @@ class VerticalView extends React.Component {
     return (
       <div>
       <Table>
-        <TableBody
-          displayRowCheckbox={false}
-        >
+        <TableBody>
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               <b>{'Company'}</b>
-            </TableRowColumn>
+            </TableCell>
             {
               this.props.appId.map((company, i) => {
                 return (
-                <TableRowColumn key={i}>
+                <TableCell key={i}>
                   {this.state.apps[company].company}
-                </TableRowColumn>
+                </TableCell>
                 );
               })
             }
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               <b>{'Position'}</b>
-            </TableRowColumn>
+            </TableCell>
             {
               this.props.appId.map((company, i) => {
                 return (
-                <TableRowColumn key={i}>
+                <TableCell key={i}>
                   {this.state.apps[company].position}
-                </TableRowColumn>
+                </TableCell>
                 );
               })
             }
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               <b>{'Status'}</b>
-            </TableRowColumn>
+            </TableCell>
             {
               this.props.appId.map((company, i) => {
                 return (
-                <TableRowColumn key={i}>
+                <TableCell key={i}>
                   {this.state.apps[company].status}
-                </TableRowColumn>
+                </TableCell>
                 );
               })
             }
           </TableRow>
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               <b>{'Offer Amount'}</b>
-            </TableRowColumn>
+            </TableCell>
             {
               this.props.appId.map((company, i) => {
                 return (
-                <TableRowColumn key={i}>
+                <TableCell key={i}>
                   {this.state.apps[company].offerAmount}
-                </TableRowColumn>
+                </TableCell>
                 );
               })
             }
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>{'Pros'}
-            </TableRowColumn>
+            <TableCell>{'Pros'}
+            </TableCell>
             {this.props.appId.map((appId, i) => {
               return (
-                <TableRowColumn key={i}>
+                <TableCell key={i}>
                   <div>
                   {this.state.apps[appId].pros.map((pro) => {
                     return (
@@ -201,12 +196,12 @@ class VerticalView extends React.Component {
                   }
 
                   {this.state.isAddingPro != appId ?
-                      <FlatButton
-                        icon={<AddIcon/>}
+                      <Button
                         key={i}
-                        label={'add pro'}
-                        onClick={this.handlePro(appId)}
-                      />
+                        onClick={this.handlePro(appId)}>
+                        {'add pro'}
+                        <AddIcon/>
+                      </Button>
                       :
                       <div>
                       <TextField
@@ -233,18 +228,18 @@ class VerticalView extends React.Component {
                   }
                   </div>
 
-                </TableRowColumn>
+                </TableCell>
               );
             })
             }
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>{'Cons'}
-            </TableRowColumn>
+            <TableCell>{'Cons'}
+            </TableCell>
             {this.props.appId.map((appId, i) => {
               return (
-                <TableRowColumn key={i}>
+                <TableCell key={i}>
                   <div>
                   {this.state.apps[appId].cons.map((con) => {
                     return (
@@ -256,12 +251,14 @@ class VerticalView extends React.Component {
                   }
 
                   {this.state.isAddingCon != appId ?
-                      <FlatButton
+                      <Button
                         icon={<RemoveIcon/>}
                         key={i}
                         label={'add con'}
-                        onClick={this.handleCon(appId)}
-                      />
+                        onClick={this.handleCon(appId)}>
+                        {'add con'}
+                        <RemoveIcon/>
+                      </Button>
                       :
                       <div>
                       <TextField
@@ -288,7 +285,7 @@ class VerticalView extends React.Component {
                   }
                   </div>
 
-                </TableRowColumn>
+                </TableCell>
               );
             })
             }

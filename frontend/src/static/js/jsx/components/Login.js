@@ -3,8 +3,8 @@ import {postRequest} from '../utils/jobsSDK';
 import apiRequest from '../utils/jobsSDK';
 import {Redirect} from 'react-router-dom';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import CircularProgress from 'material-ui/CircularProgress';
+import Button from 'material-ui/Button';
+import {CircularProgress} from 'material-ui/Progress';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -50,7 +50,7 @@ class LoginForm extends React.Component {
       return (<Redirect to="/welcome/"/>);
     }
     if (this.state.loggedIn === undefined) {
-      return (<CircularProgress size={80} thickness={5}/>);
+      return (<CircularProgress variant="determinate" size={50}/>);
     }
 
     if (this.state.loggedIn === true) {
@@ -65,7 +65,6 @@ class LoginForm extends React.Component {
         <h3>{'Login'}</h3>
       <form>
         <TextField
-          hintText="Email"
           id="email"
           onChange={this.onChange('email')}
           type="text"
@@ -73,14 +72,15 @@ class LoginForm extends React.Component {
         />
         <br/>
         <TextField
-          hintText="Password"
           id="password"
           onChange={this.onChange('password')}
           type="password"
           value={this.state.password}
         />
         <br/>
-            <FlatButton label="Submit" onClick={this.onSubmit}/>
+        <Button onClick={this.onSubmit}>
+          {'Submit'}
+        </Button>
         </form>
       </div>);
   }

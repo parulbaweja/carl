@@ -1,19 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import apiRequest from '../utils/jobsSDK';
-import FlatButton from 'material-ui/FlatButton';
-import {Link} from 'react-router';
-import {
-  Table,
+import Table, {
   TableBody,
-  TableHeader,
-  TableHeaderColumn,
+  TableHead,
   TableRow,
-  TableRowColumn,
+  TableCell,
 } from 'material-ui/Table';
-import {GridList, GridTile} from 'material-ui/GridList';
-import Subheader from 'material-ui/Subheader';
-import CircularProgress from 'material-ui/CircularProgress';
+import GridList, {GridListTile, GridListTileBar} from 'material-ui/GridList';
+import {CircularProgress} from 'material-ui/Progress';
+import Subheader from 'material-ui/List/ListSubheader';
 
 const styles = {
   root: {
@@ -61,7 +57,7 @@ class News extends React.Component {
     console.log(this.props);
 
     if (this.state.articles == undefined) {
-      return (<CircularProgress size={80} thickness={5}/>);
+      return (<CircularProgress variant="determinate" size={50}/>);
     }
 
     if (this.state.articles == false) {
@@ -79,15 +75,18 @@ class News extends React.Component {
       cellHeight={180}
       style={styles.gridList}
     >
+      <GridListTile key="Subheader" cols={2} style={{height: 'auto'}}>
+          <Subheader component="div">{'Recent News'}</Subheader>
+        </GridListTile>
       {this.state.articles.map((article, i) => (
         <a key={i} href={article.url}>
-        <GridTile
+        <GridListTile
           key={i}
           title={article.title}
           subtitle={<span key={i}>{'by'} <b key={i}>{article.author}</b></span>}
         >
           <img key={i} src={article.urlToImage}/>
-        </GridTile>
+        </GridListTile>
       </a>
       ))}
     </GridList>

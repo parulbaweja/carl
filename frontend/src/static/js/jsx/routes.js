@@ -1,33 +1,51 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
-import JobApplications from './components/JobApplications';
 import JobAppForm from './components/JobAppForm';
-import SingleAppView from './components/SingleAppView';
-import NavBar from './components/NavBar';
 import {BrowserRouter, Route} from 'react-router-dom';
 import LoginForm from './components/Login';
 import Register from './components/Register';
 import AppBox from './components/AppBox';
-import EditView from './components/EditView';
 import Welcome from './components/Welcome';
-import StatusChange from './components/StatusChange';
-import Container from './components/dnd/Container';
-import AppDrawer from './components/AppDrawer';
 import Compare from './components/Compare';
 import Analytics from './components/Analytics';
 import Menu from './components/Menu';
+import Grid from 'material-ui/Grid';
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
 
 const AppRouter = () => (
   <BrowserRouter>
     <div>
+      <Grid container={true} spacing={0} direction='column' justify='flex-start' alignItems='flex-start'>
+        <Grid item={true} md={12}>
+        <AppBar position="absolute">
+          <Toolbar>
+          <Typography variant="title" color="inherit">
+            Jobs
+          </Typography>
+        </Toolbar>
+      </AppBar>
+    </Grid>
 
+    <Grid item={true} md={12}>
       <Route component={Welcome} exact={false} path="/welcome"/>
-      <Route component={Menu} exact={false} path="/app"/>
-      <Route component={JobAppForm} exact={true} path="/app/app_form"/>
-      <Route component={LoginForm} exact={true} path="/welcome/login"/>
-      <Route component={Register} exact={true} path="/welcome/register"/>
-      <Route component={AppBox} exact={false} path="/app/dashboard/"/>
-      <Route component={Compare} exact={true} path="/app/compare"/>
-      <Route component={Analytics} exact={true} path="/app/analytics"/>
+    </Grid>
+
+      <Grid container={true} spacing={0} direction='row' alignItems='flex-start' justify='flex-start' wrap={'wrap'}>
+        <Grid item={true} md={true} style={{flexGrow: 0}}>
+          <Route component={Menu} exact={false} path="/app"/>
+        </Grid>
+
+        <Grid item={true} md={9} style={{marginTop: '+100px', marginLeft: '50px'}}>
+          <Route component={AppBox} exact={false} path="/app/dashboard/"/>
+          <Route component={Compare} exact={true} path="/app/compare"/>
+          <Route component={Analytics} exact={true} path="/app/analytics"/>
+        </Grid>
+    </Grid>
+  </Grid>
+          <Route component={JobAppForm} exact={true} path="/app/app_form"/>
+          <Route component={LoginForm} exact={true} path="/welcome/login"/>
+          <Route component={Register} exact={true} path="/welcome/register"/>
     </div>
   </BrowserRouter>
 );

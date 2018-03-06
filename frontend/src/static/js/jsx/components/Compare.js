@@ -1,13 +1,5 @@
 import React from 'react';
 import apiRequest from '../utils/jobsSDK';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Redirect, Link} from 'react-router';
 import PropTypes from 'prop-types';

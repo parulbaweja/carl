@@ -1,22 +1,13 @@
 import React from 'react';
 import apiRequest from '../utils/jobsSDK';
-import {postRequest} from '../utils/jobsSDK';
-import {
-  Table,
+import Table, {
   TableBody,
-  TableHeader,
-  TableHeaderColumn,
+  TableHead,
   TableRow,
-  TableRowColumn,
+  TableCell,
 } from 'material-ui/Table';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import PropTypes from 'prop-types';
-import IconButton from 'material-ui/IconButton';
-import CreateIcon from 'material-ui/svg-icons/content/create';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import DatePicker from 'material-ui/DatePicker';
 
 const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status', 'Offer Amount', 'Notes', 'URL'];
 
@@ -67,92 +58,92 @@ class SingleAppView extends React.Component {
     return (
       <div>
       <Table>
-        <TableBody
-          displayRowCheckbox={false}
-        >
+        <TableBody>
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Company'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                   {this.state.apps[this.props.appId].company}
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Position'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                   {this.state.apps[this.props.appId].position}
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Contact Name'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                   {this.state.apps[this.props.appId].contactName}
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Contact Email'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                   {this.state.apps[this.props.appId].contactEmail}
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Status'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                     {this.state.apps[this.props.appId].status}
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Date'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                     {this.state.apps[this.props.appId].date.slice(0, 16)}
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Offer Amount'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                     {this.state.apps[this.props.appId].offerAmount}
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'Notes'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                     {this.state.apps[this.props.appId].notes}
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableRowColumn>
+            <TableCell>
               {'URL'}
-            </TableRowColumn>
-            <TableRowColumn>
+            </TableCell>
+            <TableCell>
                     {this.state.apps[this.props.appId].url}
-            </TableRowColumn>
+            </TableCell>
           </TableRow>
       </TableBody>
     </Table>
-      <RaisedButton label="Save" onClick={this.onSubmit}/>
+    <Button onClick={this.onSubmit}>
+      {'Save'}
+    </Button>
       </div>
     );
   }

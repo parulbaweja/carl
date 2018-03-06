@@ -1,16 +1,11 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import apiRequest from '../utils/jobsSDK';
 import {Redirect} from 'react-router';
-import PropTypes from 'prop-types';
 // const NavBar = () => (<h1>{'Jobs!'}</h1>);
 
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import CircularProgress from 'material-ui/CircularProgress';
+import Menu, {MenuItem} from 'material-ui/Menu';
+import {CircularProgress} from 'material-ui/Progress';
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -79,7 +74,7 @@ class NavBar extends React.Component {
   render() {
     console.log(this.state);
     if (this.state.loggedIn === undefined) {
-      return (<CircularProgress size={80} thickness={5}/>);
+      return (<CircularProgress variant="determinate" size={50}/>);
     }
 
     if (this.state.loggedIn === false) {
@@ -101,11 +96,13 @@ class NavBar extends React.Component {
           onRequestChange={this.setLeftMenuState}
           open={this.state.isLeftMenuOpen}
         >
+          <Menu>
           <MenuItem onClick={this.myDashboard}>{'Dashboard'}</MenuItem>
           <MenuItem onClick={this.myCompare}>{'Compare'}</MenuItem>
           <MenuItem onClick={this.myJobApps}>{'My Job Apps'}</MenuItem>
           <MenuItem onClick={this.createEntry}>{'New Entry'}</MenuItem>
           <MenuItem onClick={this.logout}>{'Logout'}</MenuItem>
+        </Menu>
         </Drawer>
       </div>
       // <h1>{'Jobs!'}</h1>

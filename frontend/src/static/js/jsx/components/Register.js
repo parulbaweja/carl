@@ -1,10 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {postRequest} from '../utils/jobsSDK';
 import {Redirect} from 'react-router-dom';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import CircularProgress from 'material-ui/CircularProgress';
+import Button from 'material-ui/Button';
 
 class Register extends React.Component {
   constructor(props) {
@@ -45,7 +43,6 @@ class Register extends React.Component {
         <h3>{'Register'}</h3>
         <form>
           <TextField
-            hintText="First Name"
             id="fname"
             onChange={this.onChange('fname')}
             type="text"
@@ -53,7 +50,6 @@ class Register extends React.Component {
           />
           <br/>
           <TextField
-            hintText="Last Name"
             id="lname"
             onChange={this.onChange('lname')}
             type="text"
@@ -61,7 +57,6 @@ class Register extends React.Component {
           />
           <br/>
           <TextField
-            hintText="Email"
             id="email"
             onChange={this.onChange('email')}
             type="text"
@@ -69,14 +64,15 @@ class Register extends React.Component {
           />
           <br/>
           <TextField
-            hintText="Password"
             id="password"
             onChange={this.onChange('password')}
             type="password"
             value={this.state.password}
           />
           <br/>
-            <FlatButton label="Submit" onClick={this.onSubmit}/>
+          <Button onClick={this.onSubmit}>
+            {'Submit'}
+          </Button>
           </form>
         </div>
       );
