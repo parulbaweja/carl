@@ -33,15 +33,17 @@ class Welcome extends React.Component {
       <div>
         <div style={{position: 'fixed'}}>
         <video
-          id="background-video" loop={true} autoPlay={true} height={'100%'} width={'100%'}
-          style={{padding: 'none', position: 'fixed', height: '100%', width: '100%', float: 'left'}}
+          id="background-video" loop={true} autoPlay={true} width={'100%'}
+          style={{padding: 'none', position: 'fixed', width: '100%', float: 'left'}}
         >
           <source src={'https://storage.googleapis.com/coverr-main/mp4/Black_Keys.mp4'} type="video/mp4"/>
         </video>
         </div>
 
-            <Paper style={{width: 300, height: 400, zIndex: '1', position: 'fixed', marginLeft: '37%', marginTop: '10%', backgroundColor: 'rgba(255, 255, 255, 0.7', textAlign: 'center'}}>
-              <Typography>{'carl'}</Typography>
+            <Paper style={{width: 300, height: 50, zIndex: '1', position: 'fixed', marginLeft: '37%', marginTop: '10%', backgroundColor: 'rgba(255, 255, 255, 0.7', textAlign: 'center'}}>
+              <Typography variant='display1'>{'carl'}</Typography>
+          </Paper>
+            <Paper style={{width: 300, height: 250, zIndex: '1', position: 'fixed', marginLeft: '37%', marginTop: '15%', backgroundColor: 'rgba(255, 255, 255, 0.7', textAlign: 'center'}}>
             {this.state.login &&
                 <div>
                   <Login/>

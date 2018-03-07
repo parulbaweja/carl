@@ -43,14 +43,16 @@ class SingleAppView extends React.Component {
       ));
       var date = new Date(self.state.date);
       date.setDate(date.getDate() + 1);
+      var isoDate = date.toISOString();
       self.setState({
-        date: date,
+        date: isoDate.slice(0,10),
       });
     });
 
   }
 
   render() {
+    console.log(this.state);
     if (this.state.apps === undefined) {
       return null;
     }
@@ -109,7 +111,7 @@ class SingleAppView extends React.Component {
               {'Date'}
             </TableCell>
             <TableCell>
-                    {this.state.apps[this.props.appId].date.slice(0, 16)}
+                    {this.state.date}
             </TableCell>
           </TableRow>
 

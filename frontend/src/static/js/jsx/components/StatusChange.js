@@ -16,6 +16,7 @@ import WarningIcon from 'material-ui-icons/Warning';
 import WorkIcon from 'material-ui-icons/Work';
 import AddCircleIcon from 'material-ui-icons/AddCircle';
 import IconButton from 'material-ui/IconButton';
+import Typography from 'material-ui/Typography';
 
 const headers = ['Status', 'Date'];
 
@@ -121,22 +122,18 @@ class StatusChange extends React.Component {
         <Step>
           <StepLabel
             icon={<IconButton
-              iconStyle={{width: 36, height: 36}}
-              styles={{width: 72,
-                height: 72,
-                padding: 16}}
+              styles={{width: 72, height: 72, padding: 16}}
               tooltip={'Add activity'}
               onClick={this.handleClick}
-              >
-                      <AddCircleIcon/>
+                  >
+                    <AddCircleIcon/>
                   </IconButton>}
           >
+            <Typography>{'Add new activity'}</Typography>
           </StepLabel>
-              <StepContent active={true}>
-                <p>
-                  {'hello'}
-                </p>
-              </StepContent>
+          <StepContent active={true}>
+            <Typography>{''}</Typography>
+          </StepContent>
         </Step>
 
         {this.state.dates.map((status, i) => {
@@ -149,9 +146,7 @@ class StatusChange extends React.Component {
                 {status[0]}
               </StepLabel>
               <StepContent active={true}>
-                <p>
-                  {status[1]}
-                </p>
+                <Typography>{status[1]}</Typography>
             </StepContent>
             </Step>
           );

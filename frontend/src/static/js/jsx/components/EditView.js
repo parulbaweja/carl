@@ -53,8 +53,9 @@ class EditView extends React.Component {
       ));
       var date = new Date(self.state.date);
       date.setDate(date.getDate() + 1);
+      var isoDate = date.toISOString();
       self.setState({
-        date: date,
+        date: isoDate.slice(0,10),
       });
     });
 
@@ -75,20 +76,24 @@ class EditView extends React.Component {
   }
 
   handleDateChange(e, date) {
-    var newDate = new Date(date);
     this.setState({
-      date: newDate,
+      date: date,
     });
   }
 
-  handleStatusChange(e, index, statusId) {
+  handleStatusChange(e) {
     this.setState({
-      statusId,
+      statusId: e.target.value,
     });
   }
 
   onSubmit() {
     var self = this;
+    var postDate = new Date(self.state.date);
+    self.setState({
+      date: postDate,
+    });
+    console.log(self.state);
     postRequest(`application/update/${self.props.appId}`, self.state, function(body) {
       var apps = [...self.state.apps];
       apps[self.props.appId] = body;
@@ -100,6 +105,7 @@ class EditView extends React.Component {
   }
 
   render() {
+    console.log(this.state);
     if (this.state.apps === undefined) {
       return null;
     }
@@ -116,7 +122,6 @@ class EditView extends React.Component {
                   <TextField
                     id="company"
                     onChange={this.onChange('company')}
-                    inputStyle={{fontSize: '0.8125rem'}}
                     type="text"
                     value={this.state.company}
                   />
@@ -174,38 +179,14 @@ class EditView extends React.Component {
                   onChange={this.handleStatusChange}
                   value={this.state.statusId}
                 >
-                  <MenuItem
-                    primaryText="Interested"
-                    value={1}
-                  />
-                  <MenuItem
-                    primaryText="Applied"
-                    value={2}
-                  />
-                  <MenuItem
-                    primaryText="Phone Call"
-                    value={3}
-                  />
-                  <MenuItem
-                    primaryText="Interview"
-                    value={4}
-                  />
-                  <MenuItem
-                    primaryText="Offer"
-                    value={5}
-                  />
-                  <MenuItem
-                    primaryText="Accepted"
-                    value={6}
-                  />
-                  <MenuItem
-                    primaryText="Withdrawn"
-                    value={7}
-                  />
-                  <MenuItem
-                    primaryText="Not a Fit"
-                    value={8}
-                  />
+                  <MenuItem value={1}>{'Interested'}</MenuItem>
+                  <MenuItem value={2}>{'Applied'}</MenuItem>
+                  <MenuItem value={3}>{'Phone Call'}</MenuItem>
+                  <MenuItem value={4}>{'Interview'}</MenuItem>
+                  <MenuItem value={5}>{'Offer'}</MenuItem>
+                  <MenuItem value={6}>{'Accepted'}</MenuItem>
+                  <MenuItem value={7}>{'Withdrawn'}</MenuItem>
+                  <MenuItem value={8}>{'Not a Fit'}</MenuItem>
                 </Select>
               </TableCell>
           </TableRow>
@@ -215,10 +196,10 @@ class EditView extends React.Component {
             </TableCell>
             <TableCell>
               <TextField
-                id="date"
                 label="Date"
                 type="date"
                 defaultValue={this.state.date}
+                onChange={this.onChange('date')}
                 InputLabelProps={{
                   shrink: true,
                 }}

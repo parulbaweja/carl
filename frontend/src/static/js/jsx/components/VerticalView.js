@@ -15,6 +15,7 @@ import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import CheckIcon from 'material-ui-icons/Check';
 import CloseIcon from 'material-ui-icons/Close';
+import Grid from 'material-ui/Grid';
 
 const styles = {
   cell: {
@@ -117,8 +118,6 @@ class VerticalView extends React.Component {
   }
 
   render() {
-    console.log(this.state);
-    const classes = this.props;
 
     if (this.props.appId === undefined || this.state.apps === undefined) {
       return null;

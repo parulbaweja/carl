@@ -74,20 +74,21 @@ class News extends React.Component {
     <GridList
       cellHeight={180}
       style={styles.gridList}
+      cols={2}
     >
       <GridListTile key="Subheader" cols={2} style={{height: 'auto'}}>
           <Subheader component="div">{'Recent News'}</Subheader>
         </GridListTile>
       {this.state.articles.map((article, i) => (
-        <a key={i} href={article.url}>
-        <GridListTile
-          key={i}
-          title={article.title}
-          subtitle={<span key={i}>{'by'} <b key={i}>{article.author}</b></span>}
-        >
-          <img key={i} src={article.urlToImage}/>
+          <GridListTile key={i}>
+            <img key={i} src={article.urlToImage}/>
+            <a href={article.url}>
+            <GridListTileBar
+              title={article.title}
+              subtitle={<span key={i}>{'by'} {article.author}</span>}
+            />
+          </a>
         </GridListTile>
-      </a>
       ))}
     </GridList>
   </div>

@@ -4,6 +4,7 @@ import Checkbox from 'material-ui/Checkbox';
 import VerticalView from './VerticalView';
 import Grid from 'material-ui/Grid';
 import List, {ListItem, ListItemSecondaryAction, ListItemText} from 'material-ui/List';
+import ListSubheader from 'material-ui/List/ListSubheader';
 
 const styles = {
   compare: {
@@ -49,9 +50,11 @@ class Compare extends React.Component {
   render() {
     return (
       <div>
-        <Grid container={true} spacing={16} direction='row' alignItems='flex-start' justify='flex-start'>
+        <Grid container={true} spacing={24} direction='row' alignItems='flex-start' justify='flex-start'>
           <Grid item={true} md={true} style={{flexGrow: 0}}>
-        <List>
+            <List
+              subheader={<ListSubheader component="div">{'Companies'}</ListSubheader>}
+            >
         {
           this.state.companies.map((company) => {
             return (
@@ -74,7 +77,7 @@ class Compare extends React.Component {
       </List>
     </Grid>
 
-    <Grid item={true} md={true} style={{flexGrow: 0}}>
+    <Grid item={true} md={true} style={{flexGrow: 0, backgroundColor: '#E0E0E0', marginTop: '5%', width: '10%'}}>
             <VerticalView appId={this.state.checkedValues}/>
           </Grid>
         </Grid>

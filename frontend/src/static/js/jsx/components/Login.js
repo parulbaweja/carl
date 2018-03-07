@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import {CircularProgress} from 'material-ui/Progress';
+import Typography from 'material-ui/Typography';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -62,7 +63,7 @@ class LoginForm extends React.Component {
     return (
       <div>
         <br/>
-        <h3>{'Login'}</h3>
+        <Typography variant='headline'>{'Login'}</Typography>
       <form>
         <TextField
           id="email"

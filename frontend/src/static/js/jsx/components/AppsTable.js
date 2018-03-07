@@ -19,6 +19,7 @@ import CloseIcon from 'material-ui-icons/Close';
 import Paper from 'material-ui/Paper';
 import JobAppForm from './JobAppForm';
 import TextField from 'material-ui/TextField';
+import Tooltip from 'material-ui/Tooltip';
 
 class AppsTable extends React.Component {
   constructor(props) {
@@ -170,14 +171,16 @@ class AppsTable extends React.Component {
           </TableBody>
 
         </Table>
-        <Button variant="fab" color="secondary" aria-label="add" onClick={this.showPaper} style={{marginLeft: '95%'}}>
+        <Tooltip title='Create' placement='top'>
+        <Button variant="fab" color="secondary" aria-label="add" onClick={this.showPaper} style={{marginLeft: '95%', marginTop: '25%'}}>
           <AddIcon/>
         </Button>
+      </Tooltip>
 
         {this.state.showPaper &&
               <Paper
                 style={{overflow: 'auto', height: 600, width: 400, margin: 20, textAlign: 'center', display: 'inline-block', position: 'fixed', bottom: 0, right: 50}}
-                zDepth={2}
+                elevation={2}
               >
                 <IconButton
                   style={{position: 'absolute', right: 0, top: 0}}
