@@ -35,7 +35,7 @@ class EditView extends React.Component {
       offerAmount: '',
       notes: '',
       url: '',
-      date: undefined,
+      date: date,
     };
     // this.editSection = this.editSection.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -69,6 +69,7 @@ class EditView extends React.Component {
 
   onChange(key) {
     return (e) => {
+      console.log(e);
       var newState = {};
       newState[key] = e.target.value;
       this.setState(newState);
@@ -189,22 +190,6 @@ class EditView extends React.Component {
                   <MenuItem value={8}>{'Not a Fit'}</MenuItem>
                 </Select>
               </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              {'Date'}
-            </TableCell>
-            <TableCell>
-              <TextField
-                label="Date"
-                type="date"
-                defaultValue={this.state.date}
-                onChange={this.onChange('date')}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-      />
-            </TableCell>
           </TableRow>
 
           <TableRow>

@@ -17,6 +17,8 @@ import {
 } from 'victory';
 import GridList, {GridListTile, GridListTileBar} from 'material-ui/GridList';
 import Paper from 'material-ui/Paper';
+import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
+import {PieChart, Pie, ScatterChart, Scatter, LineChart, Line} from 'recharts';
 
 const styles = {
   graph: {
@@ -101,96 +103,30 @@ class Analytics extends React.Component {
     if (this.state.dates === undefined) {
       return null;
     }
+    console.log(this.state);
     return (
       <div>
         <div style={styles.graph}>
           <Paper style={styles.circle}>
-            <VictoryChart
-              theme={VictoryTheme.material}
-              domainPadding={{y: 50}}
-              style={{width: '150%'}}
+            <BarChart
+              width={600} height={300} data={this.state.averages}
+              margin={{top: 5, right: 30, left: 20, bottom: 5}}
             >
-              <VictoryAxis
-                axisLabelComponent={<VictoryLabel dy={25}/>}
-                label="# Days"
-              />
-              <VictoryAxis
-                dependentAxis={true}
-              />
-
-              <VictoryBar
-                horizontal={true}
-                style={{data: {fill: '#c43a31'}}}
-                data={this.state.averages}
-                padding={200}
-                labelComponent={<VictoryTooltip/>}
-                events={[{
-                  target: 'data',
-                  eventHandlers: {
-                    onMouseOver: () => {
-                      return [
-                        {
-                          target: 'data',
-                          mutation: () => ({style: {fill: 'gold', width: 30}}),
-                        }, {
-                          target: 'labels',
-                          mutation: () => ({active: true}),
-                        },
-                      ];
-                    },
-                    onMouseOut: () => {
-                      return [
-                        {
-                          target: 'data',
-                          mutation: () => {},
-                        }, {
-                          target: 'labels',
-                          mutation: () => ({active: false}),
-                        },
-                      ];
-                    },
-                  },
-                }]}
-              />
-            </VictoryChart>
+              <XAxis
+                dataKey="x"
+                fontFamily='roboto'/>
+              <YAxis fontFamily='roboto'/>
+              <CartesianGrid strokeDasharray="3 3"/>
+              <Tooltip labelStyle={{fontFamily: 'roboto'}} itemStyle={{fontFamily: 'roboto'}}/>
+              <Bar dataKey="Days" fill="#82ca9d"/>
+            </BarChart>
           </Paper>
 
           <Paper style={styles.circle}>
-          <VictoryPie
-            padAngle={3}
-            innerRadius={100}
-            data={this.state.status}
-            labels={(d) => `${d.x}`}
-            theme={VictoryTheme.material}
-            labelComponent={<VictoryTooltip/>}
-            events={[{
-              target: 'data',
-              eventHandlers: {
-                onMouseOver: () => {
-                  return [
-                    {
-                      target: 'data',
-                      mutation: () => ({style: {fill: 'gold', width: 30}}),
-                    }, {
-                      target: 'labels',
-                      mutation: () => ({active: true}),
-                    },
-                  ];
-                },
-                onMouseOut: () => {
-                  return [
-                    {
-                      target: 'data',
-                      mutation: () => {},
-                    }, {
-                      target: 'labels',
-                      mutation: () => ({active: false}),
-                    },
-                  ];
-                },
-              },
-            }]}
-          />
+          <PieChart width={600} height={300}>
+            <Pie data={this.state.status} dataKey='value' cx={300} cy={150} innerRadius={100} fontFamily='roboto' outerRadius={140} fill="#82ca9d"/>
+              <Tooltip labelStyle={{fontFamily: 'roboto'}} itemStyle={{fontFamily: 'roboto'}}/>
+       </PieChart>
         </Paper>
       </div>
 
@@ -203,8 +139,6 @@ class Analytics extends React.Component {
           >
             <VictoryAxis
               style={{tickLabels: {padding: 15, angle: -45}}}
-              axisLabelComponent={<VictoryLabel dy={40}/>}
-              label="Date"
             />
             <VictoryAxis
               dependentAxis={true}
@@ -222,64 +156,20 @@ class Analytics extends React.Component {
               );
             })
             }
-            <VictoryLegend
-              x={-125}
-              y={75}
-              gutter={20}
-              colorScale={statusColors}
-              data={[
-                {name: 'Interested'},
-                {name: 'Applied'},
-                {name: 'Phone Call'},
-                {name: 'Interview'},
-                {name: 'Offer'},
-                {name: 'Accepted'},
-                {name: 'Withdrawn'},
-                {name: 'Not a fit'},
-              ]}
-            />
           </VictoryChart>
         </Paper>
 
         <Paper style={styles.circle}>
-            <VictoryChart
-              theme={VictoryTheme.material}
-              domainPadding={50}
+            <BarChart
+              width={600} height={300} data={this.state.offers}
+              margin={{top: 5, right: 30, left: 20, bottom: 5}}
             >
-              <VictoryBar
-                style={{data: {fill: '#c43a31'}}}
-                data={this.state.offers}
-                barRatio={.5}
-                labelComponent={<VictoryTooltip/>}
-                events={[{
-                  target: 'data',
-                  eventHandlers: {
-                    onMouseOver: () => {
-                      return [
-                        {
-                          target: 'data',
-                          mutation: () => ({style: {fill: 'gold', width: 30}}),
-                        }, {
-                          target: 'labels',
-                          mutation: () => ({active: true}),
-                        },
-                      ];
-                    },
-                    onMouseOut: () => {
-                      return [
-                        {
-                          target: 'data',
-                          mutation: () => {},
-                        }, {
-                          target: 'labels',
-                          mutation: () => ({active: false}),
-                        },
-                      ];
-                    },
-                  },
-                }]}
-              />
-            </VictoryChart>
+              <XAxis dataKey="x" fontFamily='roboto'/>
+              <YAxis fontFamily='roboto'/>
+              <CartesianGrid strokeDasharray="3 3"/>
+              <Tooltip labelStyle={{fontFamily: 'roboto'}} itemStyle={{fontFamily: 'roboto'}}/>
+              <Bar dataKey="Offer Amount" fill="#82ca9d"/>
+            </BarChart>
           </Paper>
         </div>
       </div>

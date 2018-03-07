@@ -125,18 +125,6 @@ class ApplicationForm extends React.Component {
             </Select>
           </FormControl>
             <br/>
-              <TextField
-                id="date"
-                label="Date"
-                type="date"
-                defaultValue={this.state.date}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                fullWidth={true}
-                onChange={this.handleDateChange}
-          />
-            <br/>
             <TextField
               label="Offer Amount $"
               id="offerAmount"
