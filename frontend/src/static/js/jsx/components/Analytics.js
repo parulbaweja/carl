@@ -18,22 +18,25 @@ import {
 import GridList, {GridListTile, GridListTileBar} from 'material-ui/GridList';
 import Paper from 'material-ui/Paper';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
-import {Cell, PieChart, Pie, ScatterChart, Scatter, LineChart, Line} from 'recharts';
+import {ResponsiveContainer, Cell, PieChart, Pie, ScatterChart, Scatter, LineChart, Line} from 'recharts';
 import Typography from 'material-ui/Typography';
 
 const styles = {
   graph: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 
   circle: {
-    height: 350,
-    width: 600,
-    padding: 10,
+    display: 'inline-block',
+    height: 300,
+    width: 500,
     textAlign: 'center',
+  },
+
+  content: {
+    width: 100,
+    height: 100,
   },
 };
 
@@ -111,10 +114,11 @@ class Analytics extends React.Component {
         <div style={styles.graph}>
           <Paper style={styles.circle}>
             <Typography variant="subheading">{'Average Days to Status Change'}</Typography>
+          <ResponsiveContainer width='100%' height='90%'>
             <BarChart
               width={600} height={300} data={this.state.averages}
               margin={{top: 5, right: 30, left: 20, bottom: 5}}
-              style={{margin: 'auto', display: 'inline', float: 'none'}}
+              style={styles.content}
             >
               <XAxis
                 dataKey="x"
@@ -124,18 +128,21 @@ class Analytics extends React.Component {
               <Tooltip labelStyle={{fontFamily: 'roboto'}} itemStyle={{fontFamily: 'roboto'}}/>
               <Bar dataKey="Days" fill="#82ca9d"/>
             </BarChart>
+          </ResponsiveContainer>
           </Paper>
 
           <Paper style={styles.circle}>
             <Typography variant="subheading">{'Applications by Status'}</Typography>
+          <ResponsiveContainer width='100%' height='100%'>
           <PieChart width={600} height={300}>
-            <Pie data={this.state.status} dataKey='value' cx={300} cy={150} innerRadius={100} fontFamily='roboto' outerRadius={140} fill="#3388bb">
+            <Pie data={this.state.status} dataKey='value' cx={300} cy={150} innerRadius={75} fontFamily='roboto' outerRadius={100} fill="#3388bb">
               {
                 data.map((entry, index) => <Cell fill={statusColors[index]}/>)
               }
             </Pie>
               <Tooltip labelStyle={{fontFamily: 'roboto'}} itemStyle={{fontFamily: 'roboto'}}/>
        </PieChart>
+          </ResponsiveContainer>
         </Paper>
       </div>
 
@@ -172,6 +179,7 @@ class Analytics extends React.Component {
 
         <Paper style={styles.circle}>
             <Typography variant="subheading">{'Offer per Company'}</Typography>
+          <ResponsiveContainer width='100%' height='90%'>
             <BarChart
               width={600} height={300} data={this.state.offers}
               margin={{top: 5, right: 30, left: 20, bottom: 5}}
@@ -182,6 +190,7 @@ class Analytics extends React.Component {
               <Tooltip labelStyle={{fontFamily: 'roboto'}} itemStyle={{fontFamily: 'roboto'}}/>
               <Bar dataKey="Offer Amount" fill="#82ca9d"/>
             </BarChart>
+          </ResponsiveContainer>
           </Paper>
         </div>
       </div>
