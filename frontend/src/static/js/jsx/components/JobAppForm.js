@@ -63,7 +63,7 @@ class ApplicationForm extends React.Component {
   render() {
     return (
       <div style={{justifyContent: 'center'}}>
-        <div style={{left: 0, backgroundColor: '#9E9E9E', height: '50px', justifyContent: 'flex-start', display: 'flex'}}>
+        <div style={{left: 0, backgroundColor: '#b0bec5', height: '50px', justifyContent: 'flex-start', display: 'flex'}}>
         <NoteAddIcon style={{height: '50px', marginLeft: '20px'}}/>
       </div>
         <form style={{width: '300px', marginLeft: '12%', marginTop: '5%'}}>

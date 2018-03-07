@@ -26,6 +26,7 @@ const styles = theme => ({
   drawerPaper: {
     position: 'relative',
     width: 200,
+    backgroundColor: theme.palette.primary,
   },
   content: {
     flexGrow: 1,

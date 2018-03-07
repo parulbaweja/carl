@@ -172,7 +172,7 @@ class AppsTable extends React.Component {
 
         </Table>
         <Tooltip title='Create' placement='top'>
-        <Button variant="fab" color="secondary" aria-label="add" onClick={this.showPaper} style={{marginLeft: '95%', marginTop: '25%'}}>
+        <Button variant="fab" color="secondary" aria-label="add" onClick={this.showPaper} style={{marginLeft: '95%', marginTop: '20%'}}>
           <AddIcon/>
         </Button>
       </Tooltip>
