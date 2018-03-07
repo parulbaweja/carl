@@ -18,7 +18,8 @@ import {
 import GridList, {GridListTile, GridListTileBar} from 'material-ui/GridList';
 import Paper from 'material-ui/Paper';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
-import {PieChart, Pie, ScatterChart, Scatter, LineChart, Line} from 'recharts';
+import {Cell, PieChart, Pie, ScatterChart, Scatter, LineChart, Line} from 'recharts';
+import Typography from 'material-ui/Typography';
 
 const styles = {
   graph: {
@@ -29,9 +30,10 @@ const styles = {
   },
 
   circle: {
-    height: 400,
-    width: 700,
+    height: 350,
+    width: 600,
     padding: 10,
+    textAlign: 'center',
   },
 };
 
@@ -108,9 +110,11 @@ class Analytics extends React.Component {
       <div>
         <div style={styles.graph}>
           <Paper style={styles.circle}>
+            <Typography variant="subheading">{'Average Days to Status Change'}</Typography>
             <BarChart
               width={600} height={300} data={this.state.averages}
               margin={{top: 5, right: 30, left: 20, bottom: 5}}
+              style={{margin: 'auto', display: 'inline', float: 'none'}}
             >
               <XAxis
                 dataKey="x"
@@ -123,8 +127,13 @@ class Analytics extends React.Component {
           </Paper>
 
           <Paper style={styles.circle}>
+            <Typography variant="subheading">{'Applications by Status'}</Typography>
           <PieChart width={600} height={300}>
-            <Pie data={this.state.status} dataKey='value' cx={300} cy={150} innerRadius={100} fontFamily='roboto' outerRadius={140} fill="#82ca9d"/>
+            <Pie data={this.state.status} dataKey='value' cx={300} cy={150} innerRadius={100} fontFamily='roboto' outerRadius={140} fill="#3388bb">
+              {
+                data.map((entry, index) => <Cell fill={statusColors[index]}/>)
+              }
+            </Pie>
               <Tooltip labelStyle={{fontFamily: 'roboto'}} itemStyle={{fontFamily: 'roboto'}}/>
        </PieChart>
         </Paper>
@@ -132,13 +141,15 @@ class Analytics extends React.Component {
 
       <div style={styles.graph}>
         <Paper style={styles.circle}>
+            <Typography variant="subheading">{'Timeline per Company Applied'}</Typography>
           <VictoryChart
             theme={VictoryTheme.material}
             containerComponent={<VictoryVoronoiContainer/>}
-            domain={{x: [0, 5], y: [0, 7]}}
+            domain={{x: [0, 11], y: [0, 5]}}
+            style={{marginLeft: '50%', marginTop: '50%'}}
           >
             <VictoryAxis
-              style={{tickLabels: {padding: 15, angle: -45}}}
+              fixLabelOverlap={true}
             />
             <VictoryAxis
               dependentAxis={true}
@@ -160,6 +171,7 @@ class Analytics extends React.Component {
         </Paper>
 
         <Paper style={styles.circle}>
+            <Typography variant="subheading">{'Offer per Company'}</Typography>
             <BarChart
               width={600} height={300} data={this.state.offers}
               margin={{top: 5, right: 30, left: 20, bottom: 5}}
