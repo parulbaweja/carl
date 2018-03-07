@@ -156,8 +156,8 @@ class Analytics extends React.Component {
           <VictoryChart
             theme={VictoryTheme.material}
             containerComponent={<VictoryVoronoiContainer/>}
-            domain={{x: [0, 11], y: [0, 5]}}
-            style={{marginLeft: '50%', marginTop: '50%'}}
+            domain={{x: [0, 15], y: [0, 8]}}
+            style={{marginLeft: '50%', marginTop: '0%'}}
             padding={{bottom: '75'}}
           >
             <VictoryAxis

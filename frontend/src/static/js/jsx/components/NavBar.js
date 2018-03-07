@@ -41,7 +41,7 @@ class NavBar extends React.Component {
         <AppBar position="absolute">
           <Toolbar>
           <Typography variant="title" color="inherit" style={{flex: 1}}>
-            Jobs
+            carl
           </Typography>
         <Button
           color="inherit"
