@@ -107,7 +107,8 @@ class Menu extends React.Component {
 
         <Drawer
           variant="permanent"
-          classes={{paper: classes.drawerPaper}}>
+          classes={{paper: classes.drawerPaper}}
+          style={{position: 'fixed'}}>
           <div className={classes.toolbar}/>
           <List>
             <ListItem button={true} onClick={this.myDashboard}>

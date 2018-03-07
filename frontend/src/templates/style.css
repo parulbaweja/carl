@@ -1,2 +1,10 @@
 .navbar-right { margin-right: 0px }
 
+body  {
+    height: 100%;
+    background-image: url("1511.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+

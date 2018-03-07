@@ -10,6 +10,7 @@ import Table, {
 import GridList, {GridListTile, GridListTileBar} from 'material-ui/GridList';
 import {CircularProgress} from 'material-ui/Progress';
 import Subheader from 'material-ui/List/ListSubheader';
+import Typography from 'material-ui/Typography';
 
 const styles = {
   root: {
@@ -62,9 +63,12 @@ class News extends React.Component {
 
     if (this.state.articles == false) {
       return(
-        <div>
+        <div style={{marginLeft: '25%'}}>
+          <br/>
+        <Typography>
           {'No recent news - check back again!'}
-        </div>
+        </Typography>
+      </div>
       );
     }
 

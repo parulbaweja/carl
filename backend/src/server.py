@@ -29,7 +29,7 @@ bp = Blueprint('server', __name__)
 @bp.route('/check_login')
 def isLoggedIn():
     """Checks to see if user is logged in."""
-    print session
+
     if session.get('token'):
         result = AuthId.query.filter(AuthId.auth_token == session['token']).order_by(AuthId.auth_id.desc()).first()
         user = User.query.filter(User.user_id == result.user_id).first()
@@ -48,10 +48,9 @@ def isLoggedIn():
 @bp.route('/login', methods=['POST'])
 def submit_login_form():
     """Check for unique email and password. If correct, log in."""
-    # import ipdb; ipdb.set_trace()
+
     email = request.json.get('email')
     password = request.json.get('password')
-    # print email, password
     result = User.query.filter((User.email == email) & (User.password == password))
 
     if result.count() == 0:
@@ -268,9 +267,11 @@ def update_app(application_id):
     # Check to see if status has changed. If so, update to dates table.
     if app.status_id != status:
         app.status_id = status
-        long_date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ')
-        short_date = long_date.date()
-        new_date_change = DateChange(application_id=app.application_id, status_id=status, date_created=short_date)
+        # long_date = datetime.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ')
+        new_date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
+        print new_date
+        # short_date = long_date.date()
+        new_date_change = DateChange(application_id=app.application_id, status_id=status, date_created=new_date)
         db.session.add(new_date_change)
 
     # Commit all updates.

@@ -116,25 +116,8 @@ class StatusChange extends React.Component {
       return null;
     }
     return (
-    <div style={{maxWidth: 300, maxHeight: 400, margin: 'auto'}}>
+    <div style={{maxWidth: 300, maxHeight: 400, marginLeft: '25%'}}>
       <Stepper orientation="vertical">
-
-        <Step>
-          <StepLabel
-            icon={<IconButton
-              styles={{width: 72, height: 72, padding: 16}}
-              tooltip={'Add activity'}
-              onClick={this.handleClick}
-                  >
-                    <AddCircleIcon/>
-                  </IconButton>}
-          >
-            <Typography>{'Add new activity'}</Typography>
-          </StepLabel>
-          <StepContent active={true}>
-            <Typography>{''}</Typography>
-          </StepContent>
-        </Step>
 
         {this.state.dates.map((status, i) => {
           return (
@@ -153,6 +136,22 @@ class StatusChange extends React.Component {
         })
         }
       </Stepper>
+        <Step>
+          <StepLabel
+            icon={<IconButton
+              styles={{width: 72, height: 72, padding: 16}}
+              tooltip={'Add activity'}
+              onClick={this.handleClick}
+                  >
+                    <AddCircleIcon/>
+                  </IconButton>}
+          >
+            <Typography>{'Add new activity'}</Typography>
+          </StepLabel>
+          <StepContent active={true}>
+            <Typography>{''}</Typography>
+          </StepContent>
+        </Step>
     </div>
     );
   }

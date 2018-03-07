@@ -50,6 +50,7 @@ class NavBar extends React.Component {
           {'Logout'}</Button>
         </Toolbar>
       </AppBar>
+      <img src='/background_img' style={{position: 'fixed', width: '100%', zIndex: -1}}/>
     </div>
     );
   }

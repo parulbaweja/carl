@@ -78,7 +78,7 @@ class Compare extends React.Component {
     </Grid>
 
     <Grid item={true} md={true} style={{flexGrow: 0, backgroundColor: '#E0E0E0', marginTop: '5%', width: '10%'}}>
-            <VerticalView appId={this.state.checkedValues}/>
+            <VerticalView appId={this.state.checkedValues} style={{backgroundColor: '#E0E0E0'}}/>
           </Grid>
         </Grid>
       </div>

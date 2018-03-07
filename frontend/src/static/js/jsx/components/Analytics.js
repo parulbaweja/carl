@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import apiRequest from '../utils/jobsSDK';
 import {
   VictoryPie,
+  VictoryAxis,
   VictoryBar,
   VictoryChart,
   VictoryTheme,
@@ -12,8 +13,10 @@ import {
   VictoryStack,
   VictoryLegend,
   VictoryVoronoiContainer,
+  VictoryLabel,
 } from 'victory';
 import GridList, {GridListTile, GridListTileBar} from 'material-ui/GridList';
+import Paper from 'material-ui/Paper';
 
 const styles = {
   graph: {
@@ -24,8 +27,9 @@ const styles = {
   },
 
   circle: {
-    height: 300,
-    width: 500,
+    height: 400,
+    width: 700,
+    padding: 10,
   },
 };
 
@@ -47,6 +51,12 @@ class Analytics extends React.Component {
     });
 
     apiRequest('analytics/date_applied', function(body) {
+      for (var i=0; i<body.length; i++) {
+        var newDate = new Date(body[i].x);
+        var isoDate = newDate.toISOString();
+        // var newDate = body[i].x.slice(0,10);
+        body[i].x = isoDate.slice(0,10);
+      }
       self.setState({
         dates: body,
       });
@@ -72,6 +82,12 @@ class Analytics extends React.Component {
   handleBrush(domain) {
     this.setState({zoomDomain: domain});
   }
+            // <VictoryAxis
+            //   tickValues={this.state.dates.map((date) => {
+            //     return date.x;
+            //   })}
+            //   tickFormat={(x) => x.getUTCDate()}
+            // />
 
   render() {
     console.log(this.state);
@@ -86,13 +102,22 @@ class Analytics extends React.Component {
       return null;
     }
     return (
-        <GridList cellHeight={500}>
-          <GridListTile style={styles.circle}>
+      <div>
+        <div style={styles.graph}>
+          <Paper style={styles.circle}>
             <VictoryChart
               theme={VictoryTheme.material}
               domainPadding={{y: 50}}
               style={{width: '150%'}}
             >
+              <VictoryAxis
+                axisLabelComponent={<VictoryLabel dy={25}/>}
+                label="# Days"
+              />
+              <VictoryAxis
+                dependentAxis={true}
+              />
+
               <VictoryBar
                 horizontal={true}
                 style={{data: {fill: '#c43a31'}}}
@@ -128,9 +153,9 @@ class Analytics extends React.Component {
                 }]}
               />
             </VictoryChart>
-          </GridListTile>
+          </Paper>
 
-          <GridListTile style={styles.circle}>
+          <Paper style={styles.circle}>
           <VictoryPie
             padAngle={3}
             innerRadius={100}
@@ -166,14 +191,24 @@ class Analytics extends React.Component {
               },
             }]}
           />
-        </GridListTile>
+        </Paper>
+      </div>
 
-        <GridListTile style={styles.circle}>
+      <div style={styles.graph}>
+        <Paper style={styles.circle}>
           <VictoryChart
             theme={VictoryTheme.material}
-            domain={{x: [0, 5], y: [0, 7]}}
             containerComponent={<VictoryVoronoiContainer/>}
+            domain={{x: [0, 5], y: [0, 7]}}
           >
+            <VictoryAxis
+              style={{tickLabels: {padding: 15, angle: -45}}}
+              axisLabelComponent={<VictoryLabel dy={40}/>}
+              label="Date"
+            />
+            <VictoryAxis
+              dependentAxis={true}
+            />
             {statuses.map((status, i) => {
               return(
                 <VictoryScatter
@@ -204,9 +239,9 @@ class Analytics extends React.Component {
               ]}
             />
           </VictoryChart>
-        </GridListTile>
+        </Paper>
 
-        <GridListTile style={styles.circle}>
+        <Paper style={styles.circle}>
             <VictoryChart
               theme={VictoryTheme.material}
               domainPadding={50}
@@ -245,8 +280,9 @@ class Analytics extends React.Component {
                 }]}
               />
             </VictoryChart>
-          </GridListTile>
-        </GridList>
+          </Paper>
+        </div>
+      </div>
     );
   }
 }
