@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html style="height:100%;width:100%;margin:0">
+<html style="height:100%;width:100%;">
   <head lang="en">
     <meta charset="UTF-8">
     <title>Jobs</title>
@@ -7,14 +7,15 @@
     <meta name="jobs-api-url" content="http://localhost:5001">
     <!-- styles -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/hint.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
   </head>
-  <body style="height:100%;width:100%;margin:0;">
+      <!-- <img src="{{ url_for('static', filename='js/jsx/1511.jpg') }}" style="position:fixed;top:0;left:0;min-width:100%;min-height:100%"> -->
+      <body style="height:100%;width:100%;margin:0;">
     <!-- scripts -->
-    <div id="react-app" style="height:100%;width:100%"></div>
+    <div id="react-app" style="height:100%;width:100%;"></div>
     <script src="{{ url_for('static', filename='js/compiled/bundle.js') }}"></script>
   </body>
 </html>

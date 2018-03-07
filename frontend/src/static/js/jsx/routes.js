@@ -29,7 +29,7 @@ const AppRouter = () => (
           <Route component={Menu} exact={false} path="/app"/>
         </Grid>
 
-        <Grid item={true} md={9} style={{marginTop: '+100px', marginLeft: '50px'}}>
+        <Grid item={true} md={9} style={{marginTop: '+100px', marginLeft: '15%'}}>
           <Route component={AppBox} exact={false} path="/app/dashboard/"/>
           <Route component={Compare} exact={true} path="/app/compare"/>
           <Route component={Analytics} exact={true} path="/app/analytics"/>
