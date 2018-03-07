@@ -15,7 +15,7 @@ import {
   VictoryVoronoiContainer,
   VictoryLabel,
 } from 'victory';
-import GridList, {GridListTile, GridListTileBar} from 'material-ui/GridList';
+import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 import {ResponsiveContainer, Cell, PieChart, Pie, ScatterChart, Scatter, LineChart, Line} from 'recharts';
@@ -100,7 +100,7 @@ class Analytics extends React.Component {
     console.log(this.state);
 
     const statuses = ['Interested', 'Applied', 'Phone Call', 'Interview', 'Offer', 'Accepted', 'Withdrawn', 'Not a fit'];
-    const statusColors = ['#B2DFDB', '#80CBC4', '#4DB6AC', '#26A69A', '#009688', '#00897B', '#00695C', '#004D40'];
+    const statusColors = ['#f1c0c0', '#edabab', '#e99797', '#e48282', '#e06d6d', '#db5858', '#d74343', '#d32f2f'];
     const data = [
       {name: 'Hackbright', uv: 4000, amt: 2400},
     ];
@@ -111,42 +111,46 @@ class Analytics extends React.Component {
     console.log(this.state);
     return (
       <div>
-        <div style={styles.graph}>
-          <Paper style={styles.circle}>
-            <Typography variant="subheading">{'Average Days to Status Change'}</Typography>
-          <ResponsiveContainer width='100%' height='90%'>
-            <BarChart
-              width={600} height={300} data={this.state.averages}
-              margin={{top: 5, right: 30, left: 20, bottom: 5}}
-              style={styles.content}
-            >
-              <XAxis
-                dataKey="x"
-                fontFamily='roboto'/>
-              <YAxis fontFamily='roboto'/>
-              <CartesianGrid strokeDasharray="3 3"/>
-              <Tooltip labelStyle={{fontFamily: 'roboto'}} itemStyle={{fontFamily: 'roboto'}}/>
-              <Bar dataKey="Days" fill="#82ca9d"/>
-            </BarChart>
-          </ResponsiveContainer>
-          </Paper>
+        <Grid container={true} spacing={8} direction='row' justify='flex-start' alignItems='flex-start'>
+          <Grid item={true}>
+            <Paper style={styles.circle}>
+              <Typography variant="subheading">{'Average Days to Status Change'}</Typography>
+              <ResponsiveContainer width='100%' height='90%'>
+                <BarChart
+                  width={600} height={300} data={this.state.averages}
+                  margin={{top: 5, right: 30, left: 20, bottom: 5}}
+                  style={styles.content}
+                >
+                  <XAxis
+                    dataKey="x"
+                    fontFamily='roboto'/>
+                  <YAxis fontFamily='roboto'/>
+                  <CartesianGrid strokeDasharray="3 3"/>
+                  <Tooltip labelStyle={{fontFamily: 'roboto'}} itemStyle={{fontFamily: 'roboto'}}/>
+                  <Bar dataKey="Days" fill="#db5858"/>
+                </BarChart>
+              </ResponsiveContainer>
+            </Paper>
+          </Grid>
 
+          <Grid item={true}>
           <Paper style={styles.circle}>
             <Typography variant="subheading">{'Applications by Status'}</Typography>
           <ResponsiveContainer width='100%' height='100%'>
-          <PieChart width={600} height={300}>
-            <Pie data={this.state.status} dataKey='value' cx={300} cy={150} innerRadius={75} fontFamily='roboto' outerRadius={100} fill="#3388bb">
-              {
-                data.map((entry, index) => <Cell fill={statusColors[index]}/>)
-              }
+            <PieChart
+              margin={{top: 5, right: 30, left: 20, bottom: 5}}
+            >
+            <Pie data={this.state.status} dataKey='value' cy={150} innerRadius={75} fontFamily='roboto' outerRadius={100} fill="#db5858">
             </Pie>
               <Tooltip labelStyle={{fontFamily: 'roboto'}} itemStyle={{fontFamily: 'roboto'}}/>
        </PieChart>
           </ResponsiveContainer>
         </Paper>
-      </div>
+      </Grid>
+    </Grid>
 
-      <div style={styles.graph}>
+        <Grid container={true} spacing={8} direction='row' justify='flex-start' alignItems='flex-start'>
+      <Grid item={true}>
         <Paper style={styles.circle}>
             <Typography variant="subheading">{'Timeline per Company Applied'}</Typography>
           <VictoryChart
@@ -154,6 +158,7 @@ class Analytics extends React.Component {
             containerComponent={<VictoryVoronoiContainer/>}
             domain={{x: [0, 11], y: [0, 5]}}
             style={{marginLeft: '50%', marginTop: '50%'}}
+            padding={{bottom: '75'}}
           >
             <VictoryAxis
               fixLabelOverlap={true}
@@ -176,7 +181,9 @@ class Analytics extends React.Component {
             }
           </VictoryChart>
         </Paper>
+      </Grid>
 
+      <Grid item={true}>
         <Paper style={styles.circle}>
             <Typography variant="subheading">{'Offer per Company'}</Typography>
           <ResponsiveContainer width='100%' height='90%'>
@@ -188,12 +195,13 @@ class Analytics extends React.Component {
               <YAxis fontFamily='roboto'/>
               <CartesianGrid strokeDasharray="3 3"/>
               <Tooltip labelStyle={{fontFamily: 'roboto'}} itemStyle={{fontFamily: 'roboto'}}/>
-              <Bar dataKey="Offer Amount" fill="#82ca9d"/>
+              <Bar dataKey="Offer Amount" fill="#db5858"/>
             </BarChart>
           </ResponsiveContainer>
-          </Paper>
-        </div>
-      </div>
+        </Paper>
+        </Grid>
+      </Grid>
+    </div>
     );
   }
 }

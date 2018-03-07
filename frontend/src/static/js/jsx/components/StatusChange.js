@@ -65,28 +65,28 @@ class StatusChange extends React.Component {
 
   getStepperIcon(status, icons) {
     if (status == 'Interested') {
-      return <BookmarkIcon/>;
+      return <BookmarkIcon color="secondary"/>;
     }
     if (status == 'Applied') {
-      return <SendIcon/>;
+      return <SendIcon color="secondary"/>;
     }
     if (status == 'Phone call') {
-      return <PhoneIcon/>;
+      return <PhoneIcon color="secondary"/>;
     }
     if (status == 'Interview') {
-      return <WorkIcon/>;
+      return <WorkIcon color="secondary"/>;
     }
     if (status == 'Offer') {
-      return <AttachMoneyIcon/>;
+      return <AttachMoneyIcon color="secondary"/>;
     }
     if (status == 'Accepted') {
-      return <CheckCircleIcon/>;
+      return <CheckCircleIcon color="secondary"/>;
     }
     if (status == 'Withdrawn') {
-      return <FeedbackIcon/>;
+      return <FeedbackIcon color="secondary"/>;
     }
     if (status == 'Not a fit') {
-      return <WarningIcon/>;
+      return <WarningIcon color="secondary"/>;
     }
   }
 

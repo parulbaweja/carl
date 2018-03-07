@@ -16,6 +16,10 @@ import IconButton from 'material-ui/IconButton';
 import CheckIcon from 'material-ui-icons/Check';
 import CloseIcon from 'material-ui-icons/Close';
 import Grid from 'material-ui/Grid';
+import List, {ListItem, ListItemText} from 'material-ui/List';
+import Card, {CardActions, CardContent} from 'material-ui/Card';
+import Divider from 'material-ui/Divider';
+import Typography from 'material-ui/Typography';
 
 const styles = {
   cell: {
@@ -29,12 +33,16 @@ const headers = ['Company', 'Position', 'Contact Name', 'Contact Email', 'Status
 class VerticalView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      apps: undefined,
+    this.state = {apps: undefined,
       isAddingPro: -1,
       isAddingCon: -1,
+      company: '',
+      position: '',
+      status: '',
+      offerAmount: '',
       pro: '',
       con: '',
+      appId: undefined,
     };
 
     this.handlePro = this.handlePro.bind(this);
@@ -49,9 +57,10 @@ class VerticalView extends React.Component {
   componentDidMount() {
     var self = this;
     apiRequest('apps_repo', function(body) {
-      self.setState({
+      self.setState(Object.assign({
         apps: body,
-      });
+      }, body[self.props.appId]
+      ));
     });
   }
 
@@ -123,97 +132,32 @@ class VerticalView extends React.Component {
       return null;
     }
 
+    console.log(this.state);
+
     return (
-      <div>
-      <Table>
-        <TableBody>
-          <TableRow>
-            <TableCell style={styles.cell}>
-              <b>{'Company'}</b>
-            </TableCell>
-            {
-              this.props.appId.map((company, i) => {
+      <Card>
+        <CardContent>
+          <Typography><b>Company:</b> {this.state.company}</Typography>
+          <Typography><b>Position:</b> {this.state.position}</Typography>
+          <Typography><b>Status:</b> {this.state.status}</Typography>
+          <Typography><b>Offer:</b> {this.state.offerAmount}</Typography>
+            <Divider/>
+          <Typography><b>Pros:</b></Typography>
+              {this.state.apps[this.props.appId].pros.map((pro, i) => {
                 return (
-                <TableCell key={i} style={styles.cell}>
-                  {this.state.apps[company].company}
-                </TableCell>
+                  <Typography key={i}>{pro}</Typography>
                 );
               })
-            }
-          </TableRow>
-
-          <TableRow>
-            <TableCell style={styles.cell}>
-              <b>{'Position'}</b>
-            </TableCell>
-            {
-              this.props.appId.map((company, i) => {
-                return (
-                <TableCell key={i} style={styles.cell}>
-                  {this.state.apps[company].position}
-                </TableCell>
-                );
-              })
-            }
-          </TableRow>
-
-          <TableRow>
-            <TableCell style={styles.cell}>
-              <b>{'Status'}</b>
-            </TableCell>
-            {
-              this.props.appId.map((company, i) => {
-                return (
-                <TableCell key={i} style={styles.cell}>
-                  {this.state.apps[company].status}
-                </TableCell>
-                );
-              })
-            }
-          </TableRow>
-          <TableRow>
-            <TableCell style={styles.cell}>
-              <b>{'Offer Amount'}</b>
-            </TableCell>
-            {
-              this.props.appId.map((company, i) => {
-                return (
-                <TableCell key={i} style={styles.cell}>
-                  {this.state.apps[company].offerAmount}
-                </TableCell>
-                );
-              })
-            }
-          </TableRow>
-
-          <TableRow>
-            <TableCell style={styles.cell}><b>{'Pros'}</b>
-            </TableCell>
-            {this.props.appId.map((appId, i) => {
-              return (
-                <TableCell key={i} style={styles.cell}>
-                  <div>
-                  {this.state.apps[appId].pros.map((pro) => {
-                    return (
-                      <div>
-                      {pro}
-                    </div>
-                    );
-                  })
-                  }
-
-                  {this.state.isAddingPro != appId ?
+              }
+              {this.state.isAddingPro != this.props.appId ?
                       <Button
-                        key={i}
-                        onClick={this.handlePro(appId)}>
+                        onClick={this.handlePro(this.props.appId)}>
                         {'add pro'}
-                        <AddIcon/>
                       </Button>
                       :
                       <div>
                       <TextField
                         id="pro"
-                        key={i}
                         onChange={this.onChange('pro')}
                         type="text"
                       />
@@ -233,44 +177,26 @@ class VerticalView extends React.Component {
                       <br/>
                     </div>
                   }
-                  </div>
 
-                </TableCell>
-              );
-            })
-            }
-          </TableRow>
-
-          <TableRow>
-            <TableCell style={styles.cell}><b>{'Cons'}</b>
-            </TableCell>
-            {this.props.appId.map((appId, i) => {
-              return (
-                <TableCell key={i} style={styles.cell}>
-                  <div>
-                  {this.state.apps[appId].cons.map((con) => {
+            <Divider/>
+              <Typography><b>Cons:</b></Typography>
+                  {this.state.apps[this.props.appId].cons.map((con, i) => {
                     return (
-                      <div>
-                      {con}
-                    </div>
+                      <Typography key={i}>{con}</Typography>
                     );
                   })
                   }
-
-                  {this.state.isAddingCon != appId ?
+                  {this.state.isAddingCon != this.props.appId ?
                       <Button
                         icon={<RemoveIcon/>}
-                        key={i}
                         label={'add con'}
-                        onClick={this.handleCon(appId)}>
+                        onClick={this.handleCon(this.props.appId)}>
                         {'add con'}
-                        <RemoveIcon/>
                       </Button>
                       :
                       <div>
                       <TextField
                         id="con"
-                        key={i}
                         onChange={this.onChange('con')}
                         type="text"
                       />
@@ -286,27 +212,16 @@ class VerticalView extends React.Component {
                           <CloseIcon/>
                         </IconButton>
                       </div>
-                      <br/>
-                      <br/>
                     </div>
                   }
-                  </div>
-
-                </TableCell>
-              );
-            })
-            }
-          </TableRow>
-
-      </TableBody>
-    </Table>
-      </div>
+        </CardContent>
+      </Card>
     );
   }
 }
 
 VerticalView.propTypes = {
-  appId: PropTypes.array.isRequired,
+  appId: PropTypes.number.isRequired,
 };
 
 export default VerticalView;

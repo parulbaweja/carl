@@ -5,6 +5,7 @@ import VerticalView from './VerticalView';
 import Grid from 'material-ui/Grid';
 import List, {ListItem, ListItemSecondaryAction, ListItemText} from 'material-ui/List';
 import ListSubheader from 'material-ui/List/ListSubheader';
+import Typography from 'material-ui/Typography';
 
 const styles = {
   compare: {
@@ -50,6 +51,7 @@ class Compare extends React.Component {
   render() {
     return (
       <div>
+          <Typography>Select the companies you'd like to compare.</Typography>
         <Grid container={true} spacing={24} direction='row' alignItems='flex-start' justify='flex-start'>
           <Grid item={true} md={true} style={{flexGrow: 0}}>
             <List
@@ -77,9 +79,14 @@ class Compare extends React.Component {
       </List>
     </Grid>
 
-    <Grid item={true} md={true} style={{flexGrow: 0, backgroundColor: '#E0E0E0', marginTop: '5%', width: '10%'}}>
-            <VerticalView appId={this.state.checkedValues} style={{backgroundColor: '#E0E0E0'}}/>
-          </Grid>
+      {this.state.checkedValues.map((company) => {
+        return (
+    <Grid item={true} key={company} md={true} style={{marginTop: '5%', width: '10%'}}>
+          <VerticalView appId={company}/>
+        </Grid>
+        );
+      })
+      }
         </Grid>
       </div>
     );
