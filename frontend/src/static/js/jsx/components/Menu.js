@@ -5,7 +5,7 @@ import apiRequest from '../utils/jobsSDK';
 import {Redirect} from 'react-router';
 import Drawer from 'material-ui/Drawer';
 import {CircularProgress} from 'material-ui/Progress';
-import HomeIcon from 'material-ui-icons/Home';
+import DashboardIcon from 'material-ui-icons/Dashboard';
 import AssessmentIcon from 'material-ui-icons/Assessment';
 import ArchiveIcon from 'material-ui-icons/Archive';
 import CompareArrowsIcon from 'material-ui-icons/CompareArrows';
@@ -113,9 +113,9 @@ class Menu extends React.Component {
           <List>
             <ListItem button={true} onClick={this.myDashboard}>
               <ListItemIcon>
-                <HomeIcon/>
+                <DashboardIcon/>
               </ListItemIcon>
-              <ListItemText primary="Home"/>
+              <ListItemText primary="Dashboard"/>
             </ListItem>
             <ListItem button={true} onClick={this.myCompare}>
               <ListItemIcon>
