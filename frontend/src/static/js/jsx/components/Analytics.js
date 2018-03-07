@@ -13,15 +13,7 @@ import {
   VictoryLegend,
   VictoryVoronoiContainer,
 } from 'victory';
-import {
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  Bar,
-} from 'recharts';
+import GridList, {GridListTile, GridListTileBar} from 'material-ui/GridList';
 
 const styles = {
   graph: {
@@ -94,13 +86,12 @@ class Analytics extends React.Component {
       return null;
     }
     return (
-      <div>
-        <div className={'row1'} style={styles.graph}>
-          <div style={styles.circle}>
-            <h3 style={{position: 'relative'}}>{'Averages'}</h3>
+        <GridList cellHeight={500}>
+          <GridListTile style={styles.circle}>
             <VictoryChart
               theme={VictoryTheme.material}
               domainPadding={{y: 50}}
+              style={{width: '150%'}}
             >
               <VictoryBar
                 horizontal={true}
@@ -137,10 +128,9 @@ class Analytics extends React.Component {
                 }]}
               />
             </VictoryChart>
-          </div>
+          </GridListTile>
 
-        <div style={styles.circle}>
-          <h3>{'Applications by Status'}</h3>
+          <GridListTile style={styles.circle}>
           <VictoryPie
             padAngle={3}
             innerRadius={100}
@@ -176,12 +166,9 @@ class Analytics extends React.Component {
               },
             }]}
           />
-        </div>
-      </div>
+        </GridListTile>
 
-      <div className={'row2'} style={styles.graph}>
-
-        <div style={styles.circle}>
+        <GridListTile style={styles.circle}>
           <VictoryChart
             theme={VictoryTheme.material}
             domain={{x: [0, 5], y: [0, 7]}}
@@ -217,10 +204,9 @@ class Analytics extends React.Component {
               ]}
             />
           </VictoryChart>
+        </GridListTile>
 
-        </div>
-
-        <div  style={styles.circle}>
+        <GridListTile style={styles.circle}>
             <VictoryChart
               theme={VictoryTheme.material}
               domainPadding={50}
@@ -259,10 +245,8 @@ class Analytics extends React.Component {
                 }]}
               />
             </VictoryChart>
-          </div>
-
-      </div>
-    </div>
+          </GridListTile>
+        </GridList>
     );
   }
 }
