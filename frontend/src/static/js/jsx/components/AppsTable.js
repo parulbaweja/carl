@@ -135,9 +135,6 @@ class AppsTable extends React.Component {
                 key={this.state.appId}/>
           </Drawer>
         }
-        <TextField
-          onChange={this.filterList}
-        />
       <Table>
         <TableHead
         >
