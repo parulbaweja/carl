@@ -11,16 +11,22 @@ Carl is a web application for tracking important events during the job search. T
 Carl is an app built with a Python-Flask backend, supported by a PostgreSQL database and SQLAlchemy as the ORM. The React.js frontend uses the ES6 fetch promise API to make requests to the backend. The app uses React-Router to source components based on specific frontend routes. In terms of design, the app uses Material UI for various components and Recharts and Victory for the Analytics feature.
 
 ## Features
-Create new entries for important job-search-related events.
+View the screencast here: [Carl](https://www.youtube.com/watch?v=Zv7Q4K4w-L0)
+
+**Create new entries for important job-search-related events.**
+
 ![alt text](https://github.com/parulbaweja/carl/blob/master/images/Dashboard.jpg)
 
-View and edit entries, review activity and find recent news articles about a specific company.
+**View and edit entries, review activity and find recent news articles about a specific company.**
+
 ![alt text](https://github.com/parulbaweja/carl/blob/master/images/News.jpg)
 
-Compare companies, applications, and offers. Log pros and cons per selected company.
+**Compare companies, applications, and offers. Log pros and cons per selected company.**
+
 ![alt text](https://github.com/parulbaweja/carl/blob/master/images/Compare.jpg)
 
-View personal analytics based on time-series data for each logged application.
+**View personal analytics based on time-series data for each logged application.**
+
 ![alt text](https://github.com/parulbaweja/carl/blob/master/images/Analytics.jpg)
 
 ## Getting Started
@@ -39,14 +45,15 @@ These instructions will get you a copy of the project up and running on your loc
 3. `virtualenv venv`
 4. `source venv/bin/activate`
 5. `pip install -r requirements.txt`
-6. `python server.py (runs on localhost:5000)`
+6. `python src/server.py (runs on localhost:5000)`
 
 ### Backend
 
 1. `virtualenv venv`
 2. `source venv/bin/activate`
 3. `pip install -r requirements.txt`
-4. `python server.py (runs on localhost:5001)`
+4. `source src/secrets/sh`
+4. `python src/server.py (runs on localhost:5001)`
 
 Get your own secret keys for [NewsAPI](https://newsapi.org/account). Save them to a file secrets.sh. Your file should look something like this:
 `export SECRET_KEY='YOUR_SECRET_KEY'`
