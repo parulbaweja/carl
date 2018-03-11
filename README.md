@@ -12,12 +12,16 @@ Carl is an app built with a Python-Flask backend, supported by a PostgreSQL data
 
 ## Features
 Create new entries for important job-search-related events.
+![alt text](https://github.com/parulbaweja/carl/blob/recharts/images/Dashboard.jpg)
 
 View and edit entries, review activity and find recent news articles about a specific company.
+![alt text](https://github.com/parulbaweja/carl/blob/recharts/images/News.jpg)
 
 Compare companies, applications, and offers. Log pros and cons per selected company.
+![alt text](https://github.com/parulbaweja/carl/blob/recharts/images/Compare.jpg)
 
 View personal analytics based on time-series data for each logged application.
+![alt text](https://github.com/parulbaweja/carl/blob/recharts/images/Analytics.jpg)
 
 ## Getting Started
 
