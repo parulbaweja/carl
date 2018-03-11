@@ -1,9 +1,32 @@
 # Carl
-A personal assistant to manage your job search.
+
+## Summary
+Carl is a web application for tracking important events during the job search. The app allows users to log entries, compare companies and view personal analytics (i.e. applications per week, application status, offer amounts).
+
+## Technologies
+* Backend: Python, Flask, SQLAlchemy, PostgreSQL
+* Frontend: React.js, React-Router, Material UI, Recharts, Victory
+* APIs: NewsAPI
+
+Carl is an app built with a Python-Flask backend, supported by a PostgreSQL database and SQLAlchemy as the ORM. The React.js frontend uses the ES6 fetch promise API to make requests to the backend. The app uses React-Router to source components based on specific frontend routes. In terms of design, the app uses Material UI for various components and Recharts and Victory for the Analytics feature.
+
+## Features
+Create new entries for important job-search-related events.
+
+View and edit entries, review activity and find recent news articles about a specific company.
+
+Compare companies, applications, and offers. Log pros and cons per selected company.
+
+View personal analytics based on time-series data for each logged application.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+1. Node.js
+2. Python2
 
 ### Frontend
 
@@ -21,20 +44,8 @@ These instructions will get you a copy of the project up and running on your loc
 3. `pip install -r requirements.txt`
 4. `python server.py (runs on localhost:5001)`
 
-### Prerequisites
-
-1. Node.js
-2. Python2
-
-## Screenshots
-
-### Dashboard
-
-![alt text](https://raw.githubusercontent.com/parulbaweja/jobs/master/images/Dashboard.jpg)
-
-### Analytics
-
-![alt text](https://raw.githubusercontent.com/parulbaweja/jobs/master/images/Analytics.jpg)
+Get your own secret keys for [NewsAPI](https://newsapi.org/account). Save them to a file secrets.sh. Your file should look something like this:
+`export SECRET_KEY='YOUR_SECRET_KEY'`
 
 ## Running the tests
 
