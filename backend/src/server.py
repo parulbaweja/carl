@@ -299,9 +299,8 @@ def get_status_analytics():
     stats = []
     for status, total in data.iteritems():
         temp = {}
-        temp['x'] = status
-        temp['y'] = total
-        temp['label'] = status + ': ' + str(total)
+        temp['name'] = status
+        temp['value'] = total
         stats.append(temp)
 
     return jsonify(stats)
@@ -342,9 +341,9 @@ def get_stat_averages():
     print type(interview_to_offer)
 
     data = [
-        {'x': 'Interest-to-Apply', 'y': interest_to_apply, 'label': interest_to_apply},
-        {'x': 'Apply-to-Interview', 'y': apply_to_interview, 'label': apply_to_interview},
-        {'x': 'Interview-to-Offer', 'y': interview_to_offer, 'label': interview_to_offer},
+        {'x': 'Interest-to-Apply', 'Days': interest_to_apply, 'label': interest_to_apply},
+        {'x': 'Apply-to-Interview', 'Days': apply_to_interview, 'label': apply_to_interview},
+        {'x': 'Interview-to-Offer', 'Days': interview_to_offer, 'label': interview_to_offer},
     ]
 
     return jsonify(data)
@@ -378,7 +377,7 @@ def get_offer_amounts():
         if app.offer_amount:
             data.append({
                 'x': app.company.name,
-                'y': app.offer_amount,
+                'Offer Amount': int(app.offer_amount),
                 'label': app.offer_amount
             })
 

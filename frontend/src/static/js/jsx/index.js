@@ -16,7 +16,16 @@ import {render} from 'react-dom';
 import AppRouter from './routes';
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 
-const theme = createMuiTheme();
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#3388bb',
+    },
+    secondary: {
+      main: '#d32f2f',
+    },
+  },
+});
 
 render(
   <MuiThemeProvider theme={theme}>
